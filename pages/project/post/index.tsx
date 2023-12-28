@@ -55,6 +55,9 @@ const ProjectTitleP = styled.p`
   font-size: 24px;
   font-weight: 500;
   text-align: left;
+
+  border-bottom: 1px solid #000;
+  width: 100%;
 `;
 
 const WriterNameDiv = styled.div`
