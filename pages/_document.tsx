@@ -37,14 +37,15 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <></>
-      // <Html lang="ko">
-      //   <Head />
-      //   <body>
-      //     <Main />
-      //     <NextScript />
-      //   </body>
-      // </Html>
+      <div>
+        <Html lang="ko">
+          <Head />
+          <body>
+            <Main />
+            <NextScript />
+          </body>
+        </Html>
+      </div>
     );
   }
 }
