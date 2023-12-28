@@ -1,5 +1,5 @@
 /** 검색단 - 겟코드로고 */
-export const SearchLogo = () => (
+export const Logo = () => (
     <svg width="147" height="32" viewBox="0 0 147 32" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
 <rect width="147" height="32" fill="url(#pattern0)"/>
 <defs>

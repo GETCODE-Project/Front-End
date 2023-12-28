@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@types/react-responsive": "^8.0.8",
     "babel-plugin-styled-components": "^2.1.4",
     "next": "14.0.4",
+    "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
     "react-responsive": "^9.0.2",
