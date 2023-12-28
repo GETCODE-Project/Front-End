@@ -2,42 +2,53 @@ import styled from "styled-components";
 import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
+import { useState } from "react";
 
-const LoginPage = () => {
+const SignUpPage = () => {
     const router = useRouter();
+    const [isSignUp, setIsSignUp] = useState<boolean>();
 
     return(
         <Layout>
-            <Title>로그인</Title>
+            {isSignUp?
+            <>
+            <Title style={{fontSize:'1.875rem', lineHeight:'3.125rem'}}>환영합니다!<br/>회원가입이 완료되었습니다!</Title>
+            <Button>
+                <SignUp onClick={()=>router.push('/')}>로그인</SignUp>
+            </Button>
+            </>
+            :
+            <>
+            <Title>회원가입</Title>
             <Content>
                 <InputWrapper className='Email'>
                     <p>Email</p>
                     <input type="email" placeholder="email@email.com"/>
-                    <div id='icon'>
-                        <EmailDeleteSVG/>
-                    </div>
+                    <div id='certified'>인증</div>
                 </InputWrapper>
                 <InputWrapper className='PassWord'>
                     <p>Password</p>
                     <input type="password" placeholder="••••••••••"/>
-                    <div id='icon'>
-                        <EmailDeleteSVG/>
-                    </div>
+                </InputWrapper>
+                <InputWrapper className='NickName'>
+                    <p>Nickname</p>
+                    <input type="text" placeholder="홍길동"/>
                 </InputWrapper>
             </Content>
-            <LoginButton>
-                <Login>로그인</Login>
-                <GoogleLoginButton/>
+            <Button>
+                <SignUp onClick={()=>setIsSignUp(!isSignUp)}>회원가입</SignUp>
+            </Button>
+            <LoginButton onClick={()=>router.push('/auth/login')}>
+                <span>이미 로그인 계정이 있으신가요?</span>
+                <span>로그인하기</span>
             </LoginButton>
-            <SignUpButton onClick={()=>router.push('/auth/signup')}>
-                <span>로그인 계정이 없으신가요?</span>
-                <span>회원가입하기</span>
-            </SignUpButton>
+            </>
+            }
         </Layout>
     )
 }
 
-export default LoginPage;
+export default SignUpPage;
 
 const Layout = styled.div`
     display: flex;
@@ -45,7 +56,6 @@ const Layout = styled.div`
     gap: 40px;
     width: 360px;
 `;
-
 const Title = styled.div`
     display: flex;
     justify-content: start;
@@ -78,22 +88,30 @@ const InputWrapper = styled.div`
         
         color: #3c3c3c;
     }
-    #icon{
+    #certified{
+        display:flex;
         position: absolute;
         right: 10px;
-        top: 37px;
+        top: 33.5px;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 25px;
 
-        cursor: pointer;
+        background-color: #FF993A;
+        border-radius: 8px;
+        
+        color: #fff;
     }
 `;
 
-const LoginButton = styled.div`
+const Button = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 16px;
 `;
-const Login = styled.div`
+const SignUp = styled.div`
     display:flex;
     align-items: center;
     justify-content: center;
@@ -108,7 +126,7 @@ const Login = styled.div`
     cursor: pointer;
 `;
 
-const SignUpButton = styled.div`
+const LoginButton = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

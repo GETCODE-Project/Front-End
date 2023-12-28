@@ -1,22 +1,19 @@
-import LoginPage from '@/components/auth/LoginPage';
-import { Logo } from '@/public/SVG/search';
+import SignUpPage from "@/components/auth/SignUpPage";
+import { Logo } from "@/public/SVG/search";
+import styled from "styled-components";
 
-import styled from 'styled-components';
-
-const Login = () => {
-    
-
+const SignUp = () => {
     return(
         <Layout>
             <LogoWrapper>
                 <Logo/>
             </LogoWrapper>
-            <LoginPage/>
+            <SignUpPage/>
         </Layout>
     )
 }
 
-export default Login;
+export default SignUp;
 
 const Layout = styled.div`
     display: flex;

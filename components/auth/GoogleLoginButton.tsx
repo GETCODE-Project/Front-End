@@ -1,3 +1,4 @@
+import { GoogleLogoSVG } from '@/public/SVG/auth';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
@@ -8,7 +9,7 @@ const GoogleLoginButton = () => {
 
     return(
         <Layout onClick={()=>signIn("google",{callbackUrl:"/"})}>
-            Google
+            <GoogleLogoSVG/><span>Google Login</span>
         </Layout>
     )
 }
@@ -19,8 +20,9 @@ const Layout = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 5px;
     width: 100%;
-    height: 35px;
+    height: 45px;
 
     background-color: #fff;
     border-radius: 8px;
