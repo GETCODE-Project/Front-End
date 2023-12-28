@@ -1,6 +1,8 @@
 import Header from "@/components/common/Header";
 import MenuBar from "@/components/common/MenuBar";
 import Footer from "@/components/common/Footer";
+
+import TestEditor from "@/components/projectDetail/b";
 import styled from "styled-components";
 
 export default function Main() {
@@ -8,7 +10,7 @@ export default function Main() {
     <div>
       <Header />
       <MenuBar />
-
+      {/* <TestEditor /> */}
       <Box />
       <Footer />
     </div>
