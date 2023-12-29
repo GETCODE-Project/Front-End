@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import SearchInput from "@/components/common/search/SearchInput";
 import ObjectForm from "@/components/findProject/ObjectForm";
+import { media } from "@/styles/mediaQuery";
 
-const FindProjectPage = () => {
+const FindProject = () => {
     const arr:any [] =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27];
 
     return(
@@ -18,7 +19,7 @@ const FindProjectPage = () => {
                         </Sort>
                 </Wrapper>
                 <ObjectList>
-                    {arr.map((i:any, idx:number)=>(
+                    {arr?.map((i:any, idx:number)=>(
                         <ObjectForm key={idx}/>
                     ))}
                 </ObjectList>
@@ -28,7 +29,7 @@ const FindProjectPage = () => {
     )
 }
 
-export default FindProjectPage;
+export default FindProject;
 
 const Layout = styled.div`
     display: flex;
@@ -37,6 +38,7 @@ const Layout = styled.div`
     padding: 50px 70px;
     box-sizing: border-box;
     width: 100%;
+
 `;
 const Content = styled.div`
     display: flex;

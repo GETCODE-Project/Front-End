@@ -1,7 +1,6 @@
 import Header from "@/components/common/Header";
 import MenuBar from "@/components/common/MenuBar";
 import Footer from "@/components/common/Footer";
-import styled from "styled-components";
 import FindProjectPage from "@/components/findStudy/FindStudyPage";
 
 
