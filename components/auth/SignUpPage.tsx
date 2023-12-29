@@ -3,10 +3,35 @@ import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import axios from 'axios';
+import { POST } from "@/api/axios";
 
 const SignUpPage = () => {
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
+    
+    // const handleLogin = async () => {
+    //     const result = await signIn("email",{
+    //         email : "kyun9152@naver.com",
+    //         nickname: "hodu",
+    //         password: "1234",
+    //         callbackUrl: "/",
+    //     });
+    // }
+
+    const handleSignUp = async() => {
+        await axios.post('http://52.78.81.149:8080',{
+        email: 'hb057@naver.com',
+        nickname: 'been',
+        password: '123478'        
+    }).then((res)=>{
+        console.log(res.data);
+    }).catch((err)=>{
+        console.log(err);
+    })
+    }
+    
 
     return(
         <Layout>
@@ -21,22 +46,22 @@ const SignUpPage = () => {
             <>
             <Title>회원가입</Title>
             <Content>
-                <InputWrapper className='Email'>
+                <InputWrapper>
                     <p>Email</p>
                     <input type="email" placeholder="email@email.com"/>
                     <div id='certified'>인증</div>
                 </InputWrapper>
-                <InputWrapper className='PassWord'>
+                <InputWrapper>
                     <p>Password</p>
                     <input type="password" placeholder="••••••••••"/>
                 </InputWrapper>
-                <InputWrapper className='NickName'>
+                <InputWrapper>
                     <p>Nickname</p>
                     <input type="text" placeholder="홍길동"/>
                 </InputWrapper>
             </Content>
             <Button>
-                <SignUp onClick={()=>setIsSignUp(!isSignUp)}>회원가입</SignUp>
+                <SignUp onClick={handleSignUp}>회원가입</SignUp>
             </Button>
             <LoginButton onClick={()=>router.push('/auth/login')}>
                 <span>이미 로그인 계정이 있으신가요?</span>

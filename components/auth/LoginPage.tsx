@@ -2,22 +2,37 @@ import styled from "styled-components";
 import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
+import { POST } from '@/api/axios';
 
 const LoginPage = () => {
     const router = useRouter();
+
+    const handleLogin = async() => {
+        await POST('http://52.78.81.149:8080',{
+            email: 'kyun91532@naver.com',
+            nickname: 'hodu',
+            password: '12344'
+        }).then((res)=>{
+            console.log(res);
+            alert(res.data);
+        }).catch((err)=>{
+            console.log(err);
+            alert(err);
+        })
+    }
 
     return(
         <Layout>
             <Title>로그인</Title>
             <Content>
-                <InputWrapper className='Email'>
+                <InputWrapper>
                     <p>Email</p>
                     <input type="email" placeholder="email@email.com"/>
                     <div id='icon'>
                         <EmailDeleteSVG/>
                     </div>
                 </InputWrapper>
-                <InputWrapper className='PassWord'>
+                <InputWrapper>
                     <p>Password</p>
                     <input type="password" placeholder="••••••••••"/>
                     <div id='icon'>
@@ -26,7 +41,7 @@ const LoginPage = () => {
                 </InputWrapper>
             </Content>
             <LoginButton>
-                <Login>로그인</Login>
+                <Login onClick={()=>handleLogin}>로그인</Login>
                 <GoogleLoginButton/>
             </LoginButton>
             <SignUpButton onClick={()=>router.push('/auth/signup')}>
