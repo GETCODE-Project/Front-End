@@ -20,13 +20,25 @@ const SignUpPage = () => {
     //     });
     // }
 
+    // const handleSignUp = async() => {
+    //     await axios.post('http://52.78.81.149:8080',{
+    //     email: 'hb057@naver.com',
+    //     nickname: 'been',
+    //     password: '123478'        
+    // }).then((res)=>{
+    //     console.log(res);
+    // }).catch((err)=>{
+    //     console.log(err);
+    // })
+    // }
+
     const handleSignUp = async() => {
-        await axios.post('http://52.78.81.149:8080',{
+        POST('http://52.78.81.149:8080/api/sign-up',{
         email: 'hb057@naver.com',
         nickname: 'been',
         password: '123478'        
     }).then((res)=>{
-        console.log(res.data);
+        console.log(res);
     }).catch((err)=>{
         console.log(err);
     })
