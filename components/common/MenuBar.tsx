@@ -3,48 +3,67 @@ import styled from 'styled-components';
 export default function MenuBar() {
   return (
     <ContainerDiv>
-      <MenuBarUl>
-        <MenuBarLi><MenuLiA href='/ProjectMainPage'>프로젝트</MenuLiA></MenuBarLi>
-        <MenuBarLi>프로젝트 모집</MenuBarLi>
-        <MenuBarLi>스터디 모집</MenuBarLi>
-        <MenuBarLi>커뮤니티</MenuBarLi>
-      </MenuBarUl>
+      <ul>
+        <li>
+          <a 
+            href={'/project'}
+            style={{textDecoration: 'none',color: '#fff'}}>프로젝트
+          </a>
+        </li>
+        <li>
+          <a 
+            href={'/findProject'}
+            style={{textDecoration: 'none',color: '#fff'}}>프로젝트 모집
+          </a>
+        </li>
+        <li>
+          <a 
+            href={'/findStudy'}
+            style={{textDecoration: 'none',color: '#fff'}}>스터디 모집
+          </a>
+        </li>
+        <li>
+          <a 
+            href={'/'}
+            style={{textDecoration: 'none',color: '#fff'}}>커뮤니티
+          </a>
+        </li>
+      </ul>
     </ContainerDiv>
   );
 }
 
 const ContainerDiv = styled.div`
-  display: block;
-  height: 50px;
-  width: 100%;
-`
-const MenuBarUl = styled.ul`
-  position: fixed;
-  height: 50px;
   display: flex;
-  place-items: center;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
   height: 50px;
-  padding: 0;
-  margin: 0;
-  background-color: #ff4b13;
-  color: white;
-  list-style-type: none;
-  z-index: 100;
-
+  width: 100%;
   
-  font-family: Inter;
-  font-size: 16px;
+  background-color: #ff4b13;
+  
+  font-size: 1rem;
   font-weight: 500;
-  letter-spacing: 0em;
-`
-const MenuBarLi = styled.li`
-  margin: 0 10px;
-  font-size: 16px;
-  font-weight: 500;
-  &:first-child { padding-left: 30px;}
-`
-const MenuLiA = styled.a`
-text-decoration: none;
-color: white;
-`
+  
+  & > ul{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 25px;
+    width: 1000px;
+    height: 50px;
+    
+    color: white;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0em;
+  }
+
+  & > li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    }
+`;
