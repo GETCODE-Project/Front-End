@@ -5,63 +5,33 @@ import { useRouter } from 'next/router';
 import { useState } from "react";
 import { POST } from "@/pages/api/axios";
 
-const SignUpPage = () => {
+/** 구글 회원가입 시, 마지막 절차 : 닉네임 등록 */
+const NickNamePage = () => {
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
 
-    const handleSignUp = async() => {
-        POST('http://52.78.81.149:8080/api/sign-up',{
-        email: 'hb057@naver.com',
-        nickname: 'been',
-        password: '123478'        
-        }).then((res)=>{
-            console.log(res);
-        }).catch((err)=>{
-            console.log(err);
-        })
-    }
-
     return(
         <Layout>
-            {isSignUp?
-            <>
-            <Title style={{fontSize:'1.875rem', lineHeight:'3.125rem'}}>환영합니다!<br/>회원가입이 완료되었습니다!</Title>
-            <Button>
-                <SignUp onClick={()=>router.push('/')}>로그인</SignUp>
-            </Button>
-            </>
-            :
-            <>
-            <Title>회원가입</Title>
+            <Title>닉네임 등록</Title>
             <Content>
-                <InputWrapper>
-                    <p>Email</p>
-                    <input type="email" placeholder="email@email.com"/>
-                    <div id='certified'>인증</div>
-                </InputWrapper>
-                <InputWrapper>
-                    <p>Password</p>
-                    <input type="password" placeholder="••••••••••"/>
-                </InputWrapper>
                 <InputWrapper>
                     <p>Nickname</p>
                     <input type="text" placeholder="홍길동"/>
                 </InputWrapper>
             </Content>
             <Button>
-                <SignUp onClick={handleSignUp}>회원가입</SignUp>
+                <SignUp>회원 가입 완료</SignUp>
             </Button>
             <LoginButton onClick={()=>router.push('/auth/login')}>
                 <span>이미 로그인 계정이 있으신가요?</span>
                 <span>로그인하기</span>
             </LoginButton>
-            </>
-            }
+        
         </Layout>
     )
 }
 
-export default SignUpPage;
+export default NickNamePage;
 
 const Layout = styled.div`
     display: flex;

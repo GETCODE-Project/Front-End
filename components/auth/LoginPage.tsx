@@ -3,8 +3,12 @@ import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { POST } from '@/pages/api/axios';
+import { useEffect, useState } from "react";
 
 const LoginPage = () => {
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userPassword, setUserPassword] = useState<string>('');
+
     const router = useRouter();
 
     const handleLogin = async() => {
@@ -21,13 +25,25 @@ const LoginPage = () => {
         })
     }
 
+    const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.value;
+        setUserEmail(target);
+    }
+
+    useEffect(() => {
+        console.log(userEmail);
+    },[userEmail]);
     return(
         <Layout>
             <Title>로그인</Title>
             <Content>
                 <InputWrapper>
                     <p>Email</p>
-                    <input type="email" placeholder="email@email.com"/>
+                    <input 
+                        type="email" 
+                        placeholder="email@email.com" 
+                        value={userEmail}
+                        onChange={handleUserEmail}/>
                     <div id='icon'>
                         <EmailDeleteSVG/>
                     </div>
@@ -92,6 +108,11 @@ const InputWrapper = styled.div`
         border: 1px solid #B7B7B7;
         
         color: #3c3c3c;
+
+        &:focus{
+            border: 1px solid #FF993A;
+            outline: none;
+        }
     }
     #icon{
         position: absolute;
