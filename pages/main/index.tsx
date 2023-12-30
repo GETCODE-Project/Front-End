@@ -1,6 +1,6 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
+import Header from "@/components/common/layout/Header";
+import MenuBar from "@/components/common/layout/MenuBar";
+import Footer from "@/components/common/layout/Footer";
 import styled from "styled-components";
 import ObjectForm from "@/components/project/ObjectForm";
 

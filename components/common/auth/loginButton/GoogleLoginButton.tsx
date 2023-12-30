@@ -8,7 +8,7 @@ const GoogleLoginButton = () => {
     const router = useRouter();
 
     return(
-        <Layout onClick={()=>signIn("google",{callbackUrl:"/"})}>
+        <Layout onClick={()=>signIn("google",{callbackUrl:"/auth/signup/nickname"})}>
             <GoogleLogoSVG/><span>Google Login</span>
         </Layout>
     )

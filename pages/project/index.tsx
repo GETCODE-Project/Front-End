@@ -1,17 +1,18 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
+import Header from "@/components/common/layout/Header";
+import MenuBar from "@/components/common/layout/MenuBar";
+import Footer from "@/components/common/layout/Footer";
 import styled from "styled-components";
 import ProjectPage from "@/components/project/ProjectPage";
 
-
-export default function Project() {
+const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
       <MenuBar />
-        <ProjectPage/>
+      <ProjectPage />
       <Footer />
     </div>
   );
-}
+};
+
+export default ProjectPost;
