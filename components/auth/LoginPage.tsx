@@ -2,7 +2,7 @@ import styled from "styled-components";
 import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
-import { POST } from '@/api/axios';
+import { POST } from '@/pages/api/axios';
 
 const LoginPage = () => {
     const router = useRouter();

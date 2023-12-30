@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import axios from 'axios';
-import { POST } from "@/api/axios";
+import { POST } from "@/pages/api/axios";
 
 const SignUpPage = () => {
     const router = useRouter();
