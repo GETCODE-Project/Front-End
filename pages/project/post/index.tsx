@@ -1,6 +1,6 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
+import Header from "@/components/common/layout/Header";
+import MenuBar from "@/components/common/layout/MenuBar";
+import Footer from "@/components/common/layout/Footer";
 import { useState } from "react";
 import styled from "styled-components";
 import ProjectForm from "@/components/projectDetail/ProjectForm";
@@ -58,6 +58,18 @@ const ProjectTitleDiv = styled.div`
     text-align: left;
   }
 `;
+const ProjectTitleP = styled.p`
+  display: inline;
+  font-family: Inter;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  text-align: left;
+
+  border-bottom: 1px solid #000;
+  width: 100%;
+`;
+
 const WriterNameDiv = styled.div`
   font-family: Inter;
   font-size: 10px;

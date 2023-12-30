@@ -1,7 +1,6 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
-import styled from "styled-components";
+import Header from "@/components/common/layout/Header";
+import MenuBar from "@/components/common/layout/MenuBar";
+import Footer from "@/components/common/layout/Footer";
 import FindProjectPage from "@/components/findStudy/FindStudyPage";
 
 
@@ -14,4 +13,5 @@ export default function FindProject() {
       <Footer />
     </div>
   );
+
 }
