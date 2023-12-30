@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
-import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 import { POST } from "@/pages/api/axios";
@@ -93,5 +91,6 @@ const Certified = styled.div`
         border-radius: 8px;
         
         color: #fff;
-    
+
+        cursor: pointer;
 `;

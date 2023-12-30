@@ -13,6 +13,17 @@ interface AuthFormProps{
 const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
 
     const router = useRouter();
+    const isSiginUpPage = router.pathname === '/auth/signup';
+    const isLoginPage = router.pathname === '/auth/login';
+
+    const handleRouterPush = () => {
+        if(isSiginUpPage){
+            router.push('/auth/login');
+        }
+        if(isLoginPage){
+            router.push('/auth/signup');
+        }
+    }
 
     return (
         <Layout>
@@ -24,9 +35,20 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
                 <Login>{buttonName}</Login>
                 <GoogleLoginButton/>
             </LoginButton>
-            <SignUpButton onClick={()=>router.push('/auth/signup')}>
-                <span>로그인 계정이 없으신가요?</span>
-                <span>회원가입하기</span>
+            <SignUpButton onClick={handleRouterPush}>
+                { isLoginPage?
+                    <>
+                    <span>로그인 계정이 없으신가요?</span>
+                    <span>회원가입하기</span>
+                    </>
+                : isSiginUpPage?
+                    <>
+                    <span>이미 계정이 있으신가요?</span>
+                    <span>로그인하기</span>
+                    </>
+                : <></>
+                }
+                
             </SignUpButton>
         </Layout>
     )

@@ -10,12 +10,13 @@ interface InputProps{
     onChange: (value: any) => void;
     validation: boolean;
     children?:any;
+    validationGuide?: string;
 }
 
-const InputForm = ({name,type, placeholder, value, onChange, validation, children}:InputProps) => {
+const InputForm = ({name,type, placeholder, value, onChange, validation, children, validationGuide}:InputProps) => {
 
     return (
-        <InputWrapper>
+        <InputWrapper validation={validation}>
                     <p>{name}</p>
                     <input 
                         type={type}
@@ -26,22 +27,31 @@ const InputForm = ({name,type, placeholder, value, onChange, validation, childre
                     { validation ?
                         <>{children}</>
                         :
+                        <>
                         <div id='icon'>
                             <EmailDeleteSVG/>
                         </div>
+                        <ValidationGuide>{validationGuide}</ValidationGuide>
+                        </>
                     }
-                    {/* {children} */}
+                    
                     
         </InputWrapper>
     )
 }
 export default InputForm;
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{validation:boolean}>`
     display: flex;
     position: relative;
     flex-direction: column;
     gap: 8px;
+
+    &>p{
+        color: ${({validation})=>(validation?'#000':'#ff4747')};
+        font-size: 1rem;
+        font-weight: 500;
+    }
 
     &>input{
         width: 100%;
@@ -50,12 +60,12 @@ const InputWrapper = styled.div`
         box-sizing: border-box;
 
         border-radius: 8px;
-        border: 1px solid #B7B7B7;
+        border: ${({validation})=>(validation?'1px solid #B7B7B7':'2px solid #ff4747')};
         
-        color: #3c3c3c;
+        color: #ff4747;
 
         &:focus{
-            border: 1px solid #FF993A;
+            border: ${({validation})=>(validation?'1px solid #FF993A':'2px solid #ff4747')};
             outline: none;
         }
     }
@@ -66,4 +76,12 @@ const InputWrapper = styled.div`
 
         cursor: pointer;
     }
+`;
+
+const ValidationGuide = styled.div`
+    width: 100%;
+    padding: 0 10px;
+
+    color: #ff4747;
+    font-size: 0.75rem;
 `;
