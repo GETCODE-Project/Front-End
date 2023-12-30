@@ -4,14 +4,15 @@ import Footer from "@/components/common/layout/Footer";
 import styled from "styled-components";
 import ProjectPage from "@/components/project/ProjectPage";
 
-
-export default function Project() {
+const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
       <MenuBar />
-        <ProjectPage/>
+      <ProjectPage />
       <Footer />
     </div>
   );
-}
+};
+
+export default ProjectPost;
