@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
+import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { useState } from "react";
