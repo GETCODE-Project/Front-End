@@ -8,7 +8,7 @@ const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
-      <MenuBar />
+      <MenuBar bold={1} />
       <ProjectPage />
       <Footer />
     </div>

@@ -8,7 +8,7 @@ const FindProjectPage = ()=> {
   return (
     <div>
       <Header />
-      <MenuBar />
+      <MenuBar bold={2}/>
       <FindProject/>
       <Footer />
     </div>

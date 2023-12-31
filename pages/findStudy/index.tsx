@@ -8,7 +8,7 @@ export default function FindProject() {
   return (
     <div>
       <Header />
-      <MenuBar />
+      <MenuBar bold={3}/>
       <FindProjectPage/>
       <Footer />
     </div>

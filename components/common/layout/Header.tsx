@@ -26,7 +26,6 @@ const Header = () => {
         </MenuCategory>
         :<></>
         }
-        
       </HeaderDiv>
     </ContainerDiv>
   );
@@ -53,6 +52,7 @@ const HeaderDiv = styled.div`
 `;
 
 const LogoDiv = styled.div`
+  margin-left: 30px;
   color: #ff4b13;
   font-size: 20px;
   font-style: normal;
