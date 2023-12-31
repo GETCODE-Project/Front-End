@@ -3,7 +3,7 @@ import SearchInput from "@/components/common/search/SearchInput";
 import ObjectForm from "@/components/findProject/ObjectForm";
 import { media } from "@/styles/mediaQuery";
 
-const FindProject = () => {
+const FindProjectPage = () => {
     const arr:any [] =[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27];
 
     return(
@@ -29,7 +29,7 @@ const FindProject = () => {
     )
 }
 
-export default FindProject;
+export default FindProjectPage;
 
 const Layout = styled.div`
     display: flex;

@@ -2,17 +2,17 @@ import Header from "@/components/common/layout/Header";
 import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
 import styled from "styled-components";
-import FindProject from "@/components/findProject/FindProject";
+import FindProjectPage from "@/components/findProject/FindProjectPage";
 
-const FindProjectPage = ()=> {
+const FindProject = ()=> {
   return (
     <div>
       <Header />
       <MenuBar />
-      <FindProject/>
+      <FindProjectPage/>
       <Footer />
     </div>
   );
 };
 
-export default FindProjectPage;
+export default FindProject;
