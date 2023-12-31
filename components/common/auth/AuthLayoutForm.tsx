@@ -6,6 +6,8 @@ interface AuthLayoutFormProps {
     children: any;
 }
 
+/** Auth Layout 틀 */
+
 const AuthLayoutForm = ({children}:AuthLayoutFormProps) => {
     return(
         <Layout>
