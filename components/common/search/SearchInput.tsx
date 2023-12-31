@@ -1,4 +1,5 @@
-import { SearchButton, Logo } from "@/public/SVG/search";
+import { Logo } from "@/public/SVG/logo";
+import { SearchButton } from "@/public/SVG/search";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -8,7 +9,7 @@ const SearchInput = () => {
     return(
         <Layout>
         <Search>
-            <Logo/>
+            <Logo width='147' height='30'/>
             <SearchInputBar/>
             <SearchButtonWrapper>
                 <SearchButton/>

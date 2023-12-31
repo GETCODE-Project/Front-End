@@ -1,5 +1,3 @@
-import { SearchButton, Logo } from "@/public/SVG/search";
-import { useState } from "react";
 import styled from "styled-components";
 import ObjectForm from "@/components/project/ObjectForm";
 import SearchInput from "../common/search/SearchInput";

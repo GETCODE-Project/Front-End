@@ -1,4 +1,5 @@
 import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
+import { media } from "@/styles/mediaQuery";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -66,10 +67,10 @@ const Title = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
-    margin-bottom: 30px;
 
     color: #3C3C3C;
     font-size: 2.5rem;
+    font-weight: 700;
 `;
 
 const Content = styled.div`
