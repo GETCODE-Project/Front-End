@@ -1,4 +1,4 @@
-import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
+import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
 import { media } from "@/styles/mediaQuery";
 import { useRouter } from "next/router";
 import styled from "styled-components";

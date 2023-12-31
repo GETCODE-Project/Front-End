@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
+import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
 import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { POST } from '@/pages/api/axios';
 import { useEffect, useState } from "react";
-import InputForm from "@/components/common/auth/InputForm";
-import AuthForm from "@/components/common/auth/AuthForm";
+import InputForm from "@/components/auth/authForm/InputForm";
+import AuthForm from "@/components/auth/authForm/AuthForm";
 
 const LoginPage = () => {
     const [userEmail, setUserEmail] = useState<string>('');

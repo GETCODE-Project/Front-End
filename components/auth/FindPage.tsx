@@ -1,6 +1,6 @@
-import AuthForm from "@/components/common/auth/AuthForm";
-import AuthLayoutForm from "@/components/common/auth/AuthLayoutForm";
-import InputForm from "@/components/common/auth/InputForm";
+import AuthForm from "@/components/auth/authForm/AuthForm";
+import AuthLayoutForm from "@/components/auth/authForm/AuthLayoutForm";
+import InputForm from "@/components/auth/authForm/InputForm";
 import { useState } from "react";
 import styled from "styled-components";
 
