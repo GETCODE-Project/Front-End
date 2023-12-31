@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import React, { useState } from "react";
 
 interface Option {
   key: number;
@@ -12,12 +11,7 @@ interface OptionProps {
 }
 
 const Toggle: React.FC<OptionProps> = ({ options, onCreate }) => {
-  // const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-
-  //   onCreate(event.target.value);
-  // };
   return (
-    // <Select onChange={handleSelectChange}>
     <Select
       onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
         onCreate?.(event.target.value)
@@ -40,7 +34,7 @@ const Option = styled.option`
 
 const Select = styled.select`
   width: 364px;
-  height: 23px;
+  height: 28px;
   border-radius: 30px;
   border: 1px solid #3c3c3c;
   background: #fff;

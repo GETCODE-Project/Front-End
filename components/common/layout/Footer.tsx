@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function Footer() {
+const Footer= () => {
   return (
     <FooterDiv>
       <a href="">공지사항</a>
@@ -9,7 +9,7 @@ export default function Footer() {
     </FooterDiv>
   );
 }
-
+export default Footer;
 const FooterDiv = styled.div`
   display: flex;
   bottom: 0;

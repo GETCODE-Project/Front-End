@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default function MenuBar() {
+const MenuBar=() =>{
   return (
     <ContainerDiv>
       <MenuBarUl>
@@ -12,6 +12,7 @@ export default function MenuBar() {
     </ContainerDiv>
   );
 }
+export default MenuBar;
 
 const ContainerDiv = styled.div`
   display: block;

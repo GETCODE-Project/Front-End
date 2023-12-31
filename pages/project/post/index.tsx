@@ -1,10 +1,14 @@
 import Header from "@/components/common/layout/Header";
 import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
+<<<<<<< Updated upstream
 import { useState } from "react";
 import styled from "styled-components";
 import ProjectForm from "@/components/projectDetail/ProjectForm";
 
+=======
+import ProjectPostPage from "@/components/post/project/ProjectPostPage";
+>>>>>>> Stashed changes
 const ProjectPost: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const inputTitle = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -14,6 +18,7 @@ const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
+<<<<<<< Updated upstream
       <MenuBar />
       <ContainerDiv>
         <ProjectTitleDiv>
@@ -24,12 +29,17 @@ const ProjectPost: React.FC = () => {
 
         <ProjectForm />
       </ContainerDiv>
+=======
+      <MenuBar/>   
+      <ProjectPostPage />
+>>>>>>> Stashed changes
       <Footer />
     </div>
   );
 };
 
 export default ProjectPost;
+<<<<<<< Updated upstream
 
 const ContainerDiv = styled.div`
   display: grid;
@@ -81,3 +91,5 @@ const WriterNameDiv = styled.div`
   grid-column: 2;
   grid-row: 4;
 `;
+=======
+>>>>>>> Stashed changes

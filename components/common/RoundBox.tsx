@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import React, { useState } from "react";
 
 interface Type {
   text: string;
@@ -17,11 +16,11 @@ export default RoundBox;
 
 const RoundBoxDiv = styled.div`
   display: grid;
-  width: 108px;
-  height: 23px;
+  width: 130px;
+  height: 28px;
   border-radius: 30px;
   border: 1px;
-  margin-right: 10px;
+  margin-right: 15px;
   place-items: center;
   background-color: black;
   p {
