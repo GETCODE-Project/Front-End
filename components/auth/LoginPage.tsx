@@ -64,7 +64,7 @@ const LoginPage = () => {
                 onChange={handleUserPassword}
                 validation={true}
             />
-            <ForgetPassWord>비밀번호를 잊으셨나요?</ForgetPassWord>
+            <ForgetPassWord onClick={()=>router.push('/auth/login/find')}>비밀번호를 잊으셨나요?</ForgetPassWord>
         </AuthForm>
     )
 }

@@ -4,30 +4,55 @@ import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 import { POST } from "@/pages/api/axios";
+import AuthLayoutForm from "@/components/common/auth/AuthLayoutForm";
+import AuthForm from "@/components/common/auth/AuthForm";
+import InputForm from "@/components/common/auth/InputForm";
 
 /** 구글 회원가입 시, 마지막 절차 : 닉네임 등록 */
 const NickNamePage = () => {
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
+    const [userNickname, setUserNickname] = useState<string>('');
+
+    /** nickname 입력 (state 변경) */
+    const handleUserNickname = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        const target = e.target.value;
+        setUserNickname(target);
+    }
 
     return(
-        <Layout>
-            <Title>닉네임 등록</Title>
-            <Content>
-                <InputWrapper>
-                    <p>Nickname</p>
-                    <input type="text" placeholder="홍길동"/>
-                </InputWrapper>
-            </Content>
-            <Button>
-                <SignUp>회원 가입 완료</SignUp>
-            </Button>
-            <LoginButton onClick={()=>router.push('/auth/login')}>
-                <span>이미 로그인 계정이 있으신가요?</span>
-                <span>로그인하기</span>
-            </LoginButton>
+        // <Layout>
+        //     <Title>닉네임 등록</Title>
+        //     <Content>
+        //         <InputWrapper>
+        //             <p>Nickname</p>
+        //             <input type="text" placeholder="홍길동"/>
+        //         </InputWrapper>
+        //     </Content>
+        //     <Button>
+        //         <SignUp>회원 가입 완료</SignUp>
+        //     </Button>
+        //     <LoginButton onClick={()=>router.push('/auth/login')}>
+        //         <span>이미 로그인 계정이 있으신가요?</span>
+        //         <span>로그인하기</span>
+        //     </LoginButton>
         
-        </Layout>
+        // </Layout>
+        <AuthLayoutForm>
+            <AuthForm
+                title="닉네임 등록"
+                buttonName="회원 가입 완료"
+            >
+                <InputForm
+                    name="Nickname"
+                    type="text"
+                    placeholder="홍길동"
+                    value={userNickname}
+                    onChange={handleUserNickname}
+                    validation={true}
+                />
+            </AuthForm>
+        </AuthLayoutForm>
     )
 }
 

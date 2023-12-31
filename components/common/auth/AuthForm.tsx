@@ -16,6 +16,7 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
     const router = useRouter();
     const isSiginUpPage = router.pathname === '/auth/signup';
     const isLoginPage = router.pathname === '/auth/login';
+    const isNickNamePage = router.pathname === '/auth/signup/nickname';
 
     const handleRouterPush = () => {
         if(isSiginUpPage){
@@ -34,7 +35,8 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
             </Content>
             <LoginButton>
                 <Login>{buttonName}</Login>
-                <GoogleLoginButton/>
+                {isNickNamePage?<></>
+                :<GoogleLoginButton/>}
             </LoginButton>
             <SignUpButton onClick={handleRouterPush}>
                 { isLoginPage?

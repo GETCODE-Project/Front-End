@@ -4,6 +4,7 @@ import { useState } from "react";
 import { POST } from "@/pages/api/axios";
 import InputForm from "../common/auth/InputForm";
 import AuthForm from "../common/auth/AuthForm";
+import AuthLayoutForm from "../common/auth/AuthLayoutForm";
 
 const SignUpPage = () => {
     const router = useRouter();
@@ -34,13 +35,14 @@ const SignUpPage = () => {
         const target = e.target.value;
         setUserPassword(target);
     }
-    /** password 입력 (state 변경) */
+    /** nickname 입력 (state 변경) */
     const handleUserNickname = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const target = e.target.value;
         setUserNickname(target);
     }
 
     return(
+        <AuthLayoutForm>
         <AuthForm
             title="회원가입"
             buttonName="회원가입"
@@ -72,6 +74,7 @@ const SignUpPage = () => {
                 validation={true}
             />
         </AuthForm>
+        </AuthLayoutForm>
     )
 }
 
