@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import ProfileButtonForm from './ProfileButtonForm';
 import { BookMarkSVG } from '@/public/SVG/header';
 import { useState } from 'react';
+import { signOut } from 'next-auth/react';
+
 
 const Header = () => {
   const [isToggle, setIsToggle] = useState<boolean>();
@@ -21,12 +23,11 @@ const Header = () => {
         </MenuDiv>
         {isToggle?
           <MenuCategory>
-          <Link>로그아웃</Link>
-          <Link>마이페이지</Link>
-        </MenuCategory>
+            <Link onClick={()=>signOut}>로그아웃</Link>
+            <Link>마이페이지</Link>
+          </MenuCategory>
         :<></>
         }
-        
       </HeaderDiv>
     </ContainerDiv>
   );
