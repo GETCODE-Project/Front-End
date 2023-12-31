@@ -64,8 +64,20 @@ const LoginPage = () => {
                 onChange={handleUserPassword}
                 validation={true}
             />
+            <ForgetPassWord>비밀번호를 잊으셨나요?</ForgetPassWord>
         </AuthForm>
     )
 }
 
 export default LoginPage;
+
+const ForgetPassWord = styled.div`
+    display: flex;
+    justify-content: end;
+    width: 100%;
+
+    color: #ff4b13;
+    font-size: 0.75rem;
+
+    cursor: pointer;
+`;
