@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
 import {SelectSubject,SelectTech, AddLink, TextArea} from "@/components/post/project/ProjectPostObject";
-
+import Comment from "@/components/detail/Comment"
 
 const ProjectPostPage = () => {
   return (
@@ -51,4 +51,8 @@ const Content = styled.div`
   gap: 30px;
   margin-top: 20px;
   padding: 20px 70px;
+  @media screen and (max-width: 800px){
+    padding: 20px calc(70px + (100% - 760px)/3);
+  }
 `;
+

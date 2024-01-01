@@ -5,6 +5,7 @@ import {SelectSubject,SelectTech, AddLink, TextArea, SelectStatus, WishPart} fro
 
 
 const FindProjectPostPage = () => {
+  
   return (
     <Layout>
       <Title>프로젝트 모집 글 제목</Title>
@@ -49,10 +50,15 @@ const UserName = styled.p`
   padding: 20px 0 20px 0;
 `;
 
+
+
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
   margin-top: 20px;
   padding: 20px 70px;
+  @media screen and (max-width: 800px){
+    padding: 20px calc(70px + (100% - 760px)/3);
+  }
 `;

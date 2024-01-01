@@ -5,18 +5,6 @@ import Toggle from "@/components/common/Toggle";
 import React, { useState } from "react";
 import Link from "@/components/common/Link"
 
-
-export const SelectStatus = () => {
-  return (
-    <div style={{ display: "flex", flexDirection: "row"}}>
-      <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" />
-      <RoundBox text="모집 완료" />
-    </div>
-  );
-};
-
-
 export const SelectSubject = () => {
     const optionSubject = [
       { key: 1, value: "주제1" },
@@ -46,31 +34,15 @@ export  const SelectTech = () => {
     );
   };
 
-  export  const WishPart = () => {
-    const [option, selectOption] = useState("선택 해제");
-    const optionSubject = [
-      { key: 1, value: "기술1" },
-      { key: 2, value: "기술2" },
-    ];
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="모집 파트" />
-        <Toggle onCreate={selectOption} options={optionSubject} />
-        {/* <p>{option}</p> */}
-      </div>
-    );
-  };
-
 export  const AddLink = () => {
 
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="신청 방법" />
+        <RoundBox text="소스 링크" />
         <div style={{ display: "flex", flexDirection: "column", gap:"10px" }}>
-          <Link text="E-mail"/>
-          <Link text="Phone"/>
-          <Link text="Open-Kakao" size="13px"/>
-          <Link text="Form"/>
+          <Link text="GITHUB"/>
+          <Link text="VELOG"/>
+          <Link text="GITLAB"/>
         </div>
       </div>
     );

@@ -59,4 +59,7 @@ const Content = styled.div`
   gap: 30px;
   margin-top: 20px;
   padding: 20px 70px;
+  @media screen and (max-width: 800px){
+    padding: 20px calc(70px + (100% - 760px)/3);
+  }
 `;

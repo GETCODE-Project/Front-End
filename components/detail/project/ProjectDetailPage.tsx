@@ -1,23 +1,27 @@
 import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
-import {SelectSubject,SelectTech, AddLink, TextArea, SelectStatus, WishPart} from "@/components/post/findProject/FindProjectPostObject";
+import {SelectSubject,SelectTech, AddLink, TextArea} from "@/components/detail/project/ProjectDetailObject";
+import Comment from "@/components/detail/Comment"
+import RoundBox from "@/components/common/RoundBox";
 
-
-const FindProjectPostPage = () => {
+const ProjectDetailPage = () => {
   return (
     <Layout>
-      <Title>제목</Title>
+      <Title>프로젝트 제목</Title>
       <UserName>작성자 닉네임</UserName>
       <hr style={{ width: "100%" }} />
       <Content>
         <SelectSubject />
+        <SelectTech />
+        <AddLink />
       </Content>
       <TextArea />
+      <Comment />
     </Layout>
   );
 };
-export default FindProjectPostPage;
+export default ProjectDetailPage;
 
 const Layout = styled.div`
   display: flex;
@@ -33,7 +37,7 @@ const Layout = styled.div`
   };
 `;
 
-const Title = styled.p`
+const Title = styled.div`
   font-size: 1.8rem;
   padding: 80px 0 20px 0;
   text-align: left;
@@ -53,3 +57,4 @@ const Content = styled.div`
     padding: 20px calc(70px + (100% - 760px)/3);
   }
 `;
+

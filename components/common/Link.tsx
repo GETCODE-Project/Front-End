@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 interface Type {
   text: string;
+  size?: string;
 }
 
-const Link: React.FC<Type> = ({ text }) => {
+const Link: React.FC<Type> = ({ text, size }) => {
   return (
     <RoundBoxDiv>
       <LinkCategory>
-        <p>{text}</p>
+        <p style={{fontSize:size}}>{text}</p>
       </LinkCategory>
       <LinkInput />
     </RoundBoxDiv>
@@ -20,7 +21,7 @@ export default Link;
 const RoundBoxDiv = styled.div`
   display: flex;
   flex-direction: row;
-  width: 400px;
+  width: 380px;
   height: 28px;
   align-items: center;
   margin-right: 15px;
@@ -32,7 +33,7 @@ const LinkCategory = styled.div`
     display: flex;
     margin: 0;
     height: 100%;
-    width: 150px;
+    width: 130px;
     align-items: center;
     justify-content: center;
     background-color: black;
