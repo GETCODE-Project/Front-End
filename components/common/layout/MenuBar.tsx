@@ -1,39 +1,52 @@
 import styled from 'styled-components';
+import {useState, useEffect} from 'react';
+import { useRouter } from 'next/router';
 
-export default function MenuBar() {
+interface MenuBarProps {
+  bold?: number;
+}
+
+
+const MenuBar:React.FC<MenuBarProps>=({bold}) =>{
+  const handle = (num: number) => {
+    return (num===bold)?1000:500;
+  }
+
   return (
     <ContainerDiv>
       <ul>
         <li>
-          <a 
+        <a 
             href={'/project'}
-            style={{textDecoration: 'none',color: '#fff'}}>프로젝트
+            style={{textDecoration: 'none',color: '#fff',fontWeight:handle(1)}}>프로젝트
           </a>
         </li>
         <li>
           <a 
             href={'/findProject'}
-            style={{textDecoration: 'none',color: '#fff'}}>프로젝트 모집
+            style={{textDecoration: 'none',color: '#fff',fontWeight:handle(2) }}>프로젝트 모집
           </a>
         </li>
         <li>
           <a 
             href={'/findStudy'}
-            style={{textDecoration: 'none',color: '#fff'}}>스터디 모집
+            style={{textDecoration: 'none',color: '#fff',fontWeight:handle(3)}}>스터디 모집
           </a>
         </li>
         <li>
           <a 
             href={'/'}
-            style={{textDecoration: 'none',color: '#fff'}}>커뮤니티
+            style={{textDecoration: 'none',color: '#fff',fontWeight:handle(4)}}>커뮤니티
           </a>
         </li>
       </ul>
     </ContainerDiv>
   );
 }
+export default MenuBar;
 
 const ContainerDiv = styled.div`
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,6 +59,7 @@ const ContainerDiv = styled.div`
   font-weight: 500;
   
   & > ul{
+    margin-left: 20px;
     display: flex;
     align-items: center;
     justify-content: start;
@@ -56,7 +70,6 @@ const ContainerDiv = styled.div`
     color: white;
     font-family: Inter;
     font-size: 16px;
-    font-weight: 500;
     letter-spacing: 0em;
   }
 
@@ -66,4 +79,6 @@ const ContainerDiv = styled.div`
     justify-content: center;
     
     }
+  }
+
 `;

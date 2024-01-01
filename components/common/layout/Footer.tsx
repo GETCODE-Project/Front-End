@@ -12,9 +12,8 @@ const Footer= () => {
 export default Footer;
 const FooterDiv = styled.div`
   display: flex;
-  bottom: 0;
-  width: calc(100% - 80px);
-  height: 100px;
+  width: 100%;
+  height: 150px;
   padding: 40px;
   background-color: #ff4b13;
   a {
