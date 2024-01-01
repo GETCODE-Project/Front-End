@@ -1,5 +1,6 @@
 import { Logo } from "@/public/SVG/logo";
 import { media } from "@/styles/mediaQuery";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface AuthLayoutFormProps {
@@ -9,9 +10,10 @@ interface AuthLayoutFormProps {
 /** Auth Layout 틀 */
 
 const AuthLayoutForm = ({children}:AuthLayoutFormProps) => {
+    const router = useRouter();
     return(
         <Layout>
-            <LogoWrapper>
+            <LogoWrapper onClick={()=>router.push('/')}>
                 <Logo width='130' height='30'/>
             </LogoWrapper>
             {children}
@@ -47,4 +49,6 @@ const LogoWrapper = styled.div`
         justify-content: center;
         padding: 50px;
     }
+
+    cursor: pointer;
 `;

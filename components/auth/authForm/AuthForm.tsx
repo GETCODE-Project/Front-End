@@ -1,5 +1,4 @@
 import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
-import { media } from "@/styles/mediaQuery";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -17,6 +16,7 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
     const isSiginUpPage = router.pathname === '/auth/signup';
     const isLoginPage = router.pathname === '/auth/login';
     const isNickNamePage = router.pathname === '/auth/signup/nickname';
+    const isFindPage = router.pathname === '/auth/login/find';
 
     const handleRouterPush = () => {
         if(isSiginUpPage){
@@ -44,7 +44,7 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
                     <span>로그인 계정이 없으신가요?</span>
                     <span>회원가입하기</span>
                     </>
-                : isSiginUpPage?
+                : isSiginUpPage || isFindPage?
                     <>
                     <span>이미 계정이 있으신가요?</span>
                     <span>로그인하기</span>

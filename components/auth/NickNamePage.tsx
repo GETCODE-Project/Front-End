@@ -1,6 +1,3 @@
-import styled from "styled-components";
-import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
-import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 import { POST } from "@/pages/api/axios";

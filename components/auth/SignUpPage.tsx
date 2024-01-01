@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useRouter } from 'next/router';
 import { useState } from "react";
 import { POST } from "@/pages/api/axios";
-import InputForm from "./authForm/InputForm";
-import AuthForm from "./authForm/AuthForm";
-import AuthLayoutForm from "./authForm/AuthLayoutForm";
+import InputForm from "@/components/auth/authForm/InputForm";
+import AuthForm from "@/components/auth/authForm/AuthForm";
+import AuthLayoutForm from "@/components/auth/authForm/AuthLayoutForm";
 
 const SignUpPage = () => {
     const router = useRouter();
