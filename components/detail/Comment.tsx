@@ -2,49 +2,56 @@ import styled from "styled-components";
 import { useState } from "react";
 import {ProfileSVG} from "@/public/SVG/profile"
 
-const CommentList = () =>{
+interface CommentProps {
+    id:number;
+    name:string;
+    date:string;
+    comment:string;
+}
 
+const Comment: React.FC<CommentProps> = ({id, name, date, comment}) =>{
     return(
     <div style={{ display:"flex", flexDirection:"column", margin:"20px 0", borderBottom: "1px solid #FFD4AC"}}>
         <CommentBox>
             <ProfileSVG size="30"/>
-            <p>닉네임</p>
-            <p style={{fontSize:"12px"}}>2024.01.01</p>
+            <p>{name}</p>
+            <p style={{fontSize:"12px"}}>{date}</p>
         </CommentBox>
-    <p style={{margin:"20px 50px", lineHeight: "normal",fontSize:"14px"}}>댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용</p>
+    <p style={{margin:"20px 50px", lineHeight: "normal",fontSize:"14px"}}>{comment}</p>
     </div>
     );
 };
 
-const CommentBox = styled.div`
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-    p{
-        margin:0 10px;
-    }
-`
+// const CommentList: React.FC<CommentProps> = ({id, name, date, comment}) =>{
+const CommentList = () => {
+    return(
+        <div style={{margin:"20px 0", padding:"10px 20px", backgroundColor:"#FFF1E4"}}>
+            <Comment id={1} name="닉네임1" date="2023.01.01" comment="댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용"/>
+            <Comment id={2} name="닉네임2" date="2023.01.01" comment={""}/>
+        </div>
+    );
+}
 
-const Comment = ()=>{
+const CommentForm = ()=>{
     let N = 0;
+    const [comment, setComment] = useState<string>("");
     return(
         <Layout>
             <p style={{ margin:"20px 0"}}>댓글 {N}개</p>
             <div style={{  display:"flex",  width: "100%", padding:"10px 40px",     alignItems: "center"}}>
                 <ProfileSVG size="40"/>
-                <SearchInputBar/>
-                <Button>등록</Button>
+                {/* <form onSubmit={(e)=> {e.preventDefault()}} > */}
+                    <SearchInputBar type="text"  onChange={(e)=>{setComment(e.target.value)}}/>
+                    <Button type="submit">등록</Button>
+                {/* </form> */}
             </div>
             
-            <div style={{margin:"20px 0", padding:"10px 20px", backgroundColor:"#FFF1E4"}}>
-                <CommentList />
-                <CommentList />
-            </div>
+            <CommentList />
         </Layout>
     );
 }
 
-export default Comment;
+export default CommentForm;
 
 const Layout =styled.div`
     display: flex;
@@ -76,4 +83,13 @@ const Button = styled.button`
     border:none;
     border-radius: 6px;
     font-size: 14px;
+    cursor:pointer;
+`
+const CommentBox = styled.div`
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    p{
+        margin:0 10px;
+    }
 `

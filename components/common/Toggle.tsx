@@ -1,24 +1,29 @@
+import { useState } from "react";
 import styled from "styled-components";
 
-interface Option {
+interface Options {
   key: number;
   value: string;
 }
-
+type onCreateProps = (key: number, value: string) => void;
 interface OptionProps {
-  options: Option[];
-  onCreate?: React.Dispatch<React.SetStateAction<string>>;
+  options: Options[];
+  // onCreate?: React.Dispatch<React.SetStateAction<string>>;
+  onCreate?: onCreateProps;
 }
+
+
 
 const Toggle: React.FC<OptionProps> = ({ options, onCreate }) => {
   return (
     <Select
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-        onCreate?.(event.target.value)
+      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>{
+        onCreate?.(Number(event.target.selectedOptions[0]?.id), event.target.value )
+      }
       }
     >
       {options.map((option) => (
-        <Option key={option.key} value={option.value}>
+        <Option key={option.key} value={option.value} id={String(option.key)}>
           {option.value}
         </Option>
       ))}

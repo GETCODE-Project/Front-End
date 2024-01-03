@@ -1,12 +1,18 @@
 import styled from "styled-components";
 
 interface Type {
-  text: string;
+  text?: string;
+  size?: string;
+  color?: string;
+  backgroundColor?: string;
+  border?: string;
+  fontWeight?: number;
+  deleteBox?: any;
 }
 
-const RoundBox: React.FC<Type> = ({ text }) => {
+const RoundBox: React.FC<Type> = ({ text, size, color, backgroundColor, border, fontWeight, deleteBox }) => {
   return (
-    <RoundBoxDiv>
+    <RoundBoxDiv size={size} color={color} backgroundColor={backgroundColor} border={border} fontWeight={fontWeight}>
       <p>{text}</p>
     </RoundBoxDiv>
   );
@@ -14,43 +20,22 @@ const RoundBox: React.FC<Type> = ({ text }) => {
 
 export default RoundBox;
 
-const RoundBoxDiv = styled.div`
+const RoundBoxDiv = styled.div<Type>`
   display: grid;
   flex: 0 0 130px;
   height: 28px;
   border-radius: 30px;
-  border: 1px;
+  border: 1px solid ${props =>props.border || "none"};
   margin-right: 15px;
   place-items: center;
-  background-color: black;
+  background-color:${props =>props.backgroundColor || "black"};
   p {
-    display: block;
+    display: flex;
     margin: 0;
     text-align: top;
     font-family: Inter;
     font-size: 16px;
-    font-weight: 700;
-    color: white;
+    font-weight: ${props =>props.fontWeight || 700};
+    color: ${props =>props.color || "white"};
   }
 `;
-
-
-// const RoundBoxDiv = styled.div`
-//   display: grid;
-//   width: 130px;
-//   height: 28px;
-//   border-radius: 30px;
-//   border: 1px;
-//   margin-right: 15px;
-//   place-items: center;
-//   background-color: black;
-//   p {
-//     display: block;
-//     margin: 0;
-//     text-align: center;
-//     font-family: Inter;
-//     font-size: 16px;
-//     font-weight: 700;
-//     color: white;
-//   }
-// `;

@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
 interface Type {
-  text: string;
+  text?: string;
   size?: string;
+  color?: string
 }
 
-const Link: React.FC<Type> = ({ text, size }) => {
+const Link: React.FC<Type> = ({ text, size, color }) => {
   return (
     <RoundBoxDiv>
-      <LinkCategory>
+      <LinkCategory color={color}>
         <p style={{fontSize:size}}>{text}</p>
       </LinkCategory>
-      <LinkInput />
+      <LinkInput color={color}/>
     </RoundBoxDiv>
   );
 };
@@ -21,23 +22,22 @@ export default Link;
 const RoundBoxDiv = styled.div`
   display: flex;
   flex-direction: row;
-  width: 380px;
+  width: 400px;
   height: 28px;
   align-items: center;
   margin-right: 15px;
 
-  background-color: white;
+  background-color:white;
 `;
 
-const LinkCategory = styled.div`
+const LinkCategory = styled.div<Type>`
     display: flex;
     margin: 0;
     height: 100%;
-    width: 130px;
+    width: 140px;
     align-items: center;
     justify-content: center;
-    background-color: black;
-    border:1px solid black;
+    background-color:${props =>props.color || "black"};
     border-radius: 5px 0 0 5px;
     p{
         color: white;
@@ -46,11 +46,11 @@ const LinkCategory = styled.div`
         font-weight: 700;
     }
 `
-const LinkInput = styled.input`
+const LinkInput = styled.input<Type>`
     height:100%;
     width:100%;
     border:none;
     padding: 10px;
-    border:1px solid black;
+    border:1px solid ${props =>props.color || "black"};
     border-radius: 0 5px 5px 0;
 `

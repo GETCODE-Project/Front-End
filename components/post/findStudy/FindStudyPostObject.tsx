@@ -75,10 +75,10 @@ export  const AddLink = () => {
       <div style={{ display: "flex", flexDirection: "row" }}>
         <RoundBox text="신청 방법" />
         <div style={{ display: "flex", flexDirection: "column", gap:"10px" }}>
-          <Link text="E-mail"/>
-          <Link text="Phone"/>
-          <Link text="Open-Kakao"/>
-          <Link text="Form"/>
+          <Link text="E-mail" color="#5200FF"/>
+          <Link text="Phone" color="#54E78F"/>
+          <Link text="Open-Kakao" color="#FFA800" size="14px"/>
+          <Link text="Form" color="#FF451D"/>
         </div>
       </div>
     );
@@ -86,8 +86,8 @@ export  const AddLink = () => {
 
   export const TextArea = () =>{
     return(
-      <div style={{ margin: "50px"}}>
-        <textarea style={{ height: "500px", width:"100%" }} />
+      <div>
+        <textarea style={{ height: "500px", width:"calc(100% - 100px)", margin:"50px" }} />
         <hr style={{ width: "100%", margin: "30px 0" }} />
         <div style={{ display:"flex", flexDirection:"row-reverse", gap:"20px"}}>
           <button style={{width:"100px"}}>등록</button>

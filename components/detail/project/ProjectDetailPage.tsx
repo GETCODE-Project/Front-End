@@ -6,6 +6,7 @@ import Comment from "@/components/detail/Comment"
 import RoundBox from "@/components/common/RoundBox";
 
 const ProjectDetailPage = () => {
+  const content= "내용"
   return (
     <Layout>
       <Title>프로젝트 제목</Title>
@@ -16,7 +17,7 @@ const ProjectDetailPage = () => {
         <SelectTech />
         <AddLink />
       </Content>
-      <TextArea />
+      <TextArea content={content} />
       <Comment />
     </Layout>
   );
@@ -52,9 +53,9 @@ const Content = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-top: 20px;
-  padding: 20px 70px;
+  padding: 20px 60px;
   @media screen and (max-width: 800px){
-    padding: 20px calc(70px + (100% - 760px)/3);
+    padding: 20px calc(60px + (100% - 760px)/3);
   }
 `;
 

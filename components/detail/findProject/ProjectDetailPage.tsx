@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
-import {SelectSubject,SelectTech, AddLink, TextArea} from "@/components/post/project/ProjectPostObject";
+import {SelectSubject,SelectTech, AddLink, TextArea} from "@/components/detail/project/ProjectDetailObject";
 import Comment from "@/components/detail/Comment"
 import RoundBox from "@/components/common/RoundBox";
 
@@ -58,9 +58,9 @@ const Content = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-top: 20px;
-  padding: 20px 70px;
+  padding: 20px 60px;
   @media screen and (max-width: 800px){
-    padding: 20px calc(70px + (100% - 760px)/3);
+    padding: 20px calc(60px + (100% - 760px)/3);
   }
 `;
 
