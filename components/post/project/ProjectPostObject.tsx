@@ -54,12 +54,11 @@ export  const SelectTech = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
         <RoundBox text="기술 스택" />
-        <div style={{ display: "flex", flexWrap:"wrap", gap:"10px"}}>
+        <div style={{ display: "flex", flexWrap:"wrap"}}>
         <Toggle onCreate={(key, value)=>{handleInput(key, value)}} options={optionSubject} />
-        <div style={{display:"flex",  width: "100%", flexWrap:"wrap", gap:"10px 0"}}>
+        <div style={{display:"flex",  width: "100%", flexWrap:"wrap"}}>
         {topics.map((topic) => (
           <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
-          // <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={deleteTopic(topic.key)}/>
         ))}</div>
         </div>
       </div>

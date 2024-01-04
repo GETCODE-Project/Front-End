@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
 import {SelectSubject,SelectTech, AddLink, TextArea, SelectStatus, WishPart} from "@/components/post/findProject/FindProjectPostObject";
-
+import {SelectLocation} from "@/components/common/Location"
 
 const FindProjectPostPage = () => {
   
@@ -16,8 +16,7 @@ const FindProjectPostPage = () => {
         <SelectSubject />
         <SelectTech />
         <WishPart />
-        <p>스터디 지역</p>
-        <p>상세 위치</p>
+        <SelectLocation text="오프라인 지역" />
         <AddLink />
       </Content>
       <TextArea />
