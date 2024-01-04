@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react'
 import { POST } from '@/pages/api/axios';
 import { useEffect, useState } from "react";
 import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
 
 const LoginPage = () => {
-    const [userEmail, setUserEmail] = useState<string>('');
-    const [userPassword, setUserPassword] = useState<string>('');
 
     const router = useRouter();
+    const { data: session } = useSession();
+
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userPassword, setUserPassword] = useState<string>('');
 
     /** [POST] Login(Email,Password) */
     const handleLogin = async() => {
@@ -37,6 +40,22 @@ const LoginPage = () => {
         setUserPassword(target);
     }
 
+    /** 버튼 클릭 이벤트 함수 */
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        const result = await signIn('credentials',{
+            redirect: false,
+            userEmail,
+            userPassword
+        })
+        if (result && !result.error){
+            //로그인 성공 처리
+        }
+        else{
+            //에러 처리
+        }
+    }
+
     useEffect(() => {
         // console.log(userEmail);
     },[userEmail]);
@@ -44,7 +63,8 @@ const LoginPage = () => {
     return(
         <AuthForm
             title="로그인"
-            buttonName="로그인"    
+            buttonName="로그인"
+            session={session}  
         >
             <InputForm
                 name="Email"

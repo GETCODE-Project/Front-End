@@ -6,11 +6,12 @@ interface AuthFormProps{
     title: string;
     children?: any;
     buttonName: string;
+    session: any;
 }
 
 /** 로그인/회원가입 폼 */
 
-const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
+const AuthForm = ({title, children, buttonName, session}:AuthFormProps) => {
 
     const router = useRouter();
     const isSiginUpPage = router.pathname === '/auth/signup';
@@ -18,6 +19,7 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
     const isNickNamePage = router.pathname === '/auth/signup/nickname';
     const isFindPage = router.pathname === '/auth/login/find';
 
+    /** 라우터 페이지 이동 함수 */
     const handleRouterPush = () => {
         if(isSiginUpPage){
             router.push('/auth/login');
