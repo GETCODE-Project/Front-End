@@ -10,7 +10,7 @@ const FindProjectPage = ()=> {
       <MenuBar />
       <MainContantsLayout
             pageName="findProject"
-            title="GETCODE 프로젝트"
+            title="프로젝트 모집"
       />
       <Footer />
     </div>

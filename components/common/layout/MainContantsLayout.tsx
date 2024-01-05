@@ -28,11 +28,11 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
     return(
         <BackLayout>
             <Layout>
-                <Title>{title}</Title>
+                <Title>{`GETCODE ${title}`}</Title>
                 <SearchInput/>
                 <Contents>
                     <TotalSortWrapper>
-                        <Total>{`총 ${total}개 프로젝트`}</Total>
+                        <Total>{`총 ${total}개 ${title}`}</Total>
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
                                 <span key={idx}>{i}</span>

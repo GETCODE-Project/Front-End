@@ -10,7 +10,7 @@ const ProjectPost: React.FC = () => {
       <MenuBar />
       <MainContantsLayout
             pageName="project"
-            title="GETCODE 프로젝트"
+            title="프로젝트"
       />
       <Footer />
     </div>

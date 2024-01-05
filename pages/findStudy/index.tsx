@@ -11,7 +11,7 @@ export default function FindProject() {
       <MenuBar />
       <MainContantsLayout
             pageName="findStudy"
-            title="GETCODE 프로젝트"
+            title="스터디 모집"
       />
       <Footer />
     </div>
