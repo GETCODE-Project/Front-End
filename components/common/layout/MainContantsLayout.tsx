@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SearchInput from "@/components/common/search/SearchInput";
 import { media } from "@/styles/mediaQuery";
 import { useEffect, useState } from "react";
+import React from "react";
 
 interface MainContentsLayoutProps {
     pageName: string;
@@ -41,7 +42,7 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
                     </TotalSortWrapper>
                     <ObjectList>
                     {arr.map((i:any,idx:number)=>(
-                        ObjectForm ? <ObjectForm key={idx}/> : <></>
+                        ObjectForm ? React.createElement(ObjectForm, {key:idx}) : null
                     ))}
                     </ObjectList>
                 </Contents>
