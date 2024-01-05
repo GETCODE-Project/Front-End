@@ -3,7 +3,7 @@ import styled from "styled-components";
 interface Type {
   text?: string;
   color?: string;
-  backgoundcolor?: string;
+  backgroundColor?: string;
   border?: string;
   fontWeight?: number;
   onClick?:any;
@@ -11,9 +11,9 @@ interface Type {
 }
 // onClick={()=>{onClick}} backgroundColor #FFF1E4
 
-const RoundBox: React.FC<Type> = ({ text, color="#FF4B13", backgoundcolor="#FFF1E4", border="#FF4B13", fontWeight=700, onClick, cursor="default"}) => {
+const RoundBox: React.FC<Type> = ({ text, color="#FF4B13", backgroundColor="#FFF1E4", border="#FF4B13", fontWeight=700, onClick, cursor="default"}) => {
   return (
-    <RoundBoxDiv color={color} backgoundcolor={backgoundcolor} border={border} fontWeight={fontWeight} onClick={onClick} cursor={cursor}>
+    <RoundBoxDiv color={color} backgroundColor={backgroundColor} border={border} fontWeight={fontWeight} onClick={onClick} cursor={cursor}>
       <p>{text}</p>
     </RoundBoxDiv>
   );
@@ -31,7 +31,7 @@ const RoundBoxDiv = styled.div<Type>`
   margin-right: 15px;
   align-items: center;
   justify-content: center;
-  background-color: ${props =>props.backgoundcolor};
+  background-color: ${props =>props.backgroundColor};
   cursor: ${props =>props.cursor};
   p {
     display: flex;

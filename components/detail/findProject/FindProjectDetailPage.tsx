@@ -15,7 +15,7 @@ const FindProjectDetailPage = () => {
       <Title>
         <div style={{display:"flex", width:"100%"}}>
           <p style={{marginRight:"20px"}}>프로젝트 제목</p>
-          <RoundBox text="모집 중" backgoundColor="#00FF1A" color="black" border="none" fontWeight={500}/>
+          <RoundBox text="모집 중" backgroundColor="#00FF1A" color="black" border="none" fontWeight={500}/>
         </div>
       <Marks /></Title>
       <UserName>작성자 닉네임</UserName>
