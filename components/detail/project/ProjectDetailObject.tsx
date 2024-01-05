@@ -19,10 +19,10 @@ export  const SelectTech = () => {
     <div style={{ display: "flex"}}>
     <RoundBox text="기술 스택" backgoundcolor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
     <div style={{ display: "flex", width: "100%", flexWrap: "wrap", gap:"10px 0"}}>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black"/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black"/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black"/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black"/>
+      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
       </div>
   </div>
   );
@@ -65,11 +65,40 @@ interface TextAreaProps {
   content: string;
 }
 export const TextArea: React.FC<TextAreaProps> = ({ content }) =>{
+  const [isMypost, setIsMyPost] = useState<boolean>(true);
   return(
     <div>
-      <hr style={{ width: "100%", margin: "30px 0" }} />
+      <Hr />
       <div style={{margin:"80px"}}>{content}</div>
-      <hr style={{ width: "100%",margin: "30px 0" }} />
+      {isMypost&&(
+        <>
+      <Hr/>
+      <div style={{ display:"flex", flexDirection:"row-reverse", gap:"20px"}}>
+        <Button color="white" backgroundcolor="#FF4B13">수정</Button>
+        <Button color="#FF4B13" backgroundcolor="white">삭제</Button>
+      </div>
+      </>)}
+        <Hr />
     </div>
   );
 }
+
+interface ButtonProps{
+  color:string;
+  backgroundcolor: string;
+}
+const Button = styled.button<ButtonProps>`
+  width:100px;
+  height:23px;
+  background-color:${(props)=>props.backgroundcolor};
+  border:none;
+  color: ${(props)=>props.color};
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid ${(props)=>props.color};
+`
+
+const Hr = styled.hr`
+  width: 100%;
+  margin: 30px 0;
+`

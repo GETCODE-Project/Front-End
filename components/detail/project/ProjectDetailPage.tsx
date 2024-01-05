@@ -14,7 +14,7 @@ const ProjectDetailPage = () => {
     <Layout>
       <Title>프로젝트 제목<Marks /></Title>
       <UserName>작성자 닉네임</UserName>
-      <hr style={{ width: "100%" }} />
+      <hr style={{width:"100%"}} />
       <Content>
         <SelectSubject />
         <SelectTech />
@@ -63,4 +63,3 @@ const Content = styled.div`
     padding: 20px calc(60px + (100% - 760px)/3);
   }
 `;
-
