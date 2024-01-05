@@ -8,7 +8,6 @@ const FindProject = ()=> {
     <div>
       <Header />
       <MenuBar bold={2}/>
-      <MenuBar />
       <MainContantsLayout
             pageName="findProject"
             title="프로젝트 모집"
