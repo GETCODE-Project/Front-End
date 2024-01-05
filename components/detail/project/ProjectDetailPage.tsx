@@ -1,23 +1,31 @@
 import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
-import {SelectSubject,SelectTech, AddLink, TextArea, SelectStatus, WishPart} from "@/components/post/findProject/FindProjectPostObject";
+import {SelectSubject,SelectTech, AddLink, TextArea} from "@/components/detail/project/ProjectDetailObject";
+import Comment from "@/components/detail/Comment"
+import RoundBox from "@/components/common/RoundBox";
+import {Marks} from "@/components/detail/Marks"
 
 
-const FindProjectPostPage = () => {
+
+const ProjectDetailPage = () => {
+  const content= "내용"
   return (
     <Layout>
-      <Title>제목</Title>
+      <Title>프로젝트 제목<Marks /></Title>
       <UserName>작성자 닉네임</UserName>
-      <hr style={{ width: "100%" }} />
+      <hr style={{width:"100%"}} />
       <Content>
         <SelectSubject />
+        <SelectTech />
+        <AddLink />
       </Content>
-      <TextArea />
+      <TextArea content={content} />
+      <Comment />
     </Layout>
   );
 };
-export default FindProjectPostPage;
+export default ProjectDetailPage;
 
 const Layout = styled.div`
   display: flex;
@@ -33,7 +41,9 @@ const Layout = styled.div`
   };
 `;
 
-const Title = styled.p`
+const Title = styled.div`
+  display: flex;
+  justify-content:space-between;
   font-size: 1.8rem;
   padding: 80px 0 20px 0;
   text-align: left;

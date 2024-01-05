@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
-import {SelectPart,SelectTech, AddLink, TextArea, SelectStatus, SelectWheretoMeet} from "@/components/post/findStudy/FindStudyPostObject";
+import {SelectPart, AddLink, TextArea, SelectStatus, SelectWheretoMeet} from "@/components/post/findStudy/FindStudyPostObject";
+import {SelectLocation} from "@/components/common/Location"
 
 
 const FindStudyPostPage = () => {
@@ -14,8 +15,7 @@ const FindStudyPostPage = () => {
         <SelectStatus />
         <SelectPart />
         <SelectWheretoMeet />
-        <p>스터디 지역</p>
-        <p>상세 위치</p>
+        <SelectLocation text="스터디 지역" />
         <AddLink />
       </Content>
       <TextArea />
@@ -58,5 +58,8 @@ const Content = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-top: 20px;
-  padding: 20px 70px;
+  padding: 20px 60px;
+  @media screen and (max-width: 800px){
+    padding: 20px calc(60px + (100% - 760px)/3);
+  }
 `;

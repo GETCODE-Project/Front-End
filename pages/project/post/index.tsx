@@ -3,7 +3,7 @@ import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
 import ProjectPostPage from "@/components/post/project/ProjectPostPage";
 
-const ProjectPost: React.FC = () => {
+const ProjectPost = () => {
   return (
     <div>
       <Header />

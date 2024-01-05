@@ -1,29 +1,39 @@
 import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState } from "react";
-import {SelectSubject,SelectTech, AddLink, TextArea, SelectStatus, WishPart} from "@/components/post/findProject/FindProjectPostObject";
-import {SelectLocation} from "@/components/common/Location"
+import {SelectStatus,SelectSubject,SelectTech,WishPart, AddLink, TextArea} from "@/components/detail/findProject/FindProjectDetailObject";
+import Comment from "@/components/detail/Comment"
+import RoundBox from "@/components/common/RoundBox";
+import {Marks} from "@/components/detail/Marks"
 
-const FindProjectPostPage = () => {
-  
+
+
+const FindProjectDetailPage = () => {
+  const content= "내용"
   return (
     <Layout>
-      <Title>프로젝트 모집 글 제목</Title>
+      <Title>
+        <div style={{display:"flex", width:"100%"}}>
+          <p style={{marginRight:"20px"}}>프로젝트 제목</p>
+          <RoundBox text="모집 중" backgoundcolor="#00FF1A" color="black" border="none" fontWeight={500}/>
+        </div>
+      <Marks /></Title>
       <UserName>작성자 닉네임</UserName>
-      <hr style={{ width: "100%" }} />
+      <hr style={{width:"100%"}} />
       <Content>
-        <SelectStatus />
+      <SelectStatus />
         <SelectSubject />
         <SelectTech />
         <WishPart />
-        <SelectLocation text="오프라인 지역" />
+        {/* <SelectLocation text="오프라인 지역" /> */}
         <AddLink />
       </Content>
-      <TextArea />
+      <TextArea content={content} />
+      <Comment />
     </Layout>
   );
 };
-export default FindProjectPostPage;
+export default FindProjectDetailPage;
 
 const Layout = styled.div`
   display: flex;
@@ -39,7 +49,9 @@ const Layout = styled.div`
   };
 `;
 
-const Title = styled.p`
+const Title = styled.div`
+  display: flex;
+  justify-content:space-between;
   font-size: 1.8rem;
   padding: 80px 0 20px 0;
   text-align: left;
@@ -48,8 +60,6 @@ const UserName = styled.p`
   font-size: 1.1rem;
   padding: 20px 0 20px 0;
 `;
-
-
 
 const Content = styled.div`
   display: flex;
@@ -61,3 +71,4 @@ const Content = styled.div`
     padding: 20px calc(60px + (100% - 760px)/3);
   }
 `;
+
