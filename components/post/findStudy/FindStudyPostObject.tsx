@@ -11,8 +11,8 @@ export const SelectStatus = () => {
   return (
     <div style={{ display: "flex", flexDirection: "row"}}>
       <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" backgoundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-      <RoundBox text="모집 완료" backgoundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+      <RoundBox text="모집 중" backgroundColor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
+      <RoundBox text="모집 완료" backgroundColor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
     </div>
   );
 };
@@ -73,8 +73,8 @@ export const SelectStatus = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row"}}>
         <RoundBox text="온/오프라인" />
-        <RoundBox text="온라인" backgoundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-        <RoundBox text="오프라인" backgoundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+        <RoundBox text="온라인" backgroundColor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
+        <RoundBox text="오프라인" backgroundColor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
 
       </div>
     );

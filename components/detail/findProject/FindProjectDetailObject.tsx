@@ -11,8 +11,8 @@ export const SelectStatus = () => {
   return (
     <div style={{ display: "flex", flexDirection: "row"}}>
       <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" backgoundcolor={backgroundColor[Number(!isSelected)]} border="black" color="black" fontWeight={500} />
-      <RoundBox text="모집 완료" backgoundcolor={backgroundColor[Number(isSelected)]} border="black" color="black" fontWeight={500}/>
+      <RoundBox text="모집 중" backgroundColor={backgroundColor[Number(!isSelected)]} border="black" color="black" fontWeight={500} />
+      <RoundBox text="모집 완료" backgroundColor={backgroundColor[Number(isSelected)]} border="black" color="black" fontWeight={500}/>
     </div>
   );
 };
@@ -21,7 +21,7 @@ export const SelectStatus = () => {
 export const SelectSubject = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-      <RoundBox text="주제" backgoundcolor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
+      <RoundBox text="주제" backgroundColor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
       <p style={{marginLeft:"10px", fontSize:"17px"}}>주제 내용</p>
     </div>
     );
@@ -31,16 +31,16 @@ export const SelectSubject = () => {
 export  const SelectTech = () => {
     return (
       <div style={{ display: "flex"}}>
-      <RoundBox text="기술 스택" backgoundcolor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
+      <RoundBox text="기술 스택" backgroundColor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
       <div style={{ display: "flex", width: "100%", flexWrap: "wrap", gap:"10px 0"}}>
         <SelectedSources>데이터베이스</SelectedSources>
         <SelectedSources>Spring Boot</SelectedSources>
         <SelectedSources>Spring Boot</SelectedSources>
         <SelectedSources>Spring Boot</SelectedSources>
         <SelectedSources>Spring Boot</SelectedSources>
-        {/* <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
-        <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
-        <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/> */}
+        {/* <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+        <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+        <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/> */}
         </div>
     </div>
     );
@@ -60,12 +60,12 @@ const SelectedSources = styled.div`
 export const WishPart = () =>{
   return (
     <div style={{ display: "flex"}}>
-    <RoundBox text="기술 스택" backgoundcolor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
+    <RoundBox text="기술 스택" backgroundColor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
     <div style={{ display: "flex", width: "100%", flexWrap: "wrap", gap:"10px 0"}}>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
-      <RoundBox text="Spring Boot" backgoundcolor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
+      <RoundBox text="Spring Boot" backgroundColor="#D9D9D9" border="white" color="black" fontWeight={500}/>
       </div>
   </div>
   );
@@ -74,7 +74,7 @@ export const WishPart = () =>{
 export  const AddLink = () => {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
-      <RoundBox text="소스 링크" backgoundcolor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
+      <RoundBox text="소스 링크" backgroundColor="#FFF1E4" border="#FF4B13" color="#FF4B13"/>
       <div style={{ display: "flex", flexDirection: "row", gap:"10px" , whiteSpace: "preLine"}}>
         <Link href="#" color="#5200FF">GITHUB</Link>
         <Link href="#" color="#54E78F">VELOG</Link>
