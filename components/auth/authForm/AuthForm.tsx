@@ -6,7 +6,7 @@ interface AuthFormProps{
     title: string;
     children?: any;
     buttonName: string;
-    session: any;
+    session?: any;
 }
 
 /** 로그인/회원가입 폼 */
