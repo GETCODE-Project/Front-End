@@ -1,15 +1,17 @@
 import Header from "@/components/common/layout/Header";
 import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
-import styled from "styled-components";
-import ProjectPage from "@/components/project/ProjectPage";
+import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 
 const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
       <MenuBar />
-      <ProjectPage />
+      <MainContantsLayout
+            pageName="project"
+            title="GETCODE 프로젝트"
+      />
       <Footer />
     </div>
   );

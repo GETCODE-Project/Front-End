@@ -1,15 +1,17 @@
 import Header from "@/components/common/layout/Header";
 import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
-import styled from "styled-components";
-import FindProject from "@/components/findProject/FindProject";
+import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 
 const FindProjectPage = ()=> {
   return (
     <div>
       <Header />
       <MenuBar />
-      <FindProject/>
+      <MainContantsLayout
+            pageName="findProject"
+            title="GETCODE 프로젝트"
+      />
       <Footer />
     </div>
   );
