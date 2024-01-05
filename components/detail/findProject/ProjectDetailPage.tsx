@@ -6,6 +6,7 @@ import Comment from "@/components/detail/Comment"
 import RoundBox from "@/components/common/RoundBox";
 
 const ProjectDetailPage = () => {
+  const content = "내용"
   return (
     <Layout>
       <Title>
@@ -19,7 +20,7 @@ const ProjectDetailPage = () => {
         <SelectTech />
         <AddLink />
       </Content>
-      <TextArea />
+      <TextArea content={content}/>
       <Comment />
     </Layout>
   );

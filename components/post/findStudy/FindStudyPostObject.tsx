@@ -48,8 +48,6 @@ export  const SelectTech = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
         <RoundBox text="기술 스택" />
-        <Toggle onCreate={selectOption} options={optionSubject} />
-        {/* <p>{option}</p> */}
       </div>
     );
   };
@@ -63,8 +61,6 @@ export  const SelectTech = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
         <RoundBox text="모집 파트" />
-        <Toggle onCreate={selectOption} options={optionSubject} />
-        {/* <p>{option}</p> */}
       </div>
     );
   };

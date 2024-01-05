@@ -28,8 +28,6 @@ export  const SelectTech = () => {
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
         <RoundBox text="기술 스택" />
-        <Toggle onCreate={selectOption} options={optionSubject} />
-        {/* <p>{option}</p> */}
       </div>
     );
   };
