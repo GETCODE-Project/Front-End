@@ -3,6 +3,7 @@ import SearchInput from "@/components/common/search/SearchInput";
 import { media } from "@/styles/mediaQuery";
 import { useEffect, useState } from "react";
 import React from "react";
+import { useRouter } from "next/router";
 
 interface MainContentsLayoutProps {
     pageName: string;
@@ -12,6 +13,7 @@ interface MainContentsLayoutProps {
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
 const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
+    const router = useRouter();
     const sortArr:any [] = ["최신순","과거순","인기순"];
     const total = 1234;
     //더미데이터,프로젝트수 arr
@@ -48,6 +50,7 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
                     ))}
                     </ObjectList>
                 </Contents>
+            <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
         </BackLayout>
     )
@@ -64,6 +67,7 @@ const BackLayout = styled.div`
 
 const Layout = styled.div`
     display: flex;
+    position: relative;
     flex-direction: column;
     align-items: center;
     width: 1000px;
@@ -107,4 +111,23 @@ const ObjectList = styled.div`
         justify-content: center;
         gap: 25px;
     }
+`;
+
+const WritingButton = styled.div`
+    display: flex;
+    position: absolute;
+    right: -140px;
+    top: 200px;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    aspect-ratio: 1/1;
+
+    background-color: #FF4b13;
+    border-radius: 100px;
+
+    color: #fff;
+    font-weight: 700;
+
+    cursor: pointer;
 `;
