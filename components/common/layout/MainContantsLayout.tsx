@@ -116,7 +116,7 @@ const ObjectList = styled.div`
 const WritingButton = styled.div`
     display: flex;
     position: absolute;
-    right: -140px;
+    right: -5rem;
     top: 200px;
     justify-content: center;
     align-items: center;
