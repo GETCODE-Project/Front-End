@@ -4,10 +4,12 @@ import { BookMarkSVG } from '@/public/SVG/header';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Header = () => {
-  const { data: session, status} = useSession();
+  const router = useRouter();
 
+  const { data: session, status} = useSession();
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
   return(  
@@ -26,7 +28,7 @@ const Header = () => {
         {isToggle?
           <MenuCategory>
             <Link onClick={()=>signOut({callbackUrl:`/`})}>로그아웃</Link>
-            <Link>마이페이지</Link>
+            <Link onClick={()=>router.push('/my')}>마이페이지</Link>
           </MenuCategory>
         :<></>
         }
