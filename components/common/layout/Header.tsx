@@ -2,9 +2,15 @@ import styled from 'styled-components';
 import ProfileButtonForm from './ProfileButtonForm';
 import { BookMarkSVG } from '@/public/SVG/header';
 import { useState } from 'react';
+import { signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Header = () => {
-  const [isToggle, setIsToggle] = useState<boolean>();
+  const router = useRouter();
+
+  const { data: session, status} = useSession();
+  const [isToggle, setIsToggle] = useState<boolean>(false);
 
   return(  
     <ContainerDiv>
@@ -17,16 +23,15 @@ const Header = () => {
                 <BookMarkSVG/>
                 <span style={{color:'#3C3C3C'}}>내 찜</span>
           </BookMark>
-          <ProfileButtonForm isToggle={isToggle} setIsToggle={setIsToggle}/>
+          <ProfileButtonForm status={status} sesson={session} isToggle={isToggle} setIsToggle={setIsToggle}/>
         </MenuDiv>
         {isToggle?
           <MenuCategory>
-          <Link>로그아웃</Link>
-          <Link>마이페이지</Link>
-        </MenuCategory>
+            <Link onClick={()=>signOut({callbackUrl:`/`})}>로그아웃</Link>
+            <Link onClick={()=>router.push('/my')}>마이페이지</Link>
+          </MenuCategory>
         :<></>
         }
-        
       </HeaderDiv>
     </ContainerDiv>
   );
@@ -53,6 +58,7 @@ const HeaderDiv = styled.div`
 `;
 
 const LogoDiv = styled.div`
+  margin-left: 30px;
   color: #ff4b13;
   font-size: 20px;
   font-style: normal;
