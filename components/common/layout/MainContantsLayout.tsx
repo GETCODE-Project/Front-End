@@ -9,6 +9,8 @@ interface MainContentsLayoutProps {
     title: string;
 }
 
+/** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
+
 const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
     const sortArr:any [] = ["최신순","과거순","인기순"];
     const total = 1234;
