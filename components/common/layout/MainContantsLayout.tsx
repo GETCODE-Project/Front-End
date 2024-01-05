@@ -57,6 +57,7 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
+    height: 100vh;
     padding: 55px 70px;
 `;
 
