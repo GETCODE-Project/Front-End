@@ -53,7 +53,6 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
     )
 }
 export default MainContantsLayout;
-const DIV = styled.div``;
 
 const BackLayout = styled.div`
     display: flex;
