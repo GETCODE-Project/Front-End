@@ -60,7 +60,6 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
-    height: 100vh;
     padding: 55px 70px;
 `;
 
@@ -103,6 +102,7 @@ const ObjectList = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+    min-height: 100vh;
 
     ${media.tablet || media.mobile}{
         justify-content: center;
