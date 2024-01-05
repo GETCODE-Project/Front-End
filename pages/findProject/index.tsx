@@ -3,7 +3,7 @@ import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 
-const FindProjectPage = ()=> {
+const FindProject = ()=> {
   return (
     <div>
       <Header />
@@ -17,4 +17,4 @@ const FindProjectPage = ()=> {
   );
 };
 
-export default FindProjectPage;
+export default FindProject;

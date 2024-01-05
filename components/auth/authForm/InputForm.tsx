@@ -13,6 +13,8 @@ interface InputProps{
     validationGuide?: string;
 }
 
+/** Auth Input칸 재사용 폼 */
+
 const InputForm = ({name,type, placeholder, value, onChange, validation, children, validationGuide}:InputProps) => {
 
     return (

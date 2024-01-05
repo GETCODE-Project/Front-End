@@ -1,4 +1,4 @@
-import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
+import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -6,16 +6,20 @@ interface AuthFormProps{
     title: string;
     children?: any;
     buttonName: string;
+    session?: any;
 }
 
 /** 로그인/회원가입 폼 */
 
-const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
+const AuthForm = ({title, children, buttonName, session}:AuthFormProps) => {
 
     const router = useRouter();
     const isSiginUpPage = router.pathname === '/auth/signup';
     const isLoginPage = router.pathname === '/auth/login';
+    const isNickNamePage = router.pathname === '/auth/signup/nickname';
+    const isFindPage = router.pathname === '/auth/login/find';
 
+    /** 라우터 페이지 이동 함수 */
     const handleRouterPush = () => {
         if(isSiginUpPage){
             router.push('/auth/login');
@@ -33,7 +37,8 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
             </Content>
             <LoginButton>
                 <Login>{buttonName}</Login>
-                <GoogleLoginButton/>
+                {isNickNamePage?<></>
+                :<GoogleLoginButton/>}
             </LoginButton>
             <SignUpButton onClick={handleRouterPush}>
                 { isLoginPage?
@@ -41,7 +46,7 @@ const AuthForm = ({title, children, buttonName}:AuthFormProps) => {
                     <span>로그인 계정이 없으신가요?</span>
                     <span>회원가입하기</span>
                     </>
-                : isSiginUpPage?
+                : isSiginUpPage || isFindPage?
                     <>
                     <span>이미 계정이 있으신가요?</span>
                     <span>로그인하기</span>
@@ -66,10 +71,10 @@ const Title = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
-    margin-bottom: 30px;
 
     color: #3C3C3C;
     font-size: 2.5rem;
+    font-weight: 700;
 `;
 
 const Content = styled.div`

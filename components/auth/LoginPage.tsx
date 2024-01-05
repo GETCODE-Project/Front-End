@@ -1,17 +1,18 @@
 import styled from "styled-components";
-import GoogleLoginButton from "@/components/common/auth/loginButton/GoogleLoginButton";
-import { EmailDeleteSVG } from "@/public/SVG/auth";
 import { useRouter } from 'next/router';
+import { signIn, useSession } from 'next-auth/react'
 import { POST } from '@/pages/api/axios';
 import { useEffect, useState } from "react";
-import InputForm from "@/components/common/auth/InputForm";
-import AuthForm from "@/components/common/auth/AuthForm";
+import InputForm from "@/components/auth/authForm/InputForm";
+import AuthForm from "@/components/auth/authForm/AuthForm";
 
 const LoginPage = () => {
-    const [userEmail, setUserEmail] = useState<string>('');
-    const [userPassword, setUserPassword] = useState<string>('');
 
     const router = useRouter();
+    const { data: session } = useSession();
+
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userPassword, setUserPassword] = useState<string>('');
 
     /** [POST] Login(Email,Password) */
     const handleLogin = async() => {
@@ -39,6 +40,22 @@ const LoginPage = () => {
         setUserPassword(target);
     }
 
+    /** 버튼 클릭 이벤트 함수 */
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        const result = await signIn('credentials',{
+            redirect: false,
+            userEmail,
+            userPassword
+        })
+        if (result && !result.error){
+            //로그인 성공 처리
+        }
+        else{
+            //에러 처리
+        }
+    }
+
     useEffect(() => {
         // console.log(userEmail);
     },[userEmail]);
@@ -46,7 +63,8 @@ const LoginPage = () => {
     return(
         <AuthForm
             title="로그인"
-            buttonName="로그인"    
+            buttonName="로그인"
+            session={session}  
         >
             <InputForm
                 name="Email"
@@ -64,8 +82,20 @@ const LoginPage = () => {
                 onChange={handleUserPassword}
                 validation={true}
             />
+            <ForgetPassWord onClick={()=>router.push('/auth/login/find')}>비밀번호를 잊으셨나요?</ForgetPassWord>
         </AuthForm>
     )
 }
 
 export default LoginPage;
+
+const ForgetPassWord = styled.div`
+    display: flex;
+    justify-content: end;
+    width: 100%;
+
+    color: #ff4b13;
+    font-size: 0.75rem;
+
+    cursor: pointer;
+`;
