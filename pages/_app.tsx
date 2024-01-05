@@ -5,8 +5,7 @@ import { theme } from '@/styles/theme';
 import '@/styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
 
-
-export default function App({ Component, pageProps:{session, ...pageProps} }: AppProps) {
+const App = ({ Component, pageProps:{session, ...pageProps} }: AppProps) => {
   return (
     <SessionProvider session={session}>
       <ThemeProvider theme={theme}>
@@ -16,3 +15,4 @@ export default function App({ Component, pageProps:{session, ...pageProps} }: Ap
     </SessionProvider>
   )
 }
+export default App;

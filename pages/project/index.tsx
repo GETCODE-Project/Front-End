@@ -7,7 +7,7 @@ const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
-      <MenuBar />
+      <MenuBar bold={1} />
       <MainContantsLayout
             pageName="project"
             title="프로젝트"

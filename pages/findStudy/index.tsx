@@ -4,11 +4,11 @@ import Footer from "@/components/common/layout/Footer";
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 
 
-export default function FindProject() {
+export default function FindStudy() {
   return (
     <div>
       <Header />
-      <MenuBar />
+      <MenuBar bold={3}/>
       <MainContantsLayout
             pageName="findStudy"
             title="스터디 모집"

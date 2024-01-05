@@ -7,6 +7,7 @@ const FindProject = ()=> {
   return (
     <div>
       <Header />
+      <MenuBar bold={2}/>
       <MenuBar />
       <MainContantsLayout
             pageName="findProject"
