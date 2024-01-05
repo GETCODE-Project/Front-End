@@ -6,7 +6,7 @@ export const Marks = () =>{
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     return(
-      <div style={{display:"flex", gap:"20px"}}>
+      <div style={{display:"flex", gap:"20px", marginRight:"10px"}}>
         <HeartNum onClick={()=>{setIsHartOn(!isHartOn)}}>{isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}<p>123</p></HeartNum>
         <div style={{cursor:"pointer"}} onClick={()=>{setIsBookMarkOn(!isBookMarkOn)}}>{isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}</div>
       </div>

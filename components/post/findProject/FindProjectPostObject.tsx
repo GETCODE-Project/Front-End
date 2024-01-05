@@ -123,7 +123,7 @@ export  const SelectTech = () => {
   };
 
 
-export  const AddLink = () => {
+export const AddLink = () => {
 
     return (
       <div style={{ display: "flex", flexDirection: "row" }}>
