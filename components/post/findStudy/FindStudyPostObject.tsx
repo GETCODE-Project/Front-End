@@ -75,11 +75,36 @@ export const SelectStatus = () => {
         <RoundBox text="온/오프라인" />
         <RoundBox text="온라인" backgoundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
         <RoundBox text="오프라인" backgoundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+
+      </div>
+    );
+  };
+export  const SelectTech = () => {
+    const [option, selectOption] = useState("선택 해제");
+    const optionSubject = [
+      { key: 1, value: "기술1" },
+      { key: 2, value: "기술2" },
+    ];
+    return (
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <RoundBox text="기술 스택" />
       </div>
     );
   };
 
 
+  export  const WishPart = () => {
+    const [option, selectOption] = useState("선택 해제");
+    const optionSubject = [
+      { key: 1, value: "기술1" },
+      { key: 2, value: "기술2" },
+    ];
+    return (
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <RoundBox text="모집 파트" />
+      </div>
+    );
+  };
 
 export  const AddLink = () => {
 

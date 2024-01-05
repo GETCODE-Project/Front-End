@@ -118,6 +118,7 @@ export  const SelectTech = () => {
           <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
         ))}</div>
         </div>
+        <RoundBox text="모집 파트" />
       </div>
     );
   };
