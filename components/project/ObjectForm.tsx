@@ -42,7 +42,6 @@ const ObjectForm = () => {
                 <Create><div>작성자 닉네임</div><div>2023.10.11.TUE</div></Create>
                 </Info>
             </Content>
-              
         </Layout>
     )
 }
@@ -52,8 +51,8 @@ export default ObjectForm;
 const Layout = styled.div`
     display: flex;
     flex-direction: column;
-    width: 315px;
-    height: 340px;
+    width: 270px;
+    height: 300px;
     padding-bottom: 30px;
 
     filter: drop-shadow(0px 4px 40px rgba(0, 0, 0, 0.25));
@@ -62,8 +61,7 @@ const Layout = styled.div`
 const Thumbnail = styled.div`
     position: relative;
     width: 100%;
-    height: 170px;
-
+    flex: 1;
     background-color: #777777;
 `;
 const Img = styled.div`
@@ -103,9 +101,9 @@ const Content = styled.div`
     flex-direction: column;
     padding: 0 15px;
     box-sizing: border-box;
-    gap: 16px;
+    /* gap: 16px; */
     width: 100%;
-    height: 170px;
+    flex: 1;
 
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;
@@ -130,8 +128,9 @@ const Info = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
     width: 100%;
+    height: 100%;
+    padding: 10px 0;
     `;
 const Intro = styled.div`
     font-size: 0.75rem;
