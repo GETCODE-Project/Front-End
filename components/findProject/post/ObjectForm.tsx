@@ -1,19 +1,19 @@
 import styled from "styled-components";
-import RoundBox from "@/components/common/RoundBox";
+import RoundBox from "@/components/common/selectObject/SelectRoundBox";
 import { media } from "@/styles/mediaQuery";
-import Toggle from "@/components/common/Toggle";
+import Toggle from "@/components/common/selectObject/SelectToggle";
 import React, { useState } from "react";
-import Link from "@/components/common/Link"
-import ToggleRoundBox from "@/components/common/ToggleRoundBox";
-
+import Link from "@/components/common/selectObject/SelectSourceLink"
+import ToggleRoundBox from "@/components/common/selectObject/SelectToggleBox";
+import SelectLocation from "@/components/common/selectObject/SelectLocation";
 export const SelectStatus = () => {
   const [isClicked, setIsClicked] = useState<boolean>(false)
   const backgroundColor = ["white", "#D9D9D9"]
   return (
     <div style={{ display: "flex", flexDirection: "row"}}>
       <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" backgroundColor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-      <RoundBox text="모집 완료" backgroundColor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+      <RoundBox text="모집 중" backgroundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
+      <RoundBox text="모집 완료" backgroundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
     </div>
   );
 };
@@ -118,7 +118,6 @@ export  const SelectTech = () => {
           <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
         ))}</div>
         </div>
-        <RoundBox text="모집 파트" />
       </div>
     );
   };
@@ -132,7 +131,7 @@ export const AddLink = () => {
         <div style={{ display: "flex", flexDirection: "column", gap:"10px" }}>
           <Link text="E-mail" color="#5200FF" type="email"/>
           <Link text="Phone" color="#54E78F" type="tel" />
-          <Link text="Open-Kakao" color="#FFA800" size="14px"/>
+          <Link text="Open-Kakao" color="#FFA800" fontSize="14px"/>
           <Link text="Form" color="#FF451D"/>
         </div>
       </div>
@@ -152,3 +151,17 @@ export const AddLink = () => {
       </div>
     );
   }
+
+const ObjectForm = () =>{
+  return(
+    <>
+        <SelectStatus />
+        <SelectSubject />
+        <SelectTech />
+        <WishPart />
+        <SelectLocation text="오프라인 지역" />
+        <AddLink />
+    </>
+  );
+}
+export default ObjectForm;

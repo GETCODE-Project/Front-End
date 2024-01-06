@@ -50,7 +50,7 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
                     ))}
                     </ObjectList>
                 </Contents>
-            <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
+            {/* <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton> */}
             </Layout>
         </BackLayout>
     )

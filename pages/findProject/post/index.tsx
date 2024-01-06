@@ -1,16 +1,12 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
-import FindProjectPostPage from "@/components/post/findProject/FindProjectPostPage";
-const ProjectPost: React.FC = () => {
+import FixedLayout from "@/components/common/layout/FixedLayout";
+import PostLayout from "@/components/common/layout/PostLayout";
+
+const FindProjectPost: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <MenuBar/>   
-      <FindProjectPostPage />
-      <Footer />
-    </div>
+    <FixedLayout>
+      <PostLayout pageName="findProject"/>
+    </FixedLayout>
   );
 };
 
-export default ProjectPost;
+export default FindProjectPost;

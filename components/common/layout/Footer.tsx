@@ -14,7 +14,7 @@ const FooterDiv = styled.div`
   display: flex;
   width: 100%;
   height: 150px;
-  padding: 40px;
+  padding: 40px 60px; //40
   background-color: #ff4b13;
   a {
     margin: 0 10px;

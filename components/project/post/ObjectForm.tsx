@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import RoundBox from "@/components/common/RoundBox";
+import RoundBox from "@/components/common/selectObject/SelectRoundBox";
 import { media } from "@/styles/mediaQuery";
-import Toggle from "@/components/common/Toggle";
+import Toggle from "@/components/common/selectObject/SelectToggle";
 import React, { useState } from "react";
-import Link from "@/components/common/Link"
-import ToggleRoundBox from "@/components/common/ToggleRoundBox";
+import Link from "@/components/common/selectObject/SelectSourceLink"
+import ToggleRoundBox from "@/components/common/selectObject/SelectToggleBox";
 export const SelectSubject = () => {
     const optionSubject = [
       { key: 1, value: "주제1" },
@@ -79,16 +79,13 @@ export  const AddLink = () => {
     );
   }
 
-  export const TextArea = () =>{
-    return(
-      <div>
-        <textarea style={{ height: "500px", width:"calc(100% - 100px)", margin:"50px" }} />
-        <hr style={{ width: "100%", margin: "30px 0" }} />
-        <div style={{ display:"flex", flexDirection:"row-reverse", gap:"20px"}}>
-          <button style={{width:"100px"}}>등록</button>
-          <button style={{width:"100px"}}>취소</button>
-        </div>
-        <hr style={{ width: "100%",margin: "30px 0" }} />
-      </div>
-    );
-  }
+const ObjectForm = () =>{
+  return(
+    <>
+      <SelectSubject />
+      <SelectTech />
+      <AddLink />
+    </>
+  );
+}
+export default ObjectForm;

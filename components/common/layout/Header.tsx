@@ -15,7 +15,7 @@ const Header = () => {
   return(  
     <ContainerDiv>
       <HeaderDiv>
-        <LogoDiv>
+        <LogoDiv href='/'>
           GETCODE  
         </LogoDiv>
         <MenuDiv>
@@ -57,13 +57,15 @@ const HeaderDiv = styled.div`
   width: 1000px;
 `;
 
-const LogoDiv = styled.div`
+const LogoDiv = styled.a`
   margin-left: 30px;
   color: #ff4b13;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  text-decoration: none;
+  cursor: pointer;
 `;
 
 const MenuDiv = styled.div`

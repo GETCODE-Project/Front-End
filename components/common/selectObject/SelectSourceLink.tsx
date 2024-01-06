@@ -2,23 +2,23 @@ import styled from "styled-components";
 
 interface Type {
   text?: string;
-  size?: string;
+  fontSize?: string;
   color?: string;
   type?: string;
 }
 
-const Link: React.FC<Type> = ({ text, size, color="black",type="text" }) => {
+const SourceLink: React.FC<Type> = ({ text, fontSize, color="black",type="text" }) => {
   return (
     <RoundBoxDiv>
       <LinkCategory color={color}>
-        <p style={{fontSize:size}}>{text}</p>
+        <p style={{fontSize:fontSize}}>{text}</p>
       </LinkCategory>
       <LinkInput color={color} type={type}/>
     </RoundBoxDiv>
   );
 };
 
-export default Link;
+export default SourceLink;
 
 const RoundBoxDiv = styled.div`
   display: flex;

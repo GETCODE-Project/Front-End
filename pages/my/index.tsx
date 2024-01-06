@@ -1,16 +1,11 @@
-import Footer from "@/components/common/layout/Footer";
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
+import FixedLayout from "@/components/common/layout/FixedLayout";
 import MyPage from "@/components/myPage/MyPage";
 
 const My = () => {
     return (
-        <div>
-            <Header />
-            <MenuBar />
-            <MyPage />
-            <Footer />
-        </div>
+    <FixedLayout>
+        <MyPage />
+    </FixedLayout>
     )
 }
 export default My;
