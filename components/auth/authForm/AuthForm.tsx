@@ -1,4 +1,5 @@
 import GoogleLoginButton from "@/components/auth/authForm/loginButton/GoogleLoginButton";
+import { media } from "@/styles/mediaQuery";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -65,6 +66,11 @@ const Layout = styled.div`
     flex-direction: column;
     gap: 40px;
     width: 360px;
+    ${media.mobile}{
+        min-width: 340px;
+        max-width: 360px;
+        width: 100%;
+    }
 `;
 
 const Title = styled.div`
