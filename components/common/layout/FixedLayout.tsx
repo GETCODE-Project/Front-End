@@ -11,7 +11,7 @@ interface LayoutProps{
 const FixedLayout:React.FC<LayoutProps> = ({children, fontWeight})=>{
     return(
     <div>
-        <div style={{display:"fixed"}}>
+        <div style={{ display:"block", height:"100px"}}>
         <Header/>
         <MenuBar fontWeight={fontWeight}/>     
         </div>

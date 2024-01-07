@@ -44,13 +44,14 @@ const MenuBar:React.FC<MenuBarProps>=({fontWeight}) =>{
 export default MenuBar;
 
 const ContainerDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 50px;
-  width: 100%;
-  background-color: #ff4b13;
-  font-weight: 500;
+position: fixed;
+height: 50px;
+top: 50px;
+display: flex;
+justify-content: center;
+width: 100%;
+background-color: #ff4b13;
+z-index: 100;
   & > ul{
     margin: 0 70px;
     display: flex;
@@ -61,9 +62,7 @@ const ContainerDiv = styled.div`
     height: 50px;
     
     color: white;
-    font-family: Inter;
     font-size: 16px;
-    letter-spacing: 0em;
     ${media.mobile}{
       align-items: center;
       justify-content: center;
@@ -71,11 +70,5 @@ const ContainerDiv = styled.div`
       margin:0 10px;
       gap: 15px;
   };
-  }
-
-  & > li{
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 `;

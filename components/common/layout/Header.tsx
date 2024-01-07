@@ -41,24 +41,26 @@ export default Header;
 
 
 const ContainerDiv = styled.div`
-  display: flex;
   justify-content: center;
-  align-items: center;
+  position: fixed;
+  top: 0;
+  display: flex;
+  background-color: white;
+  width: 100%;
   height: 50px;
-  width: 100%; 
+  z-index: 100;
+  background-color: #fff;
 `;
 
 const HeaderDiv = styled.div`
   display: flex;
+  margin: 0 70px;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  background-color: #fff;
   width: 1000px;
 `;
 
 const LogoDiv = styled.a`
-  margin-left: 30px;
   color: #ff4b13;
   font-size: 20px;
   font-style: normal;
