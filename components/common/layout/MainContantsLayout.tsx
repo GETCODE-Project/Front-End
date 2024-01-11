@@ -69,7 +69,7 @@ const MainContantsLayout = ({pageName, title, children}:MainContentsLayoutProps)
                     ))}
                     </ObjectList>
                 </Contents>
-            {/* <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton> */}
+                <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
         </BackLayout>
     )
@@ -86,7 +86,6 @@ const BackLayout = styled.div`
 
 const Layout = styled.div`
     display: flex;
-    position: relative;
     flex-direction: column;
     align-items: center;
     gap: 40px;
@@ -148,9 +147,9 @@ const ObjectList = styled.div`
 
 const WritingButton = styled.div`
     display: flex;
-    position: absolute;
-    right: -140px;
-    top: 200px;
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
     justify-content: center;
     align-items: center;
     width: 70px;
