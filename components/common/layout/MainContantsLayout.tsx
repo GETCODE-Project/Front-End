@@ -1,19 +1,22 @@
 import styled from "styled-components";
 import SearchInput from "@/components/common/search/SearchInput";
 import { media } from "@/styles/mediaQuery";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useRouter } from "next/router";
 
 interface MainContentsLayoutProps {
     pageName: string;
     title: string;
+    children?: any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, children}:MainContentsLayoutProps) => {
     const router = useRouter();
+    const objectListRef = useRef<HTMLDivElement>(null);
+    const [objectListWidth, setObjectListWidth] = useState(0);
     const sortArr:any [] = ["최신순","과거순","인기순"];
     const total = 1234;
     //더미데이터,프로젝트수 arr
@@ -24,33 +27,49 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
     /** 정렬(최신순, 과거순, 인기순) 함수 작성 예정*/
 
+   
+
     useEffect(() => {
         import(`@/components/${pageName}/ObjectForm`)
         .then(module => setObjectForm(()=>module.default))
         .catch(error => console.error(error))
     },[pageName]);
 
+    useEffect(() => {
+        const updateWidth = () => {
+            const width = objectListRef.current?.offsetWidth || 0;
+            setObjectListWidth(width);
+            console.log(width);
+        }
+        updateWidth();
+
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+    },[]);
+
     return(
         <BackLayout>
             <Layout>
                 <Title>{`GETCODE ${title}`}</Title>
-                <SearchInput/>
+                <SearchInput>{children}</SearchInput>
                 <Contents>
-                    <TotalSortWrapper>
+                    <TotalSortWrapper >
+                        <div id="wrapper" style={{width:objectListWidth}}>
                         <Total>{`총 ${total}개 ${title}`}</Total>
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
                                 <span key={idx}>{i}</span>
                             ))}
                         </Sort>
+                        </div>
                     </TotalSortWrapper>
-                    <ObjectList>
+                    <ObjectList ref={objectListRef}>
                     {arr.map((i:any,idx:number)=>(
                         ObjectForm ? React.createElement(ObjectForm, {key:idx}) : null
                     ))}
                     </ObjectList>
                 </Contents>
-            <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
+                <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
         </BackLayout>
     )
@@ -62,18 +81,20 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
-    padding: 55px 70px;
+    padding: 55px 0;
 `;
 
 const Layout = styled.div`
     display: flex;
-    position: relative;
     flex-direction: column;
     align-items: center;
+    gap: 40px;
     width: 1000px;
+    overflow: hidden;
 
     ${media.tablet || media.mobile}{
         width: 100%;
+        padding: 0 20px;
     }
 `;
 
@@ -91,10 +112,19 @@ const Contents = styled.div`
 const TotalSortWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
+
+    & #wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    
 `;
-const Total = styled.div``;
+const Total = styled.div`
+    display: flex;
+`;
 const Sort = styled.div`
     display: flex;
     gap: 10px;
@@ -103,21 +133,23 @@ const Sort = styled.div`
 const ObjectList = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     width: 100%;
     min-height: 100vh;
 
     ${media.tablet || media.mobile}{
         justify-content: center;
-        gap: 25px;
     }
+
+    
+    
 `;
 
 const WritingButton = styled.div`
     display: flex;
-    position: absolute;
-    right: -140px;
-    top: 200px;
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
     justify-content: center;
     align-items: center;
     width: 70px;

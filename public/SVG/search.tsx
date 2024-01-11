@@ -32,3 +32,16 @@ export const SearchButton = () => (
   </defs>
 </svg>
 )
+
+export const ToggleIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M6 10L12 16L18 10" stroke="black" stroke-linecap="round"/>
+</svg>
+)
+
+export const ExitToggleIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+  <path d="M9.56555 9.56401L3.4373 3.43575" stroke="#B7B7B7" stroke-linecap="round"/>
+  <path d="M9.5627 3.43575L3.43445 9.56401" stroke="#B7B7B7" stroke-linecap="round"/>
+</svg>
+);

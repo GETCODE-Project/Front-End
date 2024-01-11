@@ -1,17 +1,14 @@
 import Header from "@/components/common/layout/Header";
 import MenuBar from "@/components/common/layout/MenuBar";
 import Footer from "@/components/common/layout/Footer";
-import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
+import ProjectPage from "@/components/project/ProjectPage";
 
 const ProjectPost: React.FC = () => {
   return (
     <div>
       <Header />
       <MenuBar bold={1} />
-      <MainContantsLayout
-            pageName="project"
-            title="프로젝트"
-      />
+        <ProjectPage/>
       <Footer />
     </div>
   );
