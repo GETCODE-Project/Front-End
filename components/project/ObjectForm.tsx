@@ -3,13 +3,16 @@ import { media } from '@/styles/mediaQuery';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-const ObjectForm = () => {
+interface ObjectFormProps{
+    style?:any;
+}
+const ObjectForm = ({style}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     const arr:string [] = ['React', 'Node.js', 'TypeScript','Spring Boot','Java'];//더미데이터(임시)
 
     return(
-        <Layout>
+        <Layout style={style}>
             <Thumbnail>
                 <Img></Img>
                 <ReactionCount>
