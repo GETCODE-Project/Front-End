@@ -8,12 +8,15 @@ import { useRouter } from "next/router";
 interface MainContentsLayoutProps {
     pageName: string;
     title: string;
+    subTitle?: string;
+    sumTitle?: string;
     children?: any;
+    id?:any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title, children}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
@@ -50,12 +53,21 @@ const MainContantsLayout = ({pageName, title, children}:MainContentsLayoutProps)
     return(
         <BackLayout>
             <Layout>
-                <Title>{`GETCODE ${title}`}</Title>
+                <Title>
+                    {`GETCODE ${title}`}
+                    {subTitle?
+                        <div id="subTitle">{subTitle}</div>
+                    :   <></>
+                    }
+                </Title>
                 <SearchInput>{children}</SearchInput>
                 <Contents>
                     <TotalSortWrapper >
                         <div id="wrapper" style={{width:objectListWidth}}>
-                        <Total>{`총 ${total}개 ${title}`}</Total>
+                        {subTitle?
+                            <Total>{`총 ${total}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${total}개 ${title}`}</Total>
+                        }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
                                 <span key={idx}>{i}</span>
@@ -88,7 +100,7 @@ const Layout = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    /* gap: 10px; */
     width: 1000px;
     overflow: hidden;
 
@@ -98,7 +110,31 @@ const Layout = styled.div`
     }
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    color: #ff4b13;
+    font-weight: 700;
+    font-size: 1.125rem;
+
+    & #subTitle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 15px;
+
+        border-radius: 16px;
+        background-color: #FF993A;
+
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+    }
+`;
 
 const Contents = styled.div`
     display: flex;
@@ -140,9 +176,6 @@ const ObjectList = styled.div`
     ${media.tablet || media.mobile}{
         justify-content: center;
     }
-
-    
-    
 `;
 
 const WritingButton = styled.div`

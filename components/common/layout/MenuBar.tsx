@@ -35,7 +35,7 @@ const MenuBar:React.FC<MenuBarProps>=({bold}) =>{
         </li>
         <li>
           <a 
-            href={'/'}
+            href={'/community'}
             style={{textDecoration: 'none',color: '#fff',fontWeight:handle(4)}}>커뮤니티
           </a>
         </li>
@@ -79,6 +79,4 @@ const ContainerDiv = styled.div`
     justify-content: center;
     
     }
-  }
-
 `;

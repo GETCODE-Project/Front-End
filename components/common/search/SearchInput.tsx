@@ -10,7 +10,7 @@ const SearchInput = ({children}:any) => {
     const router = useRouter();
     const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
-    const isCommunityPage = router.pathname === '/community';
+    const isCommunityPage = router.pathname === '/community/[id]';
 
     return(
         <Layout>
