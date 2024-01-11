@@ -3,9 +3,10 @@ import { SearchButton } from "@/public/SVG/search";
 import { media } from "@/styles/mediaQuery";
 import { useState } from "react";
 import styled from "styled-components";
+import {MultipleSelectToggle, SingleSelectToggle} from "@/components/common/search/DetailSearchForm";
 
-const SearchInput = () => {
-    const [isDetailOpen, isDetailClose] = useState<boolean>(false);
+const SearchInput = ({children}:any) => {
+    const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
     return(
         <Layout>
@@ -18,9 +19,16 @@ const SearchInput = () => {
                 <SearchButton/>
             </SearchButtonWrapper>
         </Search>
-        <DetailButton onClick={()=>isDetailClose(!isDetailOpen)}>
+        <DetailButton onClick={()=>setIsDetailOpen(!isDetailOpen)}>
                 { isDetailOpen?'닫기':'상세검색'}
         </DetailButton>
+        {isDetailOpen?
+            <DetailSearchWrapper>
+                {children}
+            </DetailSearchWrapper>
+        :   <></>
+        }
+        
         </Layout>
     )
 }
@@ -91,4 +99,12 @@ const DetailButton = styled.div`
     text-decoration-line: underline;
 
     cursor: pointer;
+`;
+
+const DetailSearchWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `;

@@ -8,11 +8,12 @@ import { useRouter } from "next/router";
 interface MainContentsLayoutProps {
     pageName: string;
     title: string;
+    children?: any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, children}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
@@ -50,7 +51,7 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
         <BackLayout>
             <Layout>
                 <Title>{`GETCODE ${title}`}</Title>
-                <SearchInput/>
+                <SearchInput>{children}</SearchInput>
                 <Contents>
                     <TotalSortWrapper >
                         <div id="wrapper" style={{width:objectListWidth}}>
