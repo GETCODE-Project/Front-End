@@ -4,9 +4,13 @@ import { media } from "@/styles/mediaQuery";
 import { useState } from "react";
 import styled from "styled-components";
 import {MultipleSelectToggle, SingleSelectToggle} from "@/components/common/search/DetailSearchForm";
+import { useRouter } from "next/router";
 
 const SearchInput = ({children}:any) => {
+    const router = useRouter();
     const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
+
+    const isCommunityPage = router.pathname === '/community';
 
     return(
         <Layout>
@@ -19,9 +23,13 @@ const SearchInput = ({children}:any) => {
                 <SearchButton/>
             </SearchButtonWrapper>
         </Search>
-        <DetailButton onClick={()=>setIsDetailOpen(!isDetailOpen)}>
-                { isDetailOpen?'닫기':'상세검색'}
-        </DetailButton>
+        {isCommunityPage?
+            <></>
+        :   <DetailButton onClick={()=>setIsDetailOpen(!isDetailOpen)}>
+                    { isDetailOpen?'닫기':'상세검색'}
+            </DetailButton>
+        }
+        
         {isDetailOpen?
             <DetailSearchWrapper>
                 {children}
