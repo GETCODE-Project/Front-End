@@ -97,10 +97,10 @@ const MenuCategory = styled.div`
     align-items: center;
     position: absolute;
     right: 0;
-    bottom: -31.5625rem;
+    bottom: -500px;
     width: 280px;
     min-height: 31.25rem;
-    z-index: 1000;
+    z-index: 1004;
 
     background: linear-gradient(180deg, #fff0e3 43.23%, rgba(255, 240, 227, 0) 100%);
 `;

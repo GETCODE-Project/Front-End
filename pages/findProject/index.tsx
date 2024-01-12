@@ -4,7 +4,7 @@ import FindProjectPage from "@/components/findProject/FindProjectPage";
 const FindProject = ()=> {
   return (
     <div>
-      <FixedLayout fontWeight={1}>
+      <FixedLayout fontWeight={2}>
         <FindProjectPage/>
       </FixedLayout>
     </div>
