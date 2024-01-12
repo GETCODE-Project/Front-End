@@ -31,7 +31,7 @@ const SignUpPage = () => {
 
     /** POST - 회원가입 */
     const handleSignUp = async() => {
-        POST(`${process.env.NEXT_PUBLIC_API_URL}/api/sign-up`,{
+        await POST(`${process.env.NEXT_PUBLIC_API_URL}/api/sign-up`,{
             email: {userEmail},
             nickname: {userNickname},
             password: {userPassword},      

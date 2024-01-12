@@ -1,6 +1,4 @@
-import Footer from "@/components/common/layout/Footer";
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
+import FixedLayout from "@/components/common/layout/FixedLayout";
 import CommunityPage from "@/components/community/CommunityPage";
 import { useRouter } from "next/router";
 
@@ -8,12 +6,9 @@ const CommunityMain = () => {
     const router = useRouter();
     const { id } = router.query;
     return(
-        <>
-            <Header />
-            <MenuBar/>
-            <CommunityPage id={id}/> 
-            <Footer />
-        </>
+        <FixedLayout fontWeight={4} id={id}>
+            <CommunityPage id={id}/>
+        </FixedLayout>
     )
 }
 export default CommunityMain;

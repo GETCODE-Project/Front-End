@@ -2,10 +2,11 @@ import styled from 'styled-components';
 import { media } from '@/styles/mediaQuery';
 interface MenuBarProps {
   fontWeight?: number;
+  id?: number;
 }
 
 
-const MenuBar:React.FC<MenuBarProps>=({fontWeight}) =>{
+const MenuBar:React.FC<MenuBarProps>=({fontWeight, id}) =>{
   const handle = (num: number) => {
     return (num===fontWeight)?{fontWeight:1000, textShadow:"0.5px 0.5px 0.5px black"}:{fontWeight:500};
   }
@@ -33,8 +34,8 @@ const MenuBar:React.FC<MenuBarProps>=({fontWeight}) =>{
         </li>
         <li>
           <a 
-            href={'/community'}
-            style={{textDecoration: 'none',color: '#fff',...handle(4)}}>커뮤니티=
+            href={`/community/${id}`}
+            style={{textDecoration: 'none',color: '#fff',...handle(4)}}>커뮤니티
           </a>
         </li>
       </ul>
@@ -44,30 +45,31 @@ const MenuBar:React.FC<MenuBarProps>=({fontWeight}) =>{
 export default MenuBar;
 
 const ContainerDiv = styled.div`
-position: fixed;
-height: 50px;
-top: 50px;
-display: flex;
-justify-content: center;
-width: 100%;
-background-color: #ff4b13;
-z-index: 100;
-  & > ul{
-    margin: 0 70px;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 25px;
-    width: 1000px;
-    height: 50px;
-    
-    color: white;
-    font-size: 16px;
-    ${media.mobile}{
+  position: fixed;
+  height: 50px;
+  top: 50px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #ff4b13;
+  
+    & > ul{
+      margin: 0 70px;
+      display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      margin:0 10px;
-      gap: 15px;
-  };
+      justify-content: start;
+      gap: 25px;
+      width: 1000px;
+      height: 50px;
+      
+      color: white;
+      font-size: 16px;
+      ${media.mobile}{
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        margin:0 10px;
+        gap: 15px;
+    };
+  }
 `;
