@@ -11,12 +11,13 @@ interface MainContentsLayoutProps {
     subTitle?: string;
     sumTitle?: string;
     children?: any;
+    data?: any;
     id?:any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data, id}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
@@ -25,12 +26,11 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:
     //더미데이터,프로젝트수 arr
     const arr:any [] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
 
+
     const [ObjectForm, setObjectForm] = useState(null);
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
     /** 정렬(최신순, 과거순, 인기순) 함수 작성 예정*/
-
-   
 
     useEffect(() => {
         import(`@/components/${pageName}/ObjectForm`)
@@ -42,7 +42,6 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:
         const updateWidth = () => {
             const width = objectListRef.current?.offsetWidth || 0;
             setObjectListWidth(width);
-            console.log(width);
         }
         updateWidth();
 
@@ -65,8 +64,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:
                     <TotalSortWrapper >
                         <div id="wrapper" style={{width:objectListWidth}}>
                         {subTitle?
-                            <Total>{`총 ${total}개 ${sumTitle}`}</Total>
-                        :   <Total>{`총 ${total}개 ${title}`}</Total>
+                            <Total>{`총 ${data?.length}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${data?.length}개 ${title}`}</Total>
                         }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
@@ -76,8 +75,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, id}:
                         </div>
                     </TotalSortWrapper>
                     <ObjectList ref={objectListRef}>
-                    {arr.map((i:any,idx:number)=>(
-                        ObjectForm ? React.createElement(ObjectForm, {key:idx}) : null
+                    {data?.map((i:any,idx:number)=>(
+                        ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                     ))}
                     </ObjectList>
                 </Contents>
@@ -107,6 +106,7 @@ const Layout = styled.div`
     ${media.tablet || media.mobile}{
         width: 100%;
         padding: 0 20px;
+        gap: 20px;
     }
 `;
 
