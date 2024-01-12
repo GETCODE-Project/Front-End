@@ -1,15 +1,12 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
+import FixedLayout from "@/components/common/layout/FixedLayout";
 import MainPage from "@/components/main/MainPage";
 
 const Main = ()=> {
   return (
     <div>
-      <Header />
-      <MenuBar />
+    <FixedLayout>
       <MainPage />
-      <Footer />
+    </FixedLayout>
     </div>
   );
 }

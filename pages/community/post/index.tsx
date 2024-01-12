@@ -1,16 +1,11 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
-import CommunityPostPage from "@/components/post/community/CommunityPostPage";
-const ProjectPost: React.FC = () => {
+import FixedLayout from "@/components/common/layout/FixedLayout";
+import PostLayout from "@/components/common/layout/PostLayout";
+const CommunityPost: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <MenuBar/>   
-      <CommunityPostPage />
-      <Footer />
-    </div>
+    <FixedLayout>
+      <PostLayout pageName="community" />
+    </FixedLayout>
   );
 };
 
-export default ProjectPost;
+export default CommunityPost;

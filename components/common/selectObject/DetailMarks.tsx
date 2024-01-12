@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { HartOnSVG, HartOffSVG, BookMarkOnSVG, BookMarkOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
 
-export const Marks = () =>{
+const DetailMarks = () =>{
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     return(
@@ -12,6 +12,8 @@ export const Marks = () =>{
       </div>
     );
   }
+
+export default DetailMarks;
 
 const HeartNum = styled.div`
     cursor:pointer; 

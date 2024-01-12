@@ -1,15 +1,11 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
-import FindStudyPostPage from "@/components/post/findStudy/FindStudyPostPage";
+import FixedLayout from "@/components/common/layout/FixedLayout";
+import PostLayout from "@/components/common/layout/PostLayout";
+
 const FindStudyPost: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <MenuBar/>   
-      <FindStudyPostPage />
-      <Footer />
-    </div>
+    <FixedLayout>
+      <PostLayout pageName="findStudy" />
+    </FixedLayout>
   );
 };
 

@@ -1,16 +1,11 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
+import FixedLayout from "@/components/common/layout/FixedLayout";
 import ProjectPage from "@/components/project/ProjectPage";
 
 const ProjectPost: React.FC = () => {
   return (
-    <div>
-      <Header />
-      <MenuBar bold={1} />
+    <FixedLayout fontWeight={1}>
         <ProjectPage/>
-      <Footer />
-    </div>
+    </FixedLayout> 
   );
 };
 

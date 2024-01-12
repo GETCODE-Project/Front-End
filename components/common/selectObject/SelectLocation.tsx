@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import RoundBox from "@/components/common/RoundBox";
+import RoundBox from "@/components/common/selectObject/SelectRoundBox";
 import { media } from "@/styles/mediaQuery";
 import React, { useState, useEffect } from "react";
 
@@ -7,7 +7,7 @@ interface Porps{
   text:string;
 }
 
-export const SelectLocation:React.FC<Porps> = ({text}) => {
+const SelectLocation:React.FC<Porps> = ({text}) => {
 
   const optionSubject = [
     { key: 0, siDo: "시/도 선택", guGun: ["구/군 선택"]},
@@ -62,6 +62,7 @@ export const SelectLocation:React.FC<Porps> = ({text}) => {
   );
 };
 
+export default SelectLocation;
 const SelectBoxDiv = styled.div`
   select{
     width: 200px;

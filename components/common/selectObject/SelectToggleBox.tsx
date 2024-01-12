@@ -7,7 +7,7 @@ interface Type {
   deleteTopic?: MouseEventHandler<HTMLSpanElement> | undefined;
 }
 
-const ToggleRoundBox: React.FC<Type> = ({text, deleteTopic }) => {
+const SelectToggleBox: React.FC<Type> = ({text, deleteTopic }) => {
   return (
     <RoundBoxDiv>
     <p>{text}</p>
@@ -18,7 +18,7 @@ const ToggleRoundBox: React.FC<Type> = ({text, deleteTopic }) => {
   );
 };
 
-export default ToggleRoundBox;
+export default SelectToggleBox;
 
 const RoundBoxDiv = styled.div<Type>`
   display: flex; 

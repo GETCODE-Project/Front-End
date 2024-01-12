@@ -9,7 +9,7 @@ interface CommentProps {
     comment:string;
 }
 
-const Comment: React.FC<CommentProps> = ({id, name, date, comment}) =>{
+const DetailComment: React.FC<CommentProps> = ({id, name, date, comment}) =>{
     return(
     <div style={{ display:"flex", flexDirection:"column", margin:"20px 0", borderBottom: "1px solid #FFD4AC"}}>
         <CommentBox>
@@ -26,13 +26,13 @@ const Comment: React.FC<CommentProps> = ({id, name, date, comment}) =>{
 const CommentList = () => {
     return(
         <div style={{margin:"20px 0", padding:"10px 20px", backgroundColor:"#FFF1E4"}}>
-            <Comment id={1} name="닉네임1" date="2023.01.01" comment="댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용"/>
-            <Comment id={2} name="닉네임2" date="2023.01.01" comment={""}/>
+            <DetailComment id={1} name="닉네임1" date="2023.01.01" comment="댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용 댓글 작성 내용"/>
+            <DetailComment id={2} name="닉네임2" date="2023.01.01" comment={""}/>
         </div>
     );
 }
 
-const CommentForm = ()=>{
+const DetailCommentForm = ()=>{
     let N = 0;
     const [comment, setComment] = useState<string>("");
     return(
@@ -51,7 +51,7 @@ const CommentForm = ()=>{
     );
 }
 
-export default CommentForm;
+export default DetailCommentForm;
 
 const Layout =styled.div`
     display: flex;

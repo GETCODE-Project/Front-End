@@ -1,16 +1,11 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
-import ProjectPostPage from "@/components/post/project/ProjectPostPage";
+import FixedLayout from "@/components/common/layout/FixedLayout";
+import PostLayout from "@/components/common/layout/PostLayout";
 
 const ProjectPost = () => {
   return (
-    <div>
-      <Header />
-      <MenuBar/>    
-      <ProjectPostPage />
-      <Footer />
-    </div>
+    <FixedLayout>
+      <PostLayout pageName="project"/>
+    </FixedLayout>
   );
 };
 
