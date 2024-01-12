@@ -13,7 +13,8 @@ interface AxiosType {
 const axiosWrap = async ({url,method, body, params, log}:AxiosType) => {
     try {
         const config: AxiosRequestConfig = {
-            baseURL: process.env.NEXT_PUBLICK_API_URL,
+            // baseURL: process.env.NEXT_PUBLICK_API_URL,
+            baseURL: 'http://52.78.81.149:8080',
             params,
             withCredentials: true,
         };
