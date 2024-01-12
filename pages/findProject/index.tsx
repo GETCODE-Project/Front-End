@@ -1,16 +1,12 @@
-
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
+import FixedLayout from "@/components/common/layout/FixedLayout";
 import FindProjectPage from "@/components/findProject/FindProjectPage";
 
 const FindProject = ()=> {
   return (
     <div>
-      <Header />
-      <MenuBar bold={2}/>
+      <FixedLayout fontWeight={1}>
         <FindProjectPage/>
-      <Footer />
+      </FixedLayout>
     </div>
   );
 };
