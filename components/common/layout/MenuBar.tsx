@@ -34,7 +34,7 @@ const MenuBar:React.FC<MenuBarProps>=({fontWeight}) =>{
         <li>
           <a 
             href={'/community'}
-            style={{textDecoration: 'none',color: '#fff',...handle(4)}}>커뮤니티
+            style={{textDecoration: 'none',color: '#fff',...handle(4)}}>커뮤니티=
           </a>
         </li>
       </ul>
@@ -70,5 +70,4 @@ z-index: 100;
       margin:0 10px;
       gap: 15px;
   };
-  }
 `;

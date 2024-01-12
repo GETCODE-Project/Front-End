@@ -1,23 +1,42 @@
 import { Logo } from "@/public/SVG/logo";
 import { SearchButton } from "@/public/SVG/search";
+import { media } from "@/styles/mediaQuery";
 import { useState } from "react";
 import styled from "styled-components";
+import {MultipleSelectToggle, SingleSelectToggle} from "@/components/common/search/DetailSearchForm";
+import { useRouter } from "next/router";
 
-const SearchInput = () => {
-    const [isDetailOpen, isDetailClose] = useState<boolean>(false);
+const SearchInput = ({children}:any) => {
+    const router = useRouter();
+    const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
+
+    const isCommunityPage = router.pathname === '/community/[id]';
 
     return(
         <Layout>
         <Search>
+            <div id="logo">
             <Logo width='147' height='30'/>
+            </div>
             <SearchInputBar/>
             <SearchButtonWrapper>
                 <SearchButton/>
             </SearchButtonWrapper>
         </Search>
-        <DetailButton onClick={()=>isDetailClose(!isDetailOpen)}>
-                { isDetailOpen?'닫기':'상세검색'}
-        </DetailButton>
+        {isCommunityPage?
+            <></>
+        :   <DetailButton onClick={()=>setIsDetailOpen(!isDetailOpen)}>
+                    { isDetailOpen?'닫기':'상세검색'}
+            </DetailButton>
+        }
+        
+        {isDetailOpen?
+            <DetailSearchWrapper>
+                {children}
+            </DetailSearchWrapper>
+        :   <></>
+        }
+        
         </Layout>
     )
 }
@@ -26,23 +45,36 @@ export default SearchInput;
 const Layout = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 50px 70px;
+    align-items: center;
+    padding: 50px 0;
+    max-width: 600px;
+    width: 100%;
     box-sizing: border-box;
+
+    ${media.mobile || media.tablet}{
+        width: 100%;
+        padding: 0 20px;
+    }
 `;
 const Search = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     padding-bottom: 20px;
     box-sizing: border-box;
-    width: 600px;
+    width: 100%;
     
+    & #logo {
+        ${media.mobile}{
+            display: none;
+        }
+    }
 `;
 
 const SearchInputBar = styled.input`
     display: flex;
-    width: 490px;
+    width: 100%;
     height: 44px;
     box-sizing: border-box;
 
@@ -69,8 +101,18 @@ const DetailButton = styled.div`
     display: flex;
     justify-content: start;
     align-items: center;
-    width: 600px;
+    width: 100%;
 
     font-size: 1rem;
     text-decoration-line: underline;
+
+    cursor: pointer;
+`;
+
+const DetailSearchWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 `;

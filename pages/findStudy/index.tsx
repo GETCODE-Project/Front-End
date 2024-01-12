@@ -1,15 +1,17 @@
-import FixedLayout from "@/components/common/layout/FixedLayout";
-import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 
+import Header from "@/components/common/layout/Header";
+import MenuBar from "@/components/common/layout/MenuBar";
+import Footer from "@/components/common/layout/Footer";
+import FindStudyPage from "@/components/findStudy/FindStudyPage";
 
 export default function FindStudy() {
   return (
-    <FixedLayout fontWeight={3}>
-      <MainContantsLayout
-            pageName="findStudy"
-            title="스터디 모집"
-      />
-    </FixedLayout>
+    <div>
+      <Header />
+      <MenuBar bold={3}/>
+        <FindStudyPage/>
+      <Footer />
+    </div>
   );
 
 }

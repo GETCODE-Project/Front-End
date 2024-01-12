@@ -13,9 +13,9 @@ const MainPage = () => {
                     <Contents>
                         <Title>GETCODE 인기 프로젝트</Title>
                         <MoreViewButton>더보기</MoreViewButton>
-                        <ObjectWrapper>
+                        <ObjectWrapper id="topObject">
                             {arr.map((i:any, idx:number)=>(
-                                <ObjectForm key={idx}/>
+                                <ObjectForm key={idx} style={{width:'250px', height:'340px'}}/>
                             ))}
                         </ObjectWrapper>
                         <PageDots>
@@ -49,7 +49,7 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
-    padding: 0 55px 70px;
+    /* padding: 0 55px 70px; */
 `;
 
 const Layout = styled.div`
@@ -66,9 +66,11 @@ const Layout = styled.div`
 const TopContents = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100vw;
-    height: calc(100vh - 100px);
-    padding: 45px 0;
+    height: 600px;
+    padding: 20px;
+    box-sizing: border-box;
 
     background-color: #ff4b13;
 `;
@@ -77,8 +79,12 @@ const Contents = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 25px;
+
+    & #topObject{
+        flex-wrap: nowrap;
+    }
 `;
 const Title = styled.div`
     & > span{
@@ -107,8 +113,7 @@ const MoreViewButton = styled.div`
 const ObjectWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 25px;
+    justify-content: space-between;
     flex-wrap: wrap;
 `;
 const PageDots = styled.div`

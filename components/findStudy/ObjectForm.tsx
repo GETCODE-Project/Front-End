@@ -1,12 +1,16 @@
 import { BookMarkOnSVG, BookMarkOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = () => {
+const ObjectForm = ({idx, data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
+
+    useEffect(()=>{
+        // console.log(data.title);
+    },[])
 
     return(
         <Layout>
@@ -15,18 +19,20 @@ const ObjectForm = () => {
             </BookMark>
             <Content>
                 <Info>
-                    <div id='title'>스터디 모집 글 제목</div>
-                    <div id='intro'>스터디 모집 글 한 줄</div>
+                    <div id='title'>{data?.title}</div>
+                    <div id='intro'>{data?.content}</div>
                     <Reaction>
                 <Wrapper>
                     <ViewCountSVG/>
-                    <span>1,345</span>
+                    <span>{data?.views}</span>
                 </Wrapper>
                 <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                    <span>123</span>
+                    <span>{data?.count}</span>
                 </Wrapper>
-                <RecruitmentStatus>모집 중</RecruitmentStatus>
+                <RecruitmentStatus recruitment={data?.recruitment}>
+                    {data?.recruitment===true ? '모집 중':'모집 완료'}
+                </RecruitmentStatus>
             </Reaction>
                 </Info>
                 <Stack>
@@ -135,7 +141,7 @@ const Wrapper = styled.div`
         font-size: 0.625rem;
     }
 `;
-const RecruitmentStatus = styled.div`
+const RecruitmentStatus = styled.div<{recruitment:boolean}>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,6 +152,7 @@ const RecruitmentStatus = styled.div`
 
     border-radius: 50px;
     background-color: #00ff1a;
+    background-color: ${({recruitment})=>(recruitment?'#00ff1a':'#a2a2a2')};
 
     font-size: 0.75rem
 `;

@@ -1,23 +1,31 @@
 import styled from "styled-components";
 import SearchInput from "@/components/common/search/SearchInput";
 import { media } from "@/styles/mediaQuery";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useRouter } from "next/router";
 
 interface MainContentsLayoutProps {
     pageName: string;
     title: string;
+    subTitle?: string;
+    sumTitle?: string;
+    children?: any;
+    data?: any;
+    id?:any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data, id}:MainContentsLayoutProps) => {
     const router = useRouter();
+    const objectListRef = useRef<HTMLDivElement>(null);
+    const [objectListWidth, setObjectListWidth] = useState(0);
     const sortArr:any [] = ["최신순","과거순","인기순"];
     const total = 1234;
     //더미데이터,프로젝트수 arr
     const arr:any [] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+
 
     const [ObjectForm, setObjectForm] = useState(null);
 
@@ -30,27 +38,49 @@ const MainContantsLayout = ({pageName, title}:MainContentsLayoutProps) => {
         .catch(error => console.error(error))
     },[pageName]);
 
+    useEffect(() => {
+        const updateWidth = () => {
+            const width = objectListRef.current?.offsetWidth || 0;
+            setObjectListWidth(width);
+        }
+        updateWidth();
+
+        window.addEventListener('resize', updateWidth);
+        return () => window.removeEventListener('resize', updateWidth);
+    },[]);
+
     return(
         <BackLayout>
             <Layout>
-                <Title>{`GETCODE ${title}`}</Title>
-                <SearchInput/>
+                <Title>
+                    {`GETCODE ${title}`}
+                    {subTitle?
+                        <div id="subTitle">{subTitle}</div>
+                    :   <></>
+                    }
+                </Title>
+                <SearchInput>{children}</SearchInput>
                 <Contents>
-                    <TotalSortWrapper>
-                        <Total>{`총 ${total}개 ${title}`}</Total>
+                    <TotalSortWrapper >
+                        <div id="wrapper" style={{width:objectListWidth}}>
+                        {subTitle?
+                            <Total>{`총 ${data?.length}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${data?.length}개 ${title}`}</Total>
+                        }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
                                 <span key={idx}>{i}</span>
                             ))}
                         </Sort>
+                        </div>
                     </TotalSortWrapper>
-                    <ObjectList>
-                    {arr.map((i:any,idx:number)=>(
-                        ObjectForm ? React.createElement(ObjectForm, {key:idx}) : null
+                    <ObjectList ref={objectListRef}>
+                    {data?.map((i:any,idx:number)=>(
+                        ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                     ))}
                     </ObjectList>
                 </Contents>
-            {/* <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton> */}
+                <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
         </BackLayout>
     )
@@ -62,22 +92,49 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
-    padding: 55px 70px;
+    padding: 55px 0;
 `;
 
 const Layout = styled.div`
     display: flex;
-    position: relative;
     flex-direction: column;
     align-items: center;
+    /* gap: 10px; */
     width: 1000px;
+    overflow: hidden;
 
     ${media.tablet || media.mobile}{
         width: 100%;
+        padding: 0 20px;
+        gap: 20px;
     }
 `;
 
-const Title = styled.div``;
+const Title = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    color: #ff4b13;
+    font-weight: 700;
+    font-size: 1.125rem;
+
+    & #subTitle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 15px;
+
+        border-radius: 16px;
+        background-color: #FF993A;
+
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+    }
+`;
 
 const Contents = styled.div`
     display: flex;
@@ -91,10 +148,19 @@ const Contents = styled.div`
 const TotalSortWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
+
+    & #wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    
 `;
-const Total = styled.div``;
+const Total = styled.div`
+    display: flex;
+`;
 const Sort = styled.div`
     display: flex;
     gap: 10px;
@@ -103,21 +169,20 @@ const Sort = styled.div`
 const ObjectList = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
     width: 100%;
     min-height: 100vh;
 
     ${media.tablet || media.mobile}{
         justify-content: center;
-        gap: 25px;
     }
 `;
 
 const WritingButton = styled.div`
     display: flex;
-    position: absolute;
-    right: -140px;
-    top: 200px;
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
     justify-content: center;
     align-items: center;
     width: 70px;
