@@ -1,18 +1,22 @@
 import { media } from "@/styles/mediaQuery";
 import styled from "styled-components";
 import ObjectForm from "@/components/project/ObjectForm";
+import { useRouter } from "next/router";
 
 const MainPage = () => {
     const arr: any[] = [1,2,3];
     const dotArr: any[] = [1,2,3,4,5];
     const objectArr: any[] = [1,2,3,4,5,6,7,8,9]
+
+    const router = useRouter();
+
     return (
         <BackLayout>
             <Layout>
                 <TopContents>
                     <Contents>
                         <Title>GETCODE 인기 프로젝트</Title>
-                        <MoreViewButton>더보기</MoreViewButton>
+                        <MoreViewButton onClick={()=>router.push('/project')}>더보기</MoreViewButton>
                         <ObjectWrapper id="topObject">
                             {arr.map((i:any, idx:number)=>(
                                 <ObjectForm key={idx} style={{width:'250px', height:'340px'}}/>
@@ -113,7 +117,7 @@ const MoreViewButton = styled.div`
 const ObjectWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 `;
 const PageDots = styled.div`

@@ -2,7 +2,7 @@ import { BookMarkOffSVG, BookMarkOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } fr
 import { useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = () => {
+const ObjectForm = ({data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
@@ -30,7 +30,7 @@ const ObjectForm = () => {
                 </Info>
                 <Stack>
                     <div>
-                    {arr.map((i:any,idx:number)=>(
+                    {data?.map((i:any,idx:number)=>(
                         <StackName key={idx}>{i}</StackName>
                     ))}</div>
                     <div>
