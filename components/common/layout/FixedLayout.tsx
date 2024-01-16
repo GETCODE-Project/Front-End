@@ -16,14 +16,14 @@ interface LayoutProps{
 
 const FixedLayout:React.FC<LayoutProps> = ({children, fontWeight, id})=>{
     return(
-    <Layout>
-        <div style={{ display:"block", height:"100px", zIndex:1004}}>
-            <Header/>
-            <MenuBar fontWeight={fontWeight} id={id}/>     
-        </div>
-        {children}
-        <Footer />
-    </Layout>
+        <Layout>
+            <div style={{ display:"block", height:"100px", zIndex:1004}}>
+                <Header/>
+                <MenuBar fontWeight={fontWeight} id={id}/>     
+            </div>
+            {children}
+            <Footer />
+        </Layout>
     );
 }
 export default FixedLayout;

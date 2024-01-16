@@ -22,22 +22,46 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
     const sortArr:any [] = ["최신순","과거순","인기순"];
-    const total = 1234;
-    //더미데이터,프로젝트수 arr
-    const arr:any [] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
 
-
+    const [dataName, setDataName] = useState<string>('ProjectData');
+    const [ObjectData, setObjectData] = useState<[]>([]);
     const [ObjectForm, setObjectForm] = useState(null);
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
     /** 정렬(최신순, 과거순, 인기순) 함수 작성 예정*/
 
+    /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
         import(`@/components/${pageName}/ObjectForm`)
-        .then(module => setObjectForm(()=>module.default))
+        .then(module => {pageName=='project'?
+            setObjectForm(()=>module.ObjectForm)
+        : setObjectForm(()=>module.default)})
         .catch(error => console.error(error))
     },[pageName]);
 
+    useEffect(()=>{
+        if(pageName === 'project'){
+            setDataName('ProjectData');
+        }
+        if(pageName === 'findProject'){
+            setDataName('FindProjectData');
+        }
+        if(pageName === 'findStudy'){
+            setDataName('FindStudyData');
+        }
+        if(pageName === 'community'){
+            setDataName('CommunityData');
+        }
+    },[])
+
+    /** 페이지 별 더미 데이터 불러오기 */
+    useEffect(() => {
+        import(`@/components/dummy/${dataName}`)
+        .then(module =>setObjectData(()=>module.DummyData))
+        .catch(error => console.error(error))
+    },[dataName]);
+
+    /** total,sort 너비 수정 작업 중 */
     useEffect(() => {
         const updateWidth = () => {
             const width = objectListRef.current?.offsetWidth || 0;
@@ -64,8 +88,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
                     <TotalSortWrapper >
                         <div id="wrapper" style={{width:objectListWidth}}>
                         {subTitle?
-                            <Total>{`총 ${data?.length}개 ${sumTitle}`}</Total>
-                        :   <Total>{`총 ${data?.length}개 ${title}`}</Total>
+                            <Total>{`총 ${ObjectData?.length}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${ObjectData?.length}개 ${title}`}</Total>
                         }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
@@ -75,7 +99,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
                         </div>
                     </TotalSortWrapper>
                     <ObjectList ref={objectListRef}>
-                    {data?.map((i:any,idx:number)=>(
+                    {ObjectData?.map((i:any,idx:number)=>(
                         ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                     ))}
                     </ObjectList>

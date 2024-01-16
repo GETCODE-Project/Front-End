@@ -1,11 +1,16 @@
 import { BookMarkOffSVG, BookMarkOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ObjectForm = ({data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
+
+    useEffect(() =>{
+        setIsBookMarkOn(data.bookmarks);
+        setIsHartOn(data.likes[1]);
+    },[]);
     
     return (
         <Layout>
@@ -30,7 +35,7 @@ const ObjectForm = ({data}:any) => {
                 </Info>
                 <Stack>
                     <div>
-                    {data?.map((i:any,idx:number)=>(
+                    {data.technologyStack?.map((i:any,idx:number)=>(
                         <StackName key={idx}>{i}</StackName>
                     ))}</div>
                     <div>

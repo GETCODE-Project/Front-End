@@ -2,15 +2,16 @@ import { BookMarkOnSVG, BookMarkOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } fr
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = ({idx, data}:any) => {
+const ObjectForm = ({data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
 
-    useEffect(()=>{
-        // console.log(data.title);
-    },[])
+    useEffect(() =>{
+        setIsBookMarkOn(data.bookmarks);
+        setIsHartOn(data.likes[1]);
+    },[]);
 
     return(
         <Layout>
@@ -20,7 +21,7 @@ const ObjectForm = ({idx, data}:any) => {
             <Content>
                 <Info>
                     <div id='title'>{data?.title}</div>
-                    <div id='intro'>{data?.content}</div>
+                    <div id='intro'>{data?.subTitle}</div>
                     <Reaction>
                 <Wrapper>
                     <ViewCountSVG/>
@@ -28,7 +29,7 @@ const ObjectForm = ({idx, data}:any) => {
                 </Wrapper>
                 <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                    <span>{data?.count}</span>
+                    <span>{data?.likes[0]}</span>
                 </Wrapper>
                 <RecruitmentStatus recruitment={data?.recruitment}>
                     {data?.recruitment===true ? '모집 중':'모집 완료'}
