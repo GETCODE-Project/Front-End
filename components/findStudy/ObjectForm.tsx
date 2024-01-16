@@ -11,6 +11,7 @@ const ObjectForm = ({data}:any) => {
     useEffect(() =>{
         setIsBookMarkOn(data.bookmarks);
         setIsHartOn(data.likes[1]);
+        console.log(data);
     },[]);
 
     return(
@@ -31,8 +32,8 @@ const ObjectForm = ({data}:any) => {
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                     <span>{data?.likes[0]}</span>
                 </Wrapper>
-                <RecruitmentStatus recruitment={data?.recruitment}>
-                    {data?.recruitment===true ? '모집 중':'모집 완료'}
+                <RecruitmentStatus recruitment={data?.recruitStatus}>
+                    {data?.recruitStatus===true ? '모집 중':'모집 완료'}
                 </RecruitmentStatus>
             </Reaction>
                 </Info>
@@ -42,11 +43,10 @@ const ObjectForm = ({data}:any) => {
                     ))}
                 </Stack>
                 <Create>
-                    <span>작성자</span>
-                    <span>2023.12.11.MON</span>
+                    <span>{`작성자 : ${data.writer}`}</span>
+                    <span>{`작성일 : ${data.createdDate}`}</span>
                 </Create>
             </Content>
-            
         </Layout>
     )
 }
@@ -96,7 +96,6 @@ const Info = styled.div`
         font-size: 0.75rem;
     }
 `;
-
 const Stack = styled.div`
     display: flex;
     gap: 6px;
@@ -119,6 +118,7 @@ const StackName = styled.div`
 `;
 const Create = styled.div`
     display: flex;
+    gap: 10px;
 
     font-size: 0.625rem;
 `;

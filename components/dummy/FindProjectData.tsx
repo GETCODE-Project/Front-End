@@ -4,6 +4,8 @@ interface FindProjectObjectData{
     likes: any[];
     bookmarks: boolean;
     recruitStatus: boolean;
+    title: string;
+    subTitle: string;
     topic: string[];
     recruitField: string[];
     writer: string;
@@ -19,6 +21,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: true,
         recruitStatus: true,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -30,6 +34,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: true,
         recruitStatus: false,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -41,6 +47,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: false,
         recruitStatus: false,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -52,6 +60,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: false,
         recruitStatus: true,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -63,6 +73,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: true,
         recruitStatus: false,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -74,6 +86,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, true],
         bookmarks: false,
         recruitStatus: false,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',
@@ -85,6 +99,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: false,
         recruitStatus: true,
+        title: 'GETCODE 프로젝트 모집 글 제목',
+        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
         topic: ['반응형','웹서비스'],
         recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
         writer: '닉네임',

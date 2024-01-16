@@ -98,10 +98,10 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
                         </Sort>
                         </div>
                     </TotalSortWrapper>
-                    <ObjectList ref={objectListRef}>
-                    {ObjectData?.map((i:any,idx:number)=>(
-                        ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
-                    ))}
+                    <ObjectList ref={objectListRef} pageName={pageName}>
+                        {ObjectData?.map((i:any,idx:number)=>(
+                            ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
+                        ))}
                     </ObjectList>
                 </Contents>
                 <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
@@ -190,15 +190,16 @@ const Sort = styled.div`
     gap: 10px;
 `;
 
-const ObjectList = styled.div`
+const ObjectList = styled.div<{pageName:string}>`
     display: flex;
+    flex-direction: ${({pageName})=>(pageName==='project'?'unset':'column')};
     flex-wrap: wrap;
-    justify-content: start;
+    align-items: center;
     width: 100%;
     min-height: 100vh;
 
     ${media.tablet || media.mobile}{
-        justify-content: center;
+        justify-content: ${({pageName})=>(pageName==='project'?'center':'unset')};
     }
 `;
 

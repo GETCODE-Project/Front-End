@@ -4,6 +4,8 @@ interface FindProjectObjectData{
     likes: any[];
     bookmarks: boolean;
     recruitStatus: boolean;
+    title: string;
+    subTitle: string;
     topic: string[];
     writer: string;
     createdDate: string;
@@ -18,6 +20,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, true],
         bookmarks: true,
         recruitStatus: true,
+        title: 'GETCODE 스터디 모집 게시글 제목',
+        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
         topic: ['스터디','면접준비','백엔드','웹개발'],
         writer: '닉네임',
         createdDate: '2023-12-21'
@@ -28,6 +32,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: false,
         recruitStatus: true,
+        title: 'GETCODE 스터디 모집 게시글 제목',
+        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
         topic: ['스터디','면접준비','백엔드','웹개발'],
         writer: '닉네임',
         createdDate: '2023-12-21'
@@ -38,6 +44,8 @@ export const DummyData: FindProjectObjectData[] = [
         likes: [123, false],
         bookmarks: false,
         recruitStatus: false,
+        title: 'GETCODE 스터디 모집 게시글 제목',
+        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
         topic: ['스터디','면접준비','백엔드','웹개발'],
         writer: '닉네임',
         createdDate: '2023-12-21'

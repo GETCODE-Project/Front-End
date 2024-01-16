@@ -18,7 +18,6 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
 
     useEffect(()=>{
         setIsBookMarkOn(data.bookmarks);
-        // console.log(data);
     },[]);
 
     return(
@@ -28,11 +27,11 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
                 <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>1,234</span>
+                        <span>{data.likes[0]}</span>
                     </Wrapper>
                     <Wrapper>
                         <ViewCountSVG/>
-                        <span>890</span>
+                        <span>{data.views}</span>
                     </Wrapper>
                     <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
                         {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
@@ -41,19 +40,19 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
             </Thumbnail>
             <Content>
                 <Title>
-                    <span>GETCODE프로젝트제목</span>
+                    <span>{data.title}</span>
                 </Title>
                 <Info>
                     <Intro>
-                        GETCODE인기프로젝트내용한줄프로젝트소개
+                        {data.subTitle}
                     </Intro>
-                    <Topic>주제 : 웹 포트폴리오</Topic>
+                    <Topic>{`주제 : ${data.topic}`}</Topic>
                     <Stack>
-                        {arr?.map((i:any,idx:number)=>(
+                        {data.technologyStack?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>작성자 닉네임</div><div>2023.10.11.TUE</div></Create>
+                    <Create><div>{`작성자 : ${data.writer}`}</div><div>{`작성일 : ${data.createdDate}`}</div></Create>
                 </Info>
             </Content>
               
