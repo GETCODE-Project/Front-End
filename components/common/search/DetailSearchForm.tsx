@@ -6,16 +6,18 @@ import styled from "styled-components";
 interface Props{
     title?: string;
     data?: string[];
+    currentSelected: any;
+    setCurrentSelected: any;
 }
 /** 다중 선택 토글 폼 -------------------------------------------- */
-export const MultipleSelectToggle = ({title, data}:Props) => {
+export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
     const dataArray:string[] = data??[];
     const [toggleList, setToggleList] = useState<string[]>(dataArray);
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
-    const [currentSelected, setCurrentSelected]=useState<string>('--');
     const [selectedList, setSelectedList] = useState<string[]>([]);
 
+    // 토글 선택
     const handleSelectedToggle = (i:string) => {
         let array:string[] =[...selectedList];
         array.push(i);
@@ -30,12 +32,17 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
         }
     };
 
+    // 토글 선택 취소
     const handleUnSelectedToggle = (i:string) => {
         let toggleListArray:any[] = [...toggleList,i];
         setToggleList(toggleListArray);
 
         let seletedListArray:any[] = selectedList.filter((item)=>item!=i);
         setSelectedList(seletedListArray);
+
+        if(seletedListArray.length == 0){
+            setCurrentSelected('전체');
+        }
     };
 
     return(
@@ -72,12 +79,11 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
 }
 
 /** 단일 선택 토글 폼 -------------------------------------------- */
-export const SingleSelectToggle = ({title, data}:Props) => {
+export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
     const dataArray:string[] = data??[];
     const [toggleList, setToggleList] = useState<string[]>(dataArray);
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
-    const [currentSelected, setCurrentSelected]=useState<string>('--');
 
     return(
         <BackLayout>

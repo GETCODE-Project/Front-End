@@ -24,6 +24,7 @@ const MainPage = () => {
         setDataName(dataName);
     }
 
+    /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
         import(`@/components/${pageName}/ObjectForm`)
         .then(module => {pageName=='project'?
@@ -32,6 +33,7 @@ const MainPage = () => {
         .catch(error => console.error(error))
     },[pageName]);
 
+    /** 페이지 별 더미 데이터 불러오기 */
     useEffect(() => {
         import(`@/components/dummy/${dataName}`)
         .then(module =>setObjectData(()=>module.DummyData))

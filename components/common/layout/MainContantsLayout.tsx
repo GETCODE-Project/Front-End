@@ -11,24 +11,42 @@ interface MainContentsLayoutProps {
     subTitle?: string;
     sumTitle?: string;
     children?: any;
+    currentSeletedData: any;
     data?: any;
     id?:any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data, id}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, currentSeletedData, data, id}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
     const sortArr:any [] = ["최신순","과거순","인기순"];
 
     const [dataName, setDataName] = useState<string>('ProjectData');
-    const [ObjectData, setObjectData] = useState<[]>([]);
+    const [ObjectData, setObjectData] = useState<any[]>([]);
+    // const [currentObjectData, setCurrentObjectData] = useState<any[]>(ObjectData);
     const [ObjectForm, setObjectForm] = useState(null);
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
-    /** 정렬(최신순, 과거순, 인기순) 함수 작성 예정*/
+
+    /** 정렬(최신순, 과거순, 인기순) */
+    const handleSort = (i:string) => {
+        let tempArray:any[] = [...ObjectData];
+        if(i==='최신순'){
+            tempArray.sort((a,b)=>(new Date(b.createdDate).getDate() - new Date(a.createdDate).getDate()));
+            setObjectData(tempArray);
+        }
+        if(i==='과거순'){
+            tempArray.sort((a,b)=>(new Date(a.createdDate).getDate() - new Date(b.createdDate).getDate()));
+            setObjectData(tempArray);
+        }
+        if(i==='인기순'){
+            tempArray.sort((a,b)=>(b.likes[0] - a.likes[0]));
+            setObjectData(tempArray);
+        }
+    }
 
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
@@ -37,7 +55,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
             setObjectForm(()=>module.ObjectForm)
         : setObjectForm(()=>module.default)})
         .catch(error => console.error(error))
-    },[pageName]);
+    },[pageName, setObjectData]);
 
     useEffect(()=>{
         if(pageName === 'project'){
@@ -93,7 +111,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, data
                         }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
-                                <span key={idx}>{i}</span>
+                                <span key={idx} onClick={()=>handleSort(i)}>{i}</span>
                             ))}
                         </Sort>
                         </div>
@@ -188,6 +206,10 @@ const Total = styled.div`
 const Sort = styled.div`
     display: flex;
     gap: 10px;
+
+    & > span{
+        cursor: pointer;
+    }
 `;
 
 const ObjectList = styled.div<{pageName:string}>`
