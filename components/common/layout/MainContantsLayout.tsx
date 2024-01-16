@@ -22,7 +22,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, curr
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
     const [objectListWidth, setObjectListWidth] = useState(0);
-    const sortArr:any [] = ["최신순","과거순","인기순"];
+    const sortArr:any [] = ["최신순","과거순","좋아요순"];
 
     const [dataName, setDataName] = useState<string>('ProjectData');
     const [ObjectData, setObjectData] = useState<any[]>([]);
@@ -31,7 +31,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, curr
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
 
-    /** 정렬(최신순, 과거순, 인기순) */
+    /** 정렬(최신순, 과거순, 좋아요순) */
     const handleSort = (i:string) => {
         let tempArray:any[] = [...ObjectData];
         if(i==='최신순'){
@@ -42,7 +42,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, curr
             tempArray.sort((a,b)=>(new Date(a.createdDate).getDate() - new Date(b.createdDate).getDate()));
             setObjectData(tempArray);
         }
-        if(i==='인기순'){
+        if(i==='좋아요순'){
             tempArray.sort((a,b)=>(b.likes[0] - a.likes[0]));
             setObjectData(tempArray);
         }

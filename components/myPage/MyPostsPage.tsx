@@ -8,7 +8,7 @@ const MyPostsPage = () => {
     const data:any[] = ['프로젝트','프로젝트 모집','스터디 모집','커뮤니티'];
     const [isToggleOn, setIsToggleOn] = useState<boolean>(false);
     const [selectedToggle, setSelectedToggle] = useState<string>('프로젝트');
-    const sortArr:any [] = ["최신순","과거순","인기순"];
+    const sortArr:any [] = ["최신순","과거순","좋아요순"];
 
 
     return(
