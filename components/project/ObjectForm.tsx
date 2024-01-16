@@ -18,7 +18,7 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
 
     useEffect(()=>{
         setIsBookMarkOn(data.bookmarks);
-        console.log(data);
+        // console.log(data);
     },[]);
 
     return(

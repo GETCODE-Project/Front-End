@@ -25,7 +25,7 @@ const FindStudyPage = () => {
         await GET(`/api/all-studies`)
         .then((res)=>{
             setFindStudyBulletinData(res);
-            console.log(res);
+            // console.log(res);
         })
         .catch((err)=>console.log(err));
     }
