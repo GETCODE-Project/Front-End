@@ -118,7 +118,7 @@ const Layout = styled.div`
     display: flex;
     flex-direction: column;
     width: 250px;
-    height: 340px;
+    height: 300px;
     padding: 0 10px;
     padding-bottom: 30px;
 

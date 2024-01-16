@@ -54,7 +54,7 @@ const MainPage = () => {
                         <MoreViewButton onClick={()=>router.push('/project')}>더보기</MoreViewButton>
                         <ObjectWrapper id="topObject">
                             {popularityProjectData?.map((i:any, idx:number)=>(
-                                <PopularityObjectForm key={idx} style={{width:'250px', height:'340px'}} data={i}/>
+                                <PopularityObjectForm key={idx} style={{width:'250px', height:'300px'}} data={i}/>
                             ))}
                         </ObjectWrapper>
                         <PageDots>
