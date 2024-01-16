@@ -71,7 +71,7 @@ const MainPage = () => {
                         <span onClick={()=>handlePageName('findStudy','FindStudyData')}>스터디 모집</span>
                     </Title>
                     <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
-                    <ObjectList ref={objectListRef}>
+                    <ObjectList ref={objectListRef} pageName={pageName}>
                         {ObjectData?.map((i:any,idx:number)=>(
                             ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                         ))}
@@ -187,12 +187,12 @@ const BottomContents = styled.div`
     padding: 45px 0;
 `;
 
-const ObjectList = styled.div`
+const ObjectList = styled.div<{pageName:string}>`
     display: flex;
+    flex-direction: ${({pageName})=>(pageName='project'?'unset':'column')};
     flex-wrap: wrap;
-    justify-content: start;
+    align-items: center;
     width: 100%;
-    min-height: 100vh;
 
     ${media.tablet || media.mobile}{
         justify-content: center;
