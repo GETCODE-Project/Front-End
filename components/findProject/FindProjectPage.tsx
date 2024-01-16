@@ -1,5 +1,16 @@
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
+import { GET } from "@/pages/api/axios";
+import { useEffect, useState } from "react";
+
+interface FindProjectBulletinData{
+    title: string;
+    content: string;
+    region: string;
+    recruitment: boolean;
+    online: boolean;
+    views: number;
+}
 
 const FindProjectPage = () => {
 
@@ -8,10 +19,34 @@ const FindProjectPage = () => {
     const partDataArray:string[] = ['모집파트1','모집파트2','모집파트3','모집파트4','모집파트5'] 
     const recruitmentStatusDataArray:string[] = ['모집 중','모집 완료','전체'] 
 
+    const [findProjectBulletinData, setFindProjectBulletinData] = useState<FindProjectBulletinData[]>([]);
+
+    const getFindProjectBulletinData = async() => {
+        await GET(`/api/project/all`,{
+            sort: 'latestOrder',
+            page: 5,
+            size: 10,
+            keyword: '',
+            subject: [],
+            techStack: [],
+            year: ''
+        })
+        .then((res)=>{
+            setFindProjectBulletinData(res);
+            console.log(res);
+        })
+        .catch((err)=>console.log(err));
+    }
+
+    useEffect(()=>{
+        getFindProjectBulletinData();
+    },[]);
+    
     return(
         <MainContantsLayout
             pageName="findProject"
             title="프로젝트 모집"
+            data={findProjectBulletinData}
         >
             <MultipleSelectToggle title="기술 스택" data={stackDataArray}/>
             <SingleSelectToggle title="주제" data={topicDataArray}/>

@@ -1,21 +1,60 @@
 import { media } from "@/styles/mediaQuery";
 import styled from "styled-components";
-import ObjectForm from "@/components/project/ObjectForm";
+import {PopularityObjectForm} from "@/components/project/ObjectForm";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef, useState } from "react";
+import {PopularityDummyData} from '@/components/dummy/ProjectData';
 
 const MainPage = () => {
-    const arr: any[] = [1,2,3];
+
+    const router = useRouter();
+    const objectListRef = useRef<HTMLDivElement>(null);
+    
+    const [ObjectForm, setObjectForm] = useState(null);
+    const [ObjectData, setObjectData] = useState<[]>([]);
+    const [pageName, setPageName] = useState<string>('project');
+    const [dataName, setDataName] = useState<string>('ProjectData');
+
     const dotArr: any[] = [1,2,3,4,5];
-    const objectArr: any[] = [1,2,3,4,5,6,7,8,9]
+
+    const [popularityProjectData, setPopularityProjectData] = useState<any[]>([]);
+
+    const handlePageName = (pageName:string, dataName:string) => {
+        setPageName(pageName);
+        setDataName(dataName);
+    }
+
+    useEffect(() => {
+        import(`@/components/${pageName}/ObjectForm`)
+        .then(module => {pageName=='project'?
+            setObjectForm(()=>module.ObjectForm)
+        : setObjectForm(()=>module.default)})
+        .catch(error => console.error(error))
+    },[pageName]);
+
+    useEffect(() => {
+        import(`@/components/dummy/${dataName}`)
+        .then(module =>setObjectData(()=>module.DummyData))
+        .catch(error => console.error(error))
+    },[dataName]);
+
+    useEffect(()=>{
+        let tumpArray:any[] = [...PopularityDummyData];
+        tumpArray.sort((a,b)=>b.likes - a.likes);
+        tumpArray.slice(0,9);
+        setPopularityProjectData(tumpArray);
+    },[dataName])
+
     return (
         <BackLayout>
             <Layout>
                 <TopContents>
                     <Contents>
                         <Title>GETCODE 인기 프로젝트</Title>
-                        <MoreViewButton>더보기</MoreViewButton>
+                        <MoreViewButton onClick={()=>router.push('/project')}>더보기</MoreViewButton>
                         <ObjectWrapper id="topObject">
-                            {arr.map((i:any, idx:number)=>(
-                                <ObjectForm key={idx} style={{width:'250px', height:'340px'}}/>
+                            {popularityProjectData?.map((i:any, idx:number)=>(
+                                <PopularityObjectForm key={idx} style={{width:'250px', height:'300px'}} data={i}/>
                             ))}
                         </ObjectWrapper>
                         <PageDots>
@@ -27,16 +66,16 @@ const MainPage = () => {
                 </TopContents>
                 <BottomContents>
                     <Title>
-                        <span>프로젝트 |</span>
-                        <span>프로젝트 모집 |</span>
-                        <span>스터디 모집</span>
+                        <span onClick={()=>handlePageName('project','ProjectData')}>프로젝트 |</span>
+                        <span onClick={()=>handlePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
+                        <span onClick={()=>handlePageName('findStudy','FindStudyData')}>스터디 모집</span>
                     </Title>
-                    <MoreViewButton>더보기</MoreViewButton>
-                    <ObjectWrapper>
-                            {objectArr.map((i:any, idx:number)=>(
-                                <ObjectForm key={idx}/>
-                            ))}
-                    </ObjectWrapper>
+                    <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
+                    <ObjectList ref={objectListRef} pageName={pageName}>
+                        {ObjectData?.map((i:any,idx:number)=>(
+                            ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
+                        ))}
+                    </ObjectList>
                 </BottomContents>
             </Layout>
         </BackLayout>
@@ -50,6 +89,7 @@ const BackLayout = styled.div`
     justify-content: center;
     width: 100%;
     /* padding: 0 55px 70px; */
+    overflow: hidden;
 `;
 
 const Layout = styled.div`
@@ -71,6 +111,7 @@ const TopContents = styled.div`
     height: 600px;
     padding: 20px;
     box-sizing: border-box;
+    overflow: hidden;
 
     background-color: #ff4b13;
 `;
@@ -113,7 +154,7 @@ const MoreViewButton = styled.div`
 const ObjectWrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 `;
 const PageDots = styled.div`
@@ -144,4 +185,16 @@ const BottomContents = styled.div`
     gap: 25px;
     width: 100%;
     padding: 45px 0;
+`;
+
+const ObjectList = styled.div<{pageName:string}>`
+    display: flex;
+    flex-direction: ${({pageName})=>(pageName='project'?'unset':'column')};
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+
+    ${media.tablet || media.mobile}{
+        justify-content: center;
+    }
 `;

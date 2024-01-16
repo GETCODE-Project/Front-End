@@ -1,15 +1,24 @@
 import { HartOnSVG, HartOffSVG, BookMarkOnSVG, BookMarkOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
 import { media } from '@/styles/mediaQuery';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface ObjectFormProps{
     style?:any;
+    data?: any;
 }
-const ObjectForm = ({style}:ObjectFormProps) => {
+
+/** 프로젝트 게시물 객체 폼 */
+
+export const ObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
-    const arr:string [] = ['React', 'Node.js', 'TypeScript','Spring Boot','Java'];//더미데이터(임시)
+    const arr:string [] = data?.technologyStack;
+
+
+    useEffect(()=>{
+        setIsBookMarkOn(data.bookmarks);
+    },[]);
 
     return(
         <Layout style={style}>
@@ -18,11 +27,11 @@ const ObjectForm = ({style}:ObjectFormProps) => {
                 <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>1,234</span>
+                        <span>{data.likes[0]}</span>
                     </Wrapper>
                     <Wrapper>
                         <ViewCountSVG/>
-                        <span>890</span>
+                        <span>{data.views}</span>
                     </Wrapper>
                     <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
                         {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
@@ -31,19 +40,19 @@ const ObjectForm = ({style}:ObjectFormProps) => {
             </Thumbnail>
             <Content>
                 <Title>
-                    <span>GETCODE프로젝트제목</span>
+                    <span>{data.title}</span>
                 </Title>
                 <Info>
                     <Intro>
-                        GETCODE인기프로젝트내용한줄프로젝트소개
+                        {data.subTitle}
                     </Intro>
-                    <Topic>주제 : 웹 포트폴리오</Topic>
+                    <Topic>{`주제 : ${data.topic}`}</Topic>
                     <Stack>
-                        {arr.map((i:any,idx:number)=>(
+                        {data.technologyStack?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>작성자 닉네임</div><div>2023.10.11.TUE</div></Create>
+                    <Create><div>{`작성자 : ${data.writer}`}</div><div>{`작성일 : ${data.createdDate}`}</div></Create>
                 </Info>
             </Content>
               
@@ -51,13 +60,64 @@ const ObjectForm = ({style}:ObjectFormProps) => {
     )
 }
 
-export default ObjectForm;
+/** 인기 게시물 객체 폼 */
+
+export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
+    const [isHartOn, setIsHartOn] = useState<boolean>(false);
+    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const arr:string [] = data?.technologyStack;
+
+    useEffect(()=>{
+        setIsBookMarkOn(data.bookmarks);
+    },[]);
+
+    return(
+        <Layout style={style}>
+            <Thumbnail>
+                <Img></Img>
+                <ReactionCount>
+                    <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                        {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
+                        <span>{data.likes}</span>
+                    </Wrapper>
+                    <Wrapper>
+                        <ViewCountSVG/>
+                        <span>{data.views}</span>
+                    </Wrapper>
+                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
+                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    </Wrapper>
+                </ReactionCount>
+            </Thumbnail>
+            <Content>
+                <Title>
+                    <span>{data.title}</span>
+                </Title>
+                <Info>
+                    <Intro>
+                        {data.subTitle}
+                    </Intro>
+                    <Topic>{`주제 : ${data.topic}`}</Topic>
+                    <Stack>
+                        {arr?.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i}</StackName>
+                        ))}
+                    </Stack>
+                    <Create>
+                        <div>{`작성자 : ${data.writer}`}</div>
+                        <div>{`작성일 : ${data.createdDate}`}</div>
+                    </Create>
+                </Info>
+            </Content>
+        </Layout>
+    )
+}
 
 const Layout = styled.div`
     display: flex;
     flex-direction: column;
     width: 250px;
-    height: 340px;
+    height: 300px;
     padding: 0 10px;
     padding-bottom: 30px;
 

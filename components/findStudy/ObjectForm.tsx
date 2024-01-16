@@ -2,15 +2,17 @@ import { BookMarkOnSVG, BookMarkOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } fr
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = ({idx, data}:any) => {
+const ObjectForm = ({data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
     
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
 
-    useEffect(()=>{
-        // console.log(data.title);
-    },[])
+    useEffect(() =>{
+        setIsBookMarkOn(data.bookmarks);
+        setIsHartOn(data.likes[1]);
+        console.log(data);
+    },[]);
 
     return(
         <Layout>
@@ -20,7 +22,7 @@ const ObjectForm = ({idx, data}:any) => {
             <Content>
                 <Info>
                     <div id='title'>{data?.title}</div>
-                    <div id='intro'>{data?.content}</div>
+                    <div id='intro'>{data?.subTitle}</div>
                     <Reaction>
                 <Wrapper>
                     <ViewCountSVG/>
@@ -28,10 +30,10 @@ const ObjectForm = ({idx, data}:any) => {
                 </Wrapper>
                 <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                    <span>{data?.count}</span>
+                    <span>{data?.likes[0]}</span>
                 </Wrapper>
-                <RecruitmentStatus recruitment={data?.recruitment}>
-                    {data?.recruitment===true ? '모집 중':'모집 완료'}
+                <RecruitmentStatus recruitment={data?.recruitStatus}>
+                    {data?.recruitStatus===true ? '모집 중':'모집 완료'}
                 </RecruitmentStatus>
             </Reaction>
                 </Info>
@@ -41,11 +43,10 @@ const ObjectForm = ({idx, data}:any) => {
                     ))}
                 </Stack>
                 <Create>
-                    <span>작성자</span>
-                    <span>2023.12.11.MON</span>
+                    <span>{`작성자 : ${data.writer}`}</span>
+                    <span>{`작성일 : ${data.createdDate}`}</span>
                 </Create>
             </Content>
-            
         </Layout>
     )
 }
@@ -95,7 +96,6 @@ const Info = styled.div`
         font-size: 0.75rem;
     }
 `;
-
 const Stack = styled.div`
     display: flex;
     gap: 6px;
@@ -118,6 +118,7 @@ const StackName = styled.div`
 `;
 const Create = styled.div`
     display: flex;
+    gap: 10px;
 
     font-size: 0.625rem;
 `;

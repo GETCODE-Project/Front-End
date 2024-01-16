@@ -21,7 +21,7 @@ const LoginPage = () => {
             nickname: 'hodu',
             password: '12344'
         }).then((res)=>{
-            console.log(res);
+            // console.log(res);
             alert(res.data);
         }).catch((err)=>{
             console.log(err);

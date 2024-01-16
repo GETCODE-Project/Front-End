@@ -31,7 +31,6 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
     };
 
     const handleUnSelectedToggle = (i:string) => {
-        console.log(toggleList);
         let toggleListArray:any[] = [...toggleList,i];
         setToggleList(toggleListArray);
 
