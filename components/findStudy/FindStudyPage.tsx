@@ -36,7 +36,7 @@ const FindStudyPage = () => {
 
     return(
         <MainContantsLayout
-            pageName="findStudy"
+            routePageName="findStudy"
             title="스터디 모집"
             data={findStudyBulletinData}
         >

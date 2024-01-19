@@ -7,20 +7,20 @@ import SelectRoundBox from "@/components/common/selectObject/SelectRoundBox";
 import DetailMarks from "@/components/common/selectObject/DetailMarks"
 
 interface DetailLayoutProps{
-    pageName: string;
+    routePageName: string;
     pageTitle: string;
     writerName: string;
     content: string;
 }
 
-const DetailLayout = ({pageName, pageTitle, writerName, content}:DetailLayoutProps) => {
+const DetailLayout = ({routePageName, pageTitle, writerName, content}:DetailLayoutProps) => {
     const [ObjectForm, setObjectForm] = useState(null);
 
     useEffect(() => {
-        import(`@/components/${pageName}/detail/ObjectForm`)
+        import(`@/components/${routePageName}/detail/ObjectForm`)
         .then(module => setObjectForm(()=>module.default))
         .catch(error => console.error(error))
-    },[pageName]);  
+    },[routePageName]);  
 
     return (
     <Layout>

@@ -8,7 +8,7 @@ const GoogleLoginButton = () => {
     const router = useRouter();
 
     return(
-        <Layout onClick={()=>signIn("google",{callbackUrl:"/auth/signup/nickname"})}>
+        <Layout onClick={()=>signIn("google",{callbackUrl:`${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`})}>
             <GoogleLogoSVG/><span>Google Login</span>
         </Layout>
     )

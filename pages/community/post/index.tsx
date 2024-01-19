@@ -3,7 +3,7 @@ import PostLayout from "@/components/common/layout/PostLayout";
 const CommunityPost: React.FC = () => {
   return (
     <FixedLayout>
-      <PostLayout pageName="community" />
+      <PostLayout routePageName="community" />
     </FixedLayout>
   );
 };

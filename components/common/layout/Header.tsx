@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ProfileButtonForm from './ProfileButtonForm';
 import { BookMarkSVG } from '@/public/SVG/header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -11,6 +11,16 @@ const Header = () => {
 
   const { data: session, status} = useSession();
   const [isToggle, setIsToggle] = useState<boolean>(false);
+
+  const test = () => {
+    if(session){
+      console.log(session.user);
+    }
+  }
+
+  useEffect(() => {
+    test();
+  },[]);
 
   return(  
     <ContainerDiv>

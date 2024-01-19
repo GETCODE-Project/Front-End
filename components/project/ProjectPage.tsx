@@ -20,7 +20,7 @@ const ProjectPage = () => {
 
     return(
       <MainContantsLayout
-            pageName="project"
+            routeroutePageName="project"
             title="프로젝트"
             currentSeletedData={currentSeletedData}
       >

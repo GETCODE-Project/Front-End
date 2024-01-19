@@ -44,7 +44,7 @@ const FindProjectPage = () => {
     
     return(
         <MainContantsLayout
-            pageName="findProject"
+            routePageName="findProject"
             title="프로젝트 모집"
             data={findProjectBulletinData}
         >

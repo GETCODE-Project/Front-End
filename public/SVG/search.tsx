@@ -45,3 +45,12 @@ export const ExitToggleIcon = () => (
   <path d="M9.5627 3.43575L3.43445 9.56401" stroke="#B7B7B7" stroke-linecap="round"/>
 </svg>
 );
+
+export const ExitIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.0639 12.0607L7.93908 7.93592" stroke="black" stroke-linecap="round"/>
+<path d="M7.93613 12.0607L12.0609 7.93592" stroke="black" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.87521 14.1244C8.15327 16.4024 11.8467 16.4024 14.1248 14.1244C16.4028 11.8463 16.4028 8.15285 14.1248 5.87479C11.8467 3.59673 8.15327 3.59673 5.87521 5.87479C3.59715 8.15285 3.59715 11.8463 5.87521 14.1244Z" stroke="black"/>
+</svg>
+
+)

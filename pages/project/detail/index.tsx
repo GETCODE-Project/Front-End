@@ -5,7 +5,7 @@ const ProjectDetail = () => {
   return (
     <FixedLayout>
       <DetailLayout 
-        pageName="project"
+        routePageName="project"
         pageTitle="프로젝트 제목" 
         writerName="작성자 닉네임" 
         content="내용"/>

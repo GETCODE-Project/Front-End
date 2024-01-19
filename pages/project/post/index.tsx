@@ -4,7 +4,7 @@ import PostLayout from "@/components/common/layout/PostLayout";
 const ProjectPost = () => {
   return (
     <FixedLayout>
-      <PostLayout pageName="project"/>
+      <PostLayout routePageName="project"/>
     </FixedLayout>
   );
 };

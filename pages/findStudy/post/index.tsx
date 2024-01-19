@@ -4,7 +4,7 @@ import PostLayout from "@/components/common/layout/PostLayout";
 const FindStudyPost: React.FC = () => {
   return (
     <FixedLayout>
-      <PostLayout pageName="findStudy" />
+      <PostLayout routePageName="findStudy" />
     </FixedLayout>
   );
 };

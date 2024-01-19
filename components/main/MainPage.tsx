@@ -12,26 +12,26 @@ const MainPage = () => {
     
     const [ObjectForm, setObjectForm] = useState(null);
     const [ObjectData, setObjectData] = useState<[]>([]);
-    const [pageName, setPageName] = useState<string>('project');
+    const [routePageName, setroutePageName] = useState<string>('project');
     const [dataName, setDataName] = useState<string>('ProjectData');
 
     const dotArr: any[] = [1,2,3,4,5];
 
     const [popularityProjectData, setPopularityProjectData] = useState<any[]>([]);
 
-    const handlePageName = (pageName:string, dataName:string) => {
-        setPageName(pageName);
+    const handleroutePageName = (routePageName:string, dataName:string) => {
+        setroutePageName(routePageName);
         setDataName(dataName);
     }
 
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
-        import(`@/components/${pageName}/ObjectForm`)
-        .then(module => {pageName=='project'?
+        import(`@/components/${routePageName}/ObjectForm`)
+        .then(module => {routePageName=='project'?
             setObjectForm(()=>module.ObjectForm)
         : setObjectForm(()=>module.default)})
         .catch(error => console.error(error))
-    },[pageName]);
+    },[routePageName]);
 
     /** 페이지 별 더미 데이터 불러오기 */
     useEffect(() => {
@@ -68,12 +68,12 @@ const MainPage = () => {
                 </TopContents>
                 <BottomContents>
                     <Title>
-                        <span onClick={()=>handlePageName('project','ProjectData')}>프로젝트 |</span>
-                        <span onClick={()=>handlePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
-                        <span onClick={()=>handlePageName('findStudy','FindStudyData')}>스터디 모집</span>
+                        <span onClick={()=>handleroutePageName('project','ProjectData')}>프로젝트 |</span>
+                        <span onClick={()=>handleroutePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
+                        <span onClick={()=>handleroutePageName('findStudy','FindStudyData')}>스터디 모집</span>
                     </Title>
-                    <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
-                    <ObjectList ref={objectListRef} pageName={pageName}>
+                    <MoreViewButton onClick={()=>router.push(`/${routePageName}`)}>더보기</MoreViewButton>
+                    <ObjectList ref={objectListRef} routePageName={routePageName}>
                         {ObjectData?.map((i:any,idx:number)=>(
                             ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                         ))}
@@ -189,9 +189,9 @@ const BottomContents = styled.div`
     padding: 45px 0;
 `;
 
-const ObjectList = styled.div<{pageName:string}>`
+const ObjectList = styled.div<{routePageName:string}>`
     display: flex;
-    flex-direction: ${({pageName})=>(pageName='project'?'unset':'column')};
+    flex-direction: ${({routePageName})=>(routePageName='project'?'unset':'column')};
     flex-wrap: wrap;
     align-items: center;
     width: 100%;

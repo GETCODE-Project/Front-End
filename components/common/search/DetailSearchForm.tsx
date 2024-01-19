@@ -1,4 +1,4 @@
-import { ExitToggleIcon, ToggleIcon } from "@/public/SVG/search";
+import { ExitIcon, ExitToggleIcon, ToggleIcon } from "@/public/SVG/search";
 import { media } from "@/styles/mediaQuery";
 import { useState } from "react";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ interface Props{
     currentSelected: any;
     setCurrentSelected: any;
 }
+
 /** 다중 선택 토글 폼 -------------------------------------------- */
 export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
@@ -53,6 +54,9 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                         <span>{currentSelected}</span>
                         <ToggleIcon/>
+                        <ExitIconWrapper>
+                            <ExitIcon/>
+                        </ExitIconWrapper>
                         {isToggleOn ?
                             <ToggleListWrapper>
                                 {toggleList.map((i:any, idx:number)=>(
@@ -93,6 +97,9 @@ export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSele
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                             <span>{currentSelected}</span>
                             <ToggleIcon/>
+                            <ExitIconWrapper>
+                                <ExitIcon/>
+                            </ExitIconWrapper>
                             {isToggleOn ?
                                 <ToggleListWrapper>
                                 {toggleList.map((i:any, idx:number)=>(
@@ -168,6 +175,13 @@ const Toggle = styled.div`
     ${media.tablet || media.mobile}{
         width: 100%;
     }
+`;
+const ExitIconWrapper = styled.div`
+    display: flex;
+    position: absolute;
+    right: -25px;
+
+    cursor: pointer;
 `;
 const ToggleListWrapper = styled.div`
     display: flex;
