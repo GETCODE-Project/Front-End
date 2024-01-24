@@ -5,107 +5,124 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useRouter } from "next/router";
 
+// 게시물 목록 페이지 레이아웃에 필요한 Props
 interface MainContentsLayoutProps {
-    routeroutePageName: string;
+    pageName: string;
     title: string;
     subTitle?: string;
     sumTitle?: string;
     children?: any;
-    currentSeletedData: string[];
-    data?: any;
-    id?:any;
+    searchSelecedData: any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({routeroutePageName, title, subTitle, sumTitle, children, currentSeletedData, data, id}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, searchSelecedData}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
-    const [objectListWidth, setObjectListWidth] = useState(0);
+
+    const [moduleName, setModuleName] = useState<string>('');
+
+    /** 정렬 구성(최신순,과거순,좋아요순) */
     const sortArr:any [] = ["최신순","과거순","좋아요순"];
 
-    const [dataName, setDataName] = useState<string>('ProjectData');
-    const [ObjectData, setObjectData] = useState<any[]>([]);
-    const [currentObjectData, setCurrentObjectData] = useState<any[]>([]);
+    /** 페이지 별 게시물 폼, 데이터 */
+    const [ObjectData, setObjectData] = useState<any>();
     const [ObjectForm, setObjectForm] = useState(null);
-    console.log(currentObjectData);
+
+    /** 게시물 전체 목록 불러오기 GET 파라미터 데이터 리스트 */
+    const [year, setYear] = useState<string>('');
+    const [keyword, setKeyword] = useState<string>('');
+    const [size, setSize] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
+    const [sort, setSort] = useState<string>('');
+    const [subject, setSubject] = useState<string>('');
+    const [techStack, setTechStack] = useState<string[]>([]);
+
+    /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
+    const [params, setParams] = useState<any>();
+    const projectParams = {year, keyword, size, page, sort, subject, techStack};
+    const findProjectParams = [{}];
+    const findStudyParams = [{}];
+    const communityParams = [{}];
+
+    /** 상세 검색 항목 SET */
+    
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
 
     /** 정렬(최신순, 과거순, 좋아요순) */
-    const handleSort = (i:string) => {
-        let tempArray:any[] = [...ObjectData];
-        if(i==='최신순'){
-            tempArray.sort((a,b)=>(new Date(b.createdDate).getDate() - new Date(a.createdDate).getDate()));
-            setCurrentObjectData(tempArray);
+    const handleSort = (sortName:string) => {
+        if(sortName === '최신순'){
+            setSort('latestOrder');
         }
-        if(i==='과거순'){
-            tempArray.sort((a,b)=>(new Date(a.createdDate).getDate() - new Date(b.createdDate).getDate()));
-            setCurrentObjectData(tempArray);
+        if(sortName === '과거순'){
+            setSort('pastOrder');
         }
-        if(i==='좋아요순'){
-            tempArray.sort((a,b)=>(b.likes[0] - a.likes[0]));
-            setCurrentObjectData(tempArray);
+        if(sortName === '좋아요순'){
+            setSort('likeCnt');
         }
-    }
+    } 
 
     /** 상세 검색 적용 */
-    const handleDetailSearch = () => {
-        let tempArray:any[] = [...ObjectData];
-        
-        // 기술 스택 검색
-        if(currentSeletedData[0] !== '전체'){
-            const technologyStackFilter = tempArray.filter(project => project.technologyStack === currentSeletedData[0]);
-            setCurrentObjectData(technologyStackFilter);
-        }else{
-            
-        }
-    }
 
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
-        import(`@/components/${routeroutePageName}/ObjectForm`)
-        .then(module => {routeroutePageName=='project'?
+        import(`@/components/${pageName}/ObjectForm`)
+        .then(module => {pageName=='project'?
             setObjectForm(()=>module.ObjectForm)
         : setObjectForm(()=>module.default)})
         .catch(error => console.error(error))
-    },[routeroutePageName, setObjectData]);
+    },[pageName, setObjectData]);
 
-    /** 페이지 별 더미 데이터 불러오기 */
+    /** 페이지 별 ModuleName,ParamsSet 설정 */
     useEffect(() => {
-        if(routeroutePageName === 'project'){
-            setDataName('ProjectData');
+        let moduleName = '';
+        switch (pageName){
+            case 'project':
+                moduleName = 'ProjectData';
+                setParams(projectParams);
+                break;
+            case 'findProject':
+                moduleName = 'FindProjectData'
+                setParams(findProjectParams);
+                break;
+            case 'findStudy':
+                moduleName = 'FindStudyData'
+                setParams(findStudyParams);
+                break;
+            case 'community':
+                moduleName = 'CommunityData'
+                setParams(communityParams);
+                break;
+            default:
+                return;
         }
-        if(routeroutePageName === 'findProject'){
-            setDataName('FindProjectData');
-        }
-        if(routeroutePageName === 'findStudy'){
-            setDataName('FindStudyData');
-        }
-        if(routeroutePageName === 'community'){
-            setDataName('CommunityData');
-        }
+        setModuleName(moduleName);
+    },[pageName]);
 
-        import(`@/components/dummy/${dataName}`)
-        .then(module =>(
-            setObjectData(()=>module.DummyData),
-            setCurrentObjectData(ObjectData)
-        ))
-        .catch(error => console.error(error))
-        console.log(currentSeletedData);
-    },[dataName, ObjectData]);
+    /** 페이지 별 데이터 불러오기 */
+    useEffect(()=>{
+        if(!moduleName) return;
 
-    /** total,sort 너비 수정 작업 중 */
-    useEffect(() => {
-        const updateWidth = () => {
-            const width = objectListRef.current?.offsetWidth || 0;
-            setObjectListWidth(width);
-        }
-        updateWidth();
+        const getData = async() => {
+            try{
+                const getModule = await import(`@/components/objectAllData/${moduleName}`);
+                const data = await getModule.getObjectData({
+                    params,setObjectData
+                });
+            }
+            catch (error){
+                console.error(error);
+            }
+        };
+        getData();
+    },[params, moduleName])
 
-        window.addEventListener('resize', updateWidth);
-        return () => window.removeEventListener('resize', updateWidth);
+    useEffect(()=>{
+        console.log(searchSelecedData);
     },[]);
+    
 
     return(
         <BackLayout>
@@ -117,28 +134,34 @@ const MainContantsLayout = ({routeroutePageName, title, subTitle, sumTitle, chil
                     :   <></>
                     }
                 </Title>
-                <SearchInput>{children}</SearchInput>
+                <SearchInput>
+                    <Search>
+                        <div>
+                            {children}
+                        </div>
+                        <SearchButton>검색하기</SearchButton>
+                    </Search>
+                </SearchInput>
+                
                 <Contents>
-                    <TotalSortWrapper >
-                        <div id="wrapper" style={{width:objectListWidth}}>
+                    <TotalSortWrapper>
                         {subTitle?
-                            <Total>{`총 ${currentObjectData?.length}개 ${sumTitle}`}</Total>
-                        :   <Total>{`총 ${currentObjectData?.length}개 ${title}`}</Total>
+                            <Total>{`총 ${ObjectData?.length}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${ObjectData?.length}개 ${title}`}</Total>
                         }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
                                 <span key={idx} onClick={()=>handleSort(i)}>{i}</span>
                             ))}
                         </Sort>
-                        </div>
                     </TotalSortWrapper>
-                    <ObjectList ref={objectListRef} routePageName={routeroutePageName}>
-                        {currentObjectData?.map((i:any,idx:number)=>(
+                    <ObjectList ref={objectListRef} routePageName={pageName}>
+                        {ObjectData?.map((i:any,idx:number)=>(
                             ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                         ))}
                     </ObjectList>
                 </Contents>
-                <WritingButton onClick={()=>router.push(`/${routeroutePageName}/post`)}>글쓰기</WritingButton>
+                <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
         </BackLayout>
     )
@@ -205,17 +228,13 @@ const Contents = styled.div`
 
 const TotalSortWrapper = styled.div`
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     justify-content: center;
+    gap: 20px;
     width: 100%;
-
-    & #wrapper {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    
 `;
+
 const Total = styled.div`
     display: flex;
 `;
@@ -234,7 +253,6 @@ const ObjectList = styled.div<{routePageName:string}>`
     flex-wrap: wrap;
     align-items: center;
     width: 100%;
-    min-height: 100vh;
 
     ${media.tablet || media.mobile}{
         justify-content: ${({routePageName})=>(routePageName==='project'?'center':'unset')};
@@ -256,6 +274,27 @@ const WritingButton = styled.div`
 
     color: #fff;
     font-weight: 700;
+
+    cursor: pointer;
+`;
+
+const Search = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    width: 100%;
+`;
+const SearchButton = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 35px;
+
+    background-color: #FF993A;
+    border-radius: 30px;
 
     cursor: pointer;
 `;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {PopularityObjectForm} from "@/components/project/ObjectForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import {PopularityDummyData} from '@/components/dummy/ProjectData';
+import {getObjectData} from '@/components/objectAllData/ProjectData';
 
 const MainPage = () => {
 
@@ -19,6 +19,15 @@ const MainPage = () => {
 
     const [popularityProjectData, setPopularityProjectData] = useState<any[]>([]);
 
+    /** 프로젝트 게시물 전체 목록 불러오기 GET 파라미터 데이터 */
+    //year,keyword,size,page,sort,subject,techStack
+    const [year, setYear] = useState<string>('');
+    const [keyword, setKeyword] = useState<string>('');
+    const [size, setSize] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
+    const [sort, setSort] = useState<string>('');
+    const [subject, setSubject] = useState<string>('');
+    const [techStack, setTechStack] = useState<string>('');
     const handleroutePageName = (routePageName:string, dataName:string) => {
         setroutePageName(routePageName);
         setDataName(dataName);
@@ -28,7 +37,7 @@ const MainPage = () => {
         
     }
 
-    /** 페이지 별 객체 폼 불러오기 */
+    /** 페이지 별 객체 폼(UI) 불러오기 */
     useEffect(() => {
         import(`@/components/${routePageName}/ObjectForm`)
         .then(module => {routePageName=='project'?
@@ -39,17 +48,21 @@ const MainPage = () => {
 
     /** 페이지 별 더미 데이터 불러오기 */
     useEffect(() => {
-        import(`@/components/dummy/${dataName}`)
-        .then(module =>setObjectData(()=>module.DummyData))
+        import(`@/components/objectAllData/${dataName}`)
+        .then(module =>(
+            module.getObjectData(
+                year,keyword,size,page,sort,subject,techStack,setObjectData
+            )
+        ))
         .catch(error => console.error(error))
     },[dataName]);
 
-    useEffect(()=>{
-        let tumpArray:any[] = [...PopularityDummyData];
-        tumpArray.sort((a,b)=>b.likes - a.likes);
-        tumpArray.slice(0,9);
-        setPopularityProjectData(tumpArray);
-    },[dataName])
+    // useEffect(()=>{
+    //     let tumpArray:any[] = [...PopularityDummyData];
+    //     tumpArray.sort((a,b)=>b.likes - a.likes);
+    //     tumpArray.slice(0,9);
+    //     setPopularityProjectData(tumpArray);
+    // },[dataName])
 
     return (
         <BackLayout>

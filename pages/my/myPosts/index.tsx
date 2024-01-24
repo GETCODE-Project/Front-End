@@ -1,4 +1,4 @@
-import FixedLayout from "@/components/common/layout/FixedLayout";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
 import MyPostsPage from "@/components/myPage/MyPostsPage";
 
 const MyPosts = () => {

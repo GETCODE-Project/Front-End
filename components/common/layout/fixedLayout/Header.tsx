@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ProfileButtonForm from './ProfileButtonForm';
+import ProfileButtonForm from '../ProfileButtonForm';
 import { BookMarkSVG } from '@/public/SVG/header';
 import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';

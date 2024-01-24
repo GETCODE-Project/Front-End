@@ -9,8 +9,10 @@ interface Props{
     currentSelected: any;
     setCurrentSelected: any;
 }
+/** ------------------------------------------------------------- */
+// 다중 선택 토글 폼
+/** ------------------------------------------------------------- */
 
-/** 다중 선택 토글 폼 -------------------------------------------- */
 export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
     const dataArray:string[] = data??[];
@@ -82,7 +84,9 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
     )
 }
 
-/** 단일 선택 토글 폼 -------------------------------------------- */
+/** ------------------------------------------------------------- */
+// 단일 선택 토글 폼
+/** ------------------------------------------------------------- */
 export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
     const dataArray:string[] = data??[];
@@ -102,9 +106,10 @@ export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSele
                             </ExitIconWrapper>
                             {isToggleOn ?
                                 <ToggleListWrapper>
-                                {toggleList.map((i:any, idx:number)=>(
-                                    <ToggleList key={idx} onClick={()=>setCurrentSelected(i)}>{i}</ToggleList>
-                                ))}</ToggleListWrapper>
+                                    {toggleList.map((i:any, idx:number)=>(
+                                        <ToggleList key={idx} onClick={()=>setCurrentSelected(i)}>{i}</ToggleList>
+                                    ))}
+                                </ToggleListWrapper>
                             : <></>
                             }
                     </Toggle>
@@ -123,7 +128,7 @@ const Layout = styled.div`
     display: grid;
     grid-template-columns: 1fr 4fr;
     flex-wrap: nowrap;
-    width: 90%;
+    width: 100%;
     gap: 10px;
     margin-top: 20px;
 
@@ -192,6 +197,8 @@ const ToggleListWrapper = styled.div`
     z-index: 1000;
     justify-content: start;
     width: 421px;
+    height: 150px;
+    overflow-y: scroll;
     
     background-color: #d9d9d9;
 

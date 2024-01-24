@@ -1,14 +1,12 @@
-import FixedLayout from "@/components/common/layout/FixedLayout";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
 import MainPage from "@/components/main/MainPage";
 
 const Main = ()=> {
 
   return (
-    <div>
     <FixedLayout>
       <MainPage />
     </FixedLayout>
-    </div>
   );
 }
 

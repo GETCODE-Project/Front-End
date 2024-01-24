@@ -1,4 +1,4 @@
-import FixedLayout from "@/components/common/layout/FixedLayout";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
 import FindProjectPage from "@/components/findProject/FindProjectPage";
 
 const FindProject = ()=> {

@@ -7,14 +7,32 @@ interface ObjectFormProps{
     style?:any;
     data?: any;
 }
+/** 불러온 Respons 데이터 형식 참고 */
+// 좋아요클릭여부,찜하기클릭여부,주제 추가 예정
+interface ProjectObjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    dateTime: string;
+    techStackList: [{
+        id: number;
+        techStack: string;
+    }];
+    imageUrl: {
+        id: number;
+        imageUrl: string;
+    };
+    memberNickName: string;
+}
 
+/** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
-
+/** ------------------------------------------------------------- */
 export const ObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
-    const arr:string [] = data?.technologyStack;
-
 
     useEffect(()=>{
         setIsBookMarkOn(data.bookmarks);
@@ -23,11 +41,11 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
     return(
         <Layout style={style}>
             <Thumbnail>
-                <Img></Img>
+                <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>{data.likes[0]}</span>
+                        <span>{data.likeCnt}</span>
                     </Wrapper>
                     <Wrapper>
                         <ViewCountSVG/>
@@ -44,15 +62,15 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
                 </Title>
                 <Info>
                     <Intro>
-                        {data.subTitle}
+                        {data.introduction}
                     </Intro>
                     <Topic>{`주제 : ${data.topic}`}</Topic>
                     <Stack>
-                        {data.technologyStack?.map((i:any,idx:number)=>(
-                            <StackName key={idx}>{i}</StackName>
+                        {data.techStackList?.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i.techStack}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>{`작성자 : ${data.writer}`}</div><div>{`작성일 : ${data.createdDate}`}</div></Create>
+                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.dateTime}`}</div></Create>
                 </Info>
             </Content>
               
@@ -60,8 +78,9 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
     )
 }
 
+/** ------------------------------------------------------------- */
 /** 인기 게시물 객체 폼 */
-
+/** ------------------------------------------------------------- */
 export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
@@ -75,7 +94,8 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
         <Layout style={style}>
             <Thumbnail>
                 <Img></Img>
-                <ReactionCount>
+            </Thumbnail>
+            <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
                         <span>{data.likes}</span>
@@ -87,8 +107,7 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                     <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
                         {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
                     </Wrapper>
-                </ReactionCount>
-            </Thumbnail>
+            </ReactionCount>
             <Content>
                 <Title>
                     <span>{data.title}</span>
@@ -99,7 +118,7 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                     </Intro>
                     <Topic>{`주제 : ${data.topic}`}</Topic>
                     <Stack>
-                        {arr?.map((i:any,idx:number)=>(
+                        {data.techStackList?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
                         ))}
                     </Stack>
@@ -117,7 +136,7 @@ const Layout = styled.div`
     display: flex;
     flex-direction: column;
     width: 250px;
-    height: 300px;
+    height: 320px;
     padding: 0 10px;
     padding-bottom: 30px;
 
@@ -133,14 +152,18 @@ const Layout = styled.div`
 `;
 
 const Thumbnail = styled.div`
+    display: flex;
     position: relative;
     width: 100%;
-    /* height: 170px; */
     flex: 1;
+    overflow: hidden;
 
     background-color: #777777;
 `;
-const Img = styled.div`
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 const ReactionCount = styled.div`
     display: flex;
@@ -153,7 +176,8 @@ const ReactionCount = styled.div`
     width: 100%;
     height: 35px;
 
-    background: rgba(0, 0, 0, 0.34);
+    /* background: rgba(0, 0, 0, 0.34); */
+    background: #FF993A;
 
     #bookMark{
         position: absolute;
@@ -178,7 +202,7 @@ const Content = styled.div`
     padding: 0 15px;
     box-sizing: border-box;
     width: 100%;
-    flex:1;
+    flex:0.85;
 
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;

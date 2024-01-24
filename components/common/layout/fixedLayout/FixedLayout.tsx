@@ -1,6 +1,6 @@
-import Header from "@/components/common/layout/Header";
-import MenuBar from "@/components/common/layout/MenuBar";
-import Footer from "@/components/common/layout/Footer";
+import Header from "@/components/common/layout/fixedLayout/Header";
+import MenuBar from "@/components/common/layout/fixedLayout/MenuBar";
+import Footer from "@/components/common/layout/fixedLayout/Footer";
 import React from "react";
 import styled from "styled-components";
 
@@ -21,7 +21,9 @@ const FixedLayout:React.FC<LayoutProps> = ({children, fontWeight, id})=>{
                 <Header/>
                 <MenuBar fontWeight={fontWeight} id={id}/>     
             </div>
-            {children}
+            <Content>
+                {children}
+            </Content>
             <Footer />
         </Layout>
     );
@@ -32,4 +34,10 @@ const Layout = styled.div`
     display: flex;
     flex-direction: column;
     z-index: 1003;
+`;
+
+const Content = styled.div`
+    display: flex;
+    min-height: 100vh;
+    
 `;
