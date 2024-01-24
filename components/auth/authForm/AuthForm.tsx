@@ -7,11 +7,12 @@ interface AuthFormProps{
     children?: any;
     buttonName: string;
     session?: any;
+    loginFC?: any;
 }
 
 /** 로그인/회원가입 폼 */
 
-const AuthForm = ({title, children, buttonName, session}:AuthFormProps) => {
+const AuthForm = ({title, children, buttonName, session, loginFC}:AuthFormProps) => {
 
     const router = useRouter();
     const isSiginUpPage = router.pathname === '/auth/signup';
@@ -36,7 +37,7 @@ const AuthForm = ({title, children, buttonName, session}:AuthFormProps) => {
                 {children}
             </Content>
             <LoginButton>
-                <Login>{buttonName}</Login>
+                <Login onClick={loginFC}>{buttonName}</Login>
                 {isNickNamePage?<></>
                 :<GoogleLoginButton/>}
             </LoginButton>

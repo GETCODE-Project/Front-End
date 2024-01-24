@@ -10,6 +10,7 @@ const SignUpPage = () => {
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
     const [userEmail, setUserEmail] = useState<string>('');
+    const [AuthenticationNumber, setAuthenticationNumber] = useState<any>('');
     const [userPassword, setUserPassword] = useState<string>('');
     const [userNickname, setUserNickname] = useState<string>('');
 
@@ -17,6 +18,11 @@ const SignUpPage = () => {
     const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;
         setUserEmail(target);
+    }
+    /** 인증 번호 입력 (state 변경) */
+    const handleUserAuthenticationNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.value;
+        setAuthenticationNumber(target);
     }
     /** password 입력 (state 변경) */
     const handleUserPassword = (e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -29,14 +35,21 @@ const SignUpPage = () => {
         setUserNickname(target);
     }
 
+    /** 이메일 인증 번호 요청 POST */
+    const postEmailAuthentication = async() => {
+        await POST(`/api/emails/verification-requests?email=${userEmail}`)
+        .then((response)=>{console.log(response)})
+        .catch((error)=>{console.log(error)});
+    }
+
     /** POST - 회원가입 */
     const handleSignUp = async() => {
-        await POST(`${process.env.NEXT_PUBLIC_API_URL}/api/sign-up`,{
+        await POST(`/api/sign-up`,{
             email: {userEmail},
             nickname: {userNickname},
             password: {userPassword},      
         }).then((res)=>{
-            // console.log(res);
+            console.log(res.data);
         }).catch((err)=>{
             console.log(err);
         })
@@ -56,8 +69,18 @@ const SignUpPage = () => {
                 onChange={handleUserEmail}
                 validation={true}
                 >
-                <Certified>인증</Certified>
+                <Certified onClick={postEmailAuthentication}>인증</Certified>
             </InputForm>
+            {/* <InputForm
+                name="Authentication"
+                type="number"
+                placeholder="인증 번호를 입력해주세요."
+                value={AuthenticationNumber}
+                onChange={handleUserAuthenticationNumber}
+                validation={true}
+                >
+                <Certified>완료</Certified>
+            </InputForm> */}
             <InputForm
                 name="Password"
                 type="password"
@@ -90,6 +113,7 @@ const Certified = styled.div`
         justify-content: center;
         width: 55px;
         height: 25px;
+        padding-top: 3px;
 
         background-color: #FF993A;
         border-radius: 8px;

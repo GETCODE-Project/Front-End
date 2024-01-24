@@ -17,12 +17,12 @@ const LoginPage = () => {
     /** [POST] Login(Email,Password) */
     const handleLogin = async() => {
         await POST('',{
-            email: 'kyun91532@naver.com',
-            nickname: 'hodu',
-            password: '12344'
+            email: userEmail,
+            password: userPassword,
         }).then((res)=>{
-            // console.log(res);
-            alert(res.data);
+            localStorage.setItem('accessToken', res.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            console.log(res.data);
         }).catch((err)=>{
             console.log(err);
             alert(err);
@@ -64,7 +64,8 @@ const LoginPage = () => {
         <AuthForm
             title="로그인"
             buttonName="로그인"
-            session={session}  
+            session={session}
+            loginFC={handleLogin} 
         >
             <InputForm
                 name="Email"

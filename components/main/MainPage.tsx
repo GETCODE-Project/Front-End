@@ -24,6 +24,10 @@ const MainPage = () => {
         setDataName(dataName);
     }
 
+    const getObjectData = async () => {
+        
+    }
+
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
         import(`@/components/${routePageName}/ObjectForm`)

@@ -6,12 +6,15 @@ const UserInfo = async (req: NextApiRequest, res: NextApiResponse)=>{
     try{
         const session = await getSession({req});
 
-        if(session){
-            const token = session.user as string;
+        if(session && session.user?.accessToken){
+            const token = session.user.accessToken as string;
 
             const response = await GET('/api/',{
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    // Authorization: `Bearer ${token}`,
+                    Authorization: localStorage.getItem(`Bearer ${token}`),
+                    // Authorization: localStorage.getItem(`token`),
+                    //로그인 됐을 때 AccessToken 로컬스토리지에 저장. 이건 전역이니까 
                 },
             });
 
