@@ -1,6 +1,5 @@
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
-import { GET } from "@/pages/api/axios";
 import { useEffect, useState } from "react";
 
 interface FindProjectBulletinData{
@@ -14,7 +13,7 @@ interface FindProjectBulletinData{
 
 const FindProjectPage = () => {
 
-    /** 상세 검색 항목 리스트 */
+    /** 상세 검색 항목 리스트 (기술스택,주제,모집파트,모집여부) */
     const stackDataArray:string[] = ['전체','Spring','Django','Express.js','Flask','Rails','vue.js','Springboot','Next.js','Nest.js','MySQL','Oracle','PostgreSQL','MariaDB','Redis','MongoDB','JavaScript','TypeScript','React','ReactNative','Html','Css','Flutter','Dart','Git','Github','AWS'];
     const topicDataArray:string[] = ['전체','여행','이커머스','소셜네트워크','공유서비스','의료','금융','교육','모임','스포츠','게임','부동산','뷰티','패션'];
     const partDataArray:string[] = ['모집파트1','모집파트2','모집파트3','모집파트4','모집파트5'] 

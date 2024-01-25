@@ -1,17 +1,61 @@
 import { WishOnSVG, WishOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-const ObjectForm = ({data}:any) => {
+interface ObjectFormProps{
+    style?:any;
+    data?: any;
+}
+/** 불러온 Respons 데이터 형식 참고 */
+//[TODO] 분야(다중선택)=subject라고 생각하고 작업.
+//[TODO] 좋아요클릭여부,찜하기클릭여부 필요
+interface FindStudyObjectData{
+    title: string, //제목
+    content: string, //내용
+    region: string, //지역
+    recruitment: boolean, //모집여부
+    online: boolean, //온오프라인여부
+    views: number, //조회수
+    count: number, //좋아요수
+    contact: string, //연락처
+    date: string, //작성/수정일
+    member: {
+      email: string, //작성자이메일
+      nickname: string //작성자닉네임
+    },
+    comments: [
+      {
+        ontent: string, //?내용?
+        modifiedDate: string, //모집일
+        email: string, //
+        nickname: string //
+      }
+    ],
+    subjects: [ //주제?
+      string
+    ]
+}
+/** ------------------------------------------------------------- */
+/** 스터디모집 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+const ObjectForm = ({data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
-    
-    const arr:any []=['스터디','면접준비','백엔드','웹개발'];
+    const subject:any[] = [data.subjects];
 
-    useEffect(() =>{
-        setIsWishOn(data.Wishs);
-        setIsHartOn(data.likes[1]);
-        console.log(data);
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(data.Wishs);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(data.Wishs);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
     },[]);
 
     return(
@@ -22,7 +66,7 @@ const ObjectForm = ({data}:any) => {
             <Content>
                 <Info>
                     <div id='title'>{data?.title}</div>
-                    <div id='intro'>{data?.subTitle}</div>
+                    <div id='intro'>{data?.content}</div>
                     <Reaction>
                 <Wrapper>
                     <ViewCountSVG/>
@@ -30,7 +74,7 @@ const ObjectForm = ({data}:any) => {
                 </Wrapper>
                 <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                    <span>{data?.likes[0]}</span>
+                    <span>{data?.count}</span>
                 </Wrapper>
                 <RecruitmentStatus recruitment={data?.recruitStatus}>
                     {data?.recruitStatus===true ? '모집 중':'모집 완료'}
@@ -38,13 +82,13 @@ const ObjectForm = ({data}:any) => {
             </Reaction>
                 </Info>
                 <Stack>
-                    {arr.map((i:any,idx:number)=>(
+                    {subject.map((i:any,idx:number)=>(
                         <StackName key={idx}>{i}</StackName>
                     ))}
                 </Stack>
                 <Create>
-                    <span>{`작성자 : ${data.writer}`}</span>
-                    <span>{`작성일 : ${data.createdDate}`}</span>
+                    <span>{`작성자 : ${data.member.nickname}`}</span>
+                    <span>{`작성일 : ${data.date}`}</span>
                 </Create>
             </Content>
         </Layout>

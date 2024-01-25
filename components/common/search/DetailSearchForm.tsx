@@ -209,7 +209,7 @@ const ToggleListWrapper = styled.div`
     z-index: 1000;
     justify-content: start;
     width: 421px;
-    height: 150px;
+    max-height: 150px;
     overflow-y: scroll;
     
     background-color: #d9d9d9;

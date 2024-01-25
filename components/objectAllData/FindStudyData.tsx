@@ -1,53 +1,35 @@
-interface FindProjectObjectData{
-    id: number;
-    views: number;
-    likes: any[];
-    Wishs: boolean;
-    recruitStatus: boolean;
-    title: string;
-    subTitle: string;
-    topic: string[];
-    writer: string;
-    createdDate: string;
+import { GET } from "@/pages/api/axios";
+
+/** GET 파라미터값(검색에사용), 데이터를 저장할 status */
+//[TODO]memberId 필요하지않나?
+interface FindStudyProps{
+    params: {
+        pageNumber: number; //필수값
+        keyword: string;
+        region: string;
+        recruitment: boolean;
+        online: boolean;
+        year: number;
+        subjects: string[];
+        criteria: string;
+    }
+    setObjectData?: any;
 }
 
-/** 스터디 모집 객체 더미 데이터 */
+/** 스터디모집 전체 게시물 데이터 */
+export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 
-export const DummyData: FindProjectObjectData[] = [
-    {
-        id: 1,
-        views: 1321,
-        likes: [123, true],
-        Wishs: true,
-        recruitStatus: true,
-        title: 'GETCODE 스터디 모집 게시글 제목',
-        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
-        topic: ['스터디','면접준비','백엔드','웹개발'],
-        writer: '닉네임',
-        createdDate: '2023-12-21'
-    },
-    {
-        id: 2,
-        views: 1321,
-        likes: [123, false],
-        Wishs: false,
-        recruitStatus: true,
-        title: 'GETCODE 스터디 모집 게시글 제목',
-        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
-        topic: ['스터디','면접준비','백엔드','웹개발'],
-        writer: '닉네임',
-        createdDate: '2023-12-21'
-    },
-    {
-        id: 3,
-        views: 1321,
-        likes: [123, false],
-        Wishs: false,
-        recruitStatus: false,
-        title: 'GETCODE 스터디 모집 게시글 제목',
-        subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
-        topic: ['스터디','면접준비','백엔드','웹개발'],
-        writer: '닉네임',
-        createdDate: '2023-12-21'
-    },
-]
+    const subjectQueryString = () => {
+        let subject = '';
+        if(params.subjects.length > 0){
+            subject = params.subjects?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
+        }
+        return subject;
+    }
+
+    return await GET(`/api/search/studies?page=${params.pageNumber}&keyword=${params.keyword}&region=${params.region}&recruitment=${params.recruitment}&online=${params.online}&year=${params.year}&subject=${subjectQueryString}&criteria=${params.criteria}`,{})
+    .then((res)=>{
+        setObjectData(res);
+    })
+    .catch((err)=>{console.error(err)});
+}

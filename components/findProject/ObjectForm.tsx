@@ -8,7 +8,7 @@ interface ObjectFormProps{
 }
 /** 불러온 Respons 데이터 형식 참고 */
 //[TODO] 모집파트 추가해야함,?
-interface ProjectObjectData{
+interface FindProjectObjectData{
     projectRecruitmentId: number;
     title: string;
     content: string;
@@ -42,9 +42,7 @@ const ObjectForm = ({style,data}:ObjectFormProps) => {
     const techStacks:any[] = [...data.techStacks];
     const [recruitMentBoolean, setRecruitMentBoolean] = useState<boolean>(false);
 
-    useEffect(()=>{
-        console.log(data.techStacks);
-    },[])
+    /**[TODO]recruitment속성이 boolean인지, boolean|다른무엇 인지 정확하지 않아서 작성 */
     useEffect(() => {
         if(data.recruitment === true){
             setRecruitMentBoolean(true);
