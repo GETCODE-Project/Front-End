@@ -1,45 +1,68 @@
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 import { useState } from "react";
-import { POST } from "@/pages/api/axios";
+import { GET, POST } from "@/pages/api/axios";
 import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
 import AuthLayoutForm from "@/components/auth/authForm/AuthLayoutForm";
+import Toast from "@/components/common/notification/Toast";
+import { FailSVG, NoticeSVG } from "@/public/SVG/toast";
 
 const SignUpPage = () => {
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
     const [userEmail, setUserEmail] = useState<string>('');
-    const [AuthenticationNumber, setAuthenticationNumber] = useState<any>('');
+    const [varificationNumber, setVarificationNumber] = useState<any>('');
     const [userPassword, setUserPassword] = useState<string>('');
     const [userNickname, setUserNickname] = useState<string>('');
+    const [isVarificationSuccess, setIsVarificationSuccess] = useState<boolean|undefined>(undefined);
+    const [isPostEmailVarification, setIsPostEmailVarification] = useState<boolean>(true);//임시
 
-     /** email 입력 (state 변경) */
+    /** 입력값 STATE 변경(email,varificationNumber,password,nickname) */
+
+    //email 입력 (state 변경)
     const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;
         setUserEmail(target);
     }
-    /** 인증 번호 입력 (state 변경) */
+    //인증 번호 입력 (state 변경)
     const handleUserAuthenticationNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;
-        setAuthenticationNumber(target);
+        setVarificationNumber(target);
     }
-    /** password 입력 (state 변경) */
+    //password 입력 (state 변경)
     const handleUserPassword = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const target = e.target.value;
         setUserPassword(target);
     }
-    /** nickname 입력 (state 변경) */
+    //nickname 입력 (state 변경)
     const handleUserNickname = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const target = e.target.value;
         setUserNickname(target);
     }
 
-    /** 이메일 인증 번호 요청 POST */
+    /** 이메일 인증 API */
+
+    //이메일 인증 번호 요청 POST
     const postEmailAuthentication = async() => {
         await POST(`/api/emails/verification-requests?email=${userEmail}`)
-        .then((response)=>{console.log(response)})
+        .then((res)=>{
+            console.log(res)
+            // if(res === ''){
+            //     setIsPostEmailVarification(true);
+            // }else{
+            //     setIsPostEmailVarification(false);
+            // }
+        })
         .catch((error)=>{console.log(error)});
+    }
+    //이메일 인증 번호 인증 GET
+    const getVerification = async() => {
+        await GET(`/api/emails/verifications?email=${userEmail}&code=${varificationNumber}`)
+        .then((res)=>{
+            setIsVarificationSuccess(res)
+        })
+        .catch((err)=>console.error(err));
     }
 
     /** POST - 회원가입 */
@@ -69,18 +92,24 @@ const SignUpPage = () => {
                 onChange={handleUserEmail}
                 validation={true}
                 >
-                <Certified onClick={postEmailAuthentication}>인증</Certified>
+                <CertifiedPOST onClick={postEmailAuthentication}>인증</CertifiedPOST>
             </InputForm>
-            {/* <InputForm
+            <InputForm
                 name="Authentication"
-                type="number"
+                type="string"
                 placeholder="인증 번호를 입력해주세요."
-                value={AuthenticationNumber}
+                value={varificationNumber}
                 onChange={handleUserAuthenticationNumber}
                 validation={true}
                 >
-                <Certified>완료</Certified>
-            </InputForm> */}
+                <CertifiedGET onClick={getVerification} isPostEmailVarification={isPostEmailVarification}>완료</CertifiedGET>
+                {isVarificationSuccess === true?
+                    <p>인증 완료되었습니다.</p>
+                :isVarificationSuccess === false?
+                    <Toast iconSVG={<FailSVG/>} notice="인증 번호가 일치하지 않습니다."/>
+                :<></>
+                }
+            </InputForm>
             <InputForm
                 name="Password"
                 type="password"
@@ -97,6 +126,7 @@ const SignUpPage = () => {
                 onChange={handleUserNickname}
                 validation={true}
             />
+            <Toast iconSVG={<NoticeSVG/>} notice="인증메일이 발송되었습니다."/>
         </AuthForm>
         </AuthLayoutForm>
     )
@@ -104,7 +134,7 @@ const SignUpPage = () => {
 
 export default SignUpPage;
 
-const Certified = styled.div`
+const CertifiedPOST = styled.div`
         display:flex;
         position: absolute;
         right: 10px;
@@ -121,4 +151,24 @@ const Certified = styled.div`
         color: #fff;
 
         cursor: pointer;
+`;
+
+const CertifiedGET = styled.div<{isPostEmailVarification:boolean}>`
+        display:flex;
+        position: absolute;
+        right: 10px;
+        top: 33.5px;
+        align-items: center;
+        justify-content: center;
+        width: 55px;
+        height: 25px;
+        padding-top: 3px;
+
+        background-color: ${({isPostEmailVarification})=>(isPostEmailVarification?'#FF993A':'#B7B7B7')};
+        border-radius: 8px;
+        
+        color: #fff;
+
+        cursor: pointer;
+        pointer-events: ${({isPostEmailVarification})=>(isPostEmailVarification?'unset':'none')};
 `;

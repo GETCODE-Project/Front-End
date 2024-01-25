@@ -12,12 +12,12 @@ interface MainContentsLayoutProps {
     subTitle?: string;
     sumTitle?: string;
     children?: any;
-    searchSelecedData: any;
+    detailSearchSelectedData: any;
 }
 
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
-const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, searchSelecedData}:MainContentsLayoutProps) => {
+const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, detailSearchSelectedData}:MainContentsLayoutProps) => {
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
 
@@ -120,7 +120,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, sear
     },[params, moduleName])
 
     useEffect(()=>{
-        console.log(searchSelecedData);
+        // console.log(detailSearchSelectedData);
     },[]);
     
 

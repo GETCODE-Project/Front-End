@@ -19,25 +19,23 @@ const InputForm = ({name,type, placeholder, value, onChange, validation, childre
 
     return (
         <InputWrapper validation={validation}>
-                    <p>{name}</p>
-                    <input 
-                        type={type}
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={onChange}
-                    />
-                    { validation ?
-                        <>{children}</>
-                        :
-                        <>
-                        <div id='icon'>
-                            <EmailDeleteSVG/>
-                        </div>
-                        <ValidationGuide>{validationGuide}</ValidationGuide>
-                        </>
-                    }
-                    
-                    
+            <p>{name}</p>
+            <input 
+                type={type}
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+            />
+            { validation ?
+                <>{children}</>
+                :
+                <>
+                <div id='icon'>
+                    <EmailDeleteSVG/>
+                </div>
+                <ValidationGuide>{validationGuide}</ValidationGuide>
+                </>
+            }
         </InputWrapper>
     )
 }
@@ -64,7 +62,7 @@ const InputWrapper = styled.div<{validation:boolean}>`
         border-radius: 8px;
         border: ${({validation})=>(validation?'1px solid #B7B7B7':'2px solid #ff4747')};
         
-        color: #ff4747;
+        color: ${({validation})=>(validation?'#000':'#ff4747')};
 
         &:focus{
             border: ${({validation})=>(validation?'1px solid #FF993A':'2px solid #ff4747')};

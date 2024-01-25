@@ -9,26 +9,33 @@ const ProjectPage = () => {
     const topicDataArray:string[] = ['전체','여행','이커머스','소셜네트워크','공유서비스','의료','금융','교육','모임','스포츠','게임','부동산','뷰티','패션'];
     const yearDataArray:string[] = ['전체','2020','2021','2022','2023','2024'];
   
-    /** 현재 선택된 상세 검색 항목 */
+    /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
     const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('전체');
     const [currentSelectedTopic, setCurrentSelectedTopic]=useState<string>('전체');
     const [currentSelectedYear, setCurrentSelectedYear]=useState<string>('전체');
-    const [currentSeletedData, setCurrentSeletedData]=useState<any>();
+    /** 현재 선택된 상세 검색 항목(총 선택된 항목) - 다중선택토글폼에만 해당 */
+    const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
+
+    /** 검색하기에 반영될 선택된 토글 항목들 */
+    const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any>();
 
     useEffect(() =>{
-      setCurrentSeletedData({currentSelectedStack,currentSelectedTopic,currentSelectedYear});
-      console.log(currentSeletedData);
+      console.log(selectedStackAll,'기술스택');
+      console.log(currentSelectedTopic,'주제');
+      console.log(currentSelectedYear,'년도');
     },[currentSelectedStack,currentSelectedTopic,currentSelectedYear]);
 
     return(
       <MainContantsLayout
             pageName="project"
             title="프로젝트"
-            searchSelecedData={currentSeletedData}
+            detailSearchSelectedData={detailSearchSelectedData}
       >
         <MultipleSelectToggle title="기술 스택" data={stackDataArray}
             currentSelected={currentSelectedStack}
             setCurrentSelected={setCurrentSelectedStack}
+            selectedAll={selectedStackAll}
+            setSelectedAll={setSelectedStackAll}
         />
         <SingleSelectToggle title="주제" data={topicDataArray}
             currentSelected={currentSelectedTopic}
