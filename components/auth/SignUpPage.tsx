@@ -78,6 +78,10 @@ const SignUpPage = () => {
         })
     }
 
+    /** [TODO] 유효성검사 validation,validationGuide연결해야함 */
+    // validation은 patch유효성검사 boolean값
+    // validationGuide는 patch,post유효성검사 error메세지
+
     return(
         <AuthLayoutForm>
         <AuthForm
@@ -91,6 +95,7 @@ const SignUpPage = () => {
                 value={userEmail}
                 onChange={handleUserEmail}
                 validation={true}
+                validationGuide=""
                 >
                 <CertifiedPOST onClick={postEmailAuthentication}>인증</CertifiedPOST>
             </InputForm>
@@ -101,6 +106,7 @@ const SignUpPage = () => {
                 value={varificationNumber}
                 onChange={handleUserAuthenticationNumber}
                 validation={true}
+                validationGuide=""
                 >
                 <CertifiedGET onClick={getVerification} isPostEmailVarification={isPostEmailVarification}>완료</CertifiedGET>
                 {isVarificationSuccess === true?

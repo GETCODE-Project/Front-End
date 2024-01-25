@@ -1,4 +1,4 @@
-import { HartOnSVG, HartOffSVG, BookMarkOnSVG, BookMarkOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
+import { HartOnSVG, HartOffSVG, WishOnSVG, WishOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
 import { media } from '@/styles/mediaQuery';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -8,7 +8,6 @@ interface ObjectFormProps{
     data?: any;
 }
 /** 불러온 Respons 데이터 형식 참고 */
-// 좋아요클릭여부,찜하기클릭여부,주제 추가 예정
 interface ProjectObjectData{
     projectId: number;
     title: string;
@@ -16,6 +15,10 @@ interface ProjectObjectData{
     views: number;
     likeCnt: number;
     dateTime: string;
+    projectSubjects:[{
+        id: number;
+        subject: string;
+    }]
     techStackList: [{
         id: number;
         techStack: string;
@@ -25,17 +28,35 @@ interface ProjectObjectData{
         imageUrl: string;
     };
     memberNickName: string;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
 }
-
 /** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
 /** ------------------------------------------------------------- */
 export const ObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+    const subject:any [] = data?.projectSubjects;
+
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(data.Wishs);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(data.Wishs);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
+    },[]);
 
     useEffect(()=>{
-        setIsBookMarkOn(data.bookmarks);
+        // console.log(data);
     },[]);
 
     return(
@@ -51,8 +72,8 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
                         <ViewCountSVG/>
                         <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
                 </ReactionCount>
             </Thumbnail>
@@ -64,7 +85,7 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
                     <Intro>
                         {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${data.topic}`}</Topic>
+                    <Topic>{`주제 : ${subject[0].subject}`}</Topic>
                     <Stack>
                         {data.techStackList?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i.techStack}</StackName>
@@ -83,11 +104,11 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
 /** ------------------------------------------------------------- */
 export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
     const arr:string [] = data?.technologyStack;
 
     useEffect(()=>{
-        setIsBookMarkOn(data.bookmarks);
+        setIsWishOn(data.Wishs);
     },[]);
 
     return(
@@ -104,8 +125,8 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                         <ViewCountSVG/>
                         <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
             </ReactionCount>
             <Content>
@@ -179,7 +200,7 @@ const ReactionCount = styled.div`
     /* background: rgba(0, 0, 0, 0.34); */
     background: #FF993A;
 
-    #bookMark{
+    #Wish{
         position: absolute;
         right: 15px;
     }

@@ -19,13 +19,13 @@ export const ViewCountSVG = () => (
 )
 
 /** 찜버튼 */
-export const BookMarkOnSVG = () => (
+export const WishOnSVG = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" fill="none">
         <path fillRule="evenodd" clipRule="evenodd" d="M15.4964 4.37833V22.6458L8.73685 18.4784C8.4151 18.2801 8.00901 18.2801 7.68726 18.4784L0.927734 22.6458L0.927734 4.37833C0.927734 2.30327 2.55839 0.621094 4.56989 0.621094L11.8542 0.621094C13.8657 0.621094 15.4964 2.30327 15.4964 4.37833Z" fill="#FFC24D" stroke="black" strokeLinecap="round"/>
     </svg>
 )
 
-export const BookMarkOffSVG = () => (
+export const WishOffSVG = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" fill="none">
         <path fillRule="evenodd" clipRule="evenodd" d="M15.4964 4.37833V22.6458L8.73685 18.4784C8.4151 18.2801 8.00901 18.2801 7.68726 18.4784L0.927734 22.6458L0.927734 4.37833C0.927734 2.30327 2.55839 0.621094 4.56989 0.621094L11.8542 0.621094C13.8657 0.621094 15.4964 2.30327 15.4964 4.37833Z" fill="white" stroke="black" strokeLinecap="round"/>
     </svg>

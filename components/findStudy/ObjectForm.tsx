@@ -1,24 +1,24 @@
-import { BookMarkOnSVG, BookMarkOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { WishOnSVG, WishOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const ObjectForm = ({data}:any) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
     
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
 
     useEffect(() =>{
-        setIsBookMarkOn(data.bookmarks);
+        setIsWishOn(data.Wishs);
         setIsHartOn(data.likes[1]);
         console.log(data);
     },[]);
 
     return(
         <Layout>
-            <BookMark onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
-            </BookMark>
+            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+                {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
+            </Wish>
             <Content>
                 <Info>
                     <div id='title'>{data?.title}</div>
@@ -62,7 +62,7 @@ const Layout = styled.div`
     filter: drop-shadow(-4px 4px 40px rgba(0, 0, 0, 0.25));
 `;
 
-const BookMark = styled.div`
+const Wish = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

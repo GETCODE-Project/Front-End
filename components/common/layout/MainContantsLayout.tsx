@@ -38,11 +38,12 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [sort, setSort] = useState<string>('');
     const [subject, setSubject] = useState<string>('');
     const [techStack, setTechStack] = useState<string[]>([]);
+    const [memberId, setMemberId] = useState<number>();
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<any>();
-    const projectParams = {year, keyword, size, page, sort, subject, techStack};
-    const findProjectParams = [{}];
+    const projectParams = {year, keyword, size, page, sort, subject, techStack, memberId};
+    const findProjectParams = {year, keyword, size, page, sort, subject, techStack, memberId};
     const findStudyParams = [{}];
     const communityParams = [{}];
 
@@ -120,7 +121,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     },[params, moduleName])
 
     useEffect(()=>{
-        // console.log(detailSearchSelectedData);
+        console.log(detailSearchSelectedData,'findProjectData');
     },[]);
     
 

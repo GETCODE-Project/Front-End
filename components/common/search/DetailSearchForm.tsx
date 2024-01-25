@@ -81,7 +81,7 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
                         }
                     </Toggle>
                     <SelectedToggleWrapper>
-                        {selectedAll.map((i:any, idx:number)=>(
+                        {selectedAll?.map((i:any, idx:number)=>(
                             <SelectedToggle key={idx}>
                                 {selectedAll[idx]}
                                 <div id="exitToggle" onClick={()=>handleUnSelectedToggle(selectedAll[idx])}>

@@ -1,109 +1,37 @@
-interface FindProjectObjectData{
-    id: number;
-    views: number;
-    likes: any[];
-    bookmarks: boolean;
-    recruitStatus: boolean;
-    title: string;
-    subTitle: string;
-    topic: string[];
-    recruitField: string[];
-    writer: string;
-    createdDate: string;
+import { GET } from "@/pages/api/axios";
+import { useEffect } from "react";
+
+/** GET 파라미터값(검색에사용), 데이터를 저장할 status */
+//[TODO] year제거 & 모집파트,모집여부추가해야함
+interface FindProjectProps {
+    params: {
+        sort: string;
+        page: number;
+        size: number;
+        keyword: string;
+        subject: string;
+        techStack: [];
+        year?: number;
+        memberId?: number;
+    }
+    setObjectData?: any;
 }
 
-/** 프로젝트 모집 객체 더미 데이터 */
+/** 프로젝트모집 전체 게시물 데이터 */
+export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
 
-export const DummyData: FindProjectObjectData[] = [
-    {
-        id: 1,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: true,
-        recruitStatus: true,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 2,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: true,
-        recruitStatus: false,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 3,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: false,
-        recruitStatus: false,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 4,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: false,
-        recruitStatus: true,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 5,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: true,
-        recruitStatus: false,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 6,
-        views: 1234,
-        likes: [123, true],
-        bookmarks: false,
-        recruitStatus: false,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-    {
-        id: 7,
-        views: 1234,
-        likes: [123, false],
-        bookmarks: false,
-        recruitStatus: true,
-        title: 'GETCODE 프로젝트 모집 글 제목',
-        subTitle: 'GETCODE 프로젝트 모집 글 내용 상세',
-        topic: ['반응형','웹서비스'],
-        recruitField: ['UX/UI','프론트엔드','백엔드','기획자','마케터','PM'],
-        writer: '닉네임',
-        createdDate: '2023-10-22',
-    },
-]
+    const techStackQueryString = () => {
+        let techStack = '';
+        if(params.techStack.length > 0){
+            techStack = params.techStack?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
+        }
+        return techStack;
+    }
+
+    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.page}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString}&${params.memberId}`,{})
+    .then((res)=>{
+        setObjectData(res);
+    })
+    .catch((err)=>{console.error(err)});
+    
+}

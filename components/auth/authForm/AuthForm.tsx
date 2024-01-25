@@ -25,7 +25,7 @@ const AuthForm = ({title, children, buttonName, session, loginFC}:AuthFormProps)
         if(isSiginUpPage){
             router.push('/auth/login');
         }
-        if(isLoginPage){
+        if(isLoginPage || isFindPage){
             router.push('/auth/signup');
         }
     }

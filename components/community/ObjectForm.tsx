@@ -1,17 +1,17 @@
-import { BookMarkOffSVG, BookMarkOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useState } from "react";
 import styled from "styled-components";
 
 const ObjectForm = () => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
     const arr:any []=['스터디','면접준비','백엔드','웹개발'];
     
     return (
         <Layout>
-            <BookMark onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
-            </BookMark>
+            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+                {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
+            </Wish>
             <Content>
                 <Info>
                     <div id='title'>게시글 제목</div>
@@ -47,7 +47,7 @@ const Layout = styled.div`
     filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.10));
 `;
 
-const BookMark = styled.div`
+const Wish = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

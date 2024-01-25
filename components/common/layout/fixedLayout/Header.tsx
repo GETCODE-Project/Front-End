@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import ProfileButtonForm from '../ProfileButtonForm';
-import { BookMarkSVG } from '@/public/SVG/header';
+import { WishSVG } from '@/public/SVG/header';
 import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
@@ -29,10 +29,10 @@ const Header = () => {
           GETCODE  
         </LogoDiv>
         <MenuDiv>
-          <BookMark>
-                <BookMarkSVG/>
+          <Wish>
+                <WishSVG/>
                 <span style={{color:'#3C3C3C'}}>내 찜</span>
-          </BookMark>
+          </Wish>
           <ProfileButtonForm status={status} sesson={session} isToggle={isToggle} setIsToggle={setIsToggle}/>
         </MenuDiv>
         {isToggle?
@@ -85,7 +85,7 @@ const MenuDiv = styled.div`
   gap: 30px;
 `;
 
-const BookMark = styled.div`
+const Wish = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

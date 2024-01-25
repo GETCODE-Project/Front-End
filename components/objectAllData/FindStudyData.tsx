@@ -2,7 +2,7 @@ interface FindProjectObjectData{
     id: number;
     views: number;
     likes: any[];
-    bookmarks: boolean;
+    Wishs: boolean;
     recruitStatus: boolean;
     title: string;
     subTitle: string;
@@ -18,7 +18,7 @@ export const DummyData: FindProjectObjectData[] = [
         id: 1,
         views: 1321,
         likes: [123, true],
-        bookmarks: true,
+        Wishs: true,
         recruitStatus: true,
         title: 'GETCODE 스터디 모집 게시글 제목',
         subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
@@ -30,7 +30,7 @@ export const DummyData: FindProjectObjectData[] = [
         id: 2,
         views: 1321,
         likes: [123, false],
-        bookmarks: false,
+        Wishs: false,
         recruitStatus: true,
         title: 'GETCODE 스터디 모집 게시글 제목',
         subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
@@ -42,7 +42,7 @@ export const DummyData: FindProjectObjectData[] = [
         id: 3,
         views: 1321,
         likes: [123, false],
-        bookmarks: false,
+        Wishs: false,
         recruitStatus: false,
         title: 'GETCODE 스터디 모집 게시글 제목',
         subTitle: 'GETCODE 스터디 모집 게시글 내용 컨텐츠',
