@@ -8,7 +8,7 @@ const ProfileButtonForm = ({isLogin, userInfo, isToggle, setIsToggle}:any) => {
 
     return(
         <Layout>
-            {isLogin ?
+            {userInfo!==undefined ?
             <>
                 <Wrapper onClick={()=>setIsToggle(!isToggle)}>
                     <Profile>

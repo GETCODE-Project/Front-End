@@ -5,8 +5,10 @@ axios.defaults.withCredentials = true;
 // 요청 인터셉터 추가
 axios.interceptors.request.use((config) => {
     const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
     if (accessToken!==null) {
         config.headers.Authorization = `Bearer ${accessToken}`;
+        config.headers.Refresh = `Bearer ${refreshToken}`;
     }
     return config;
 }, (error) => {

@@ -44,6 +44,7 @@ const Header = () => {
 
   useEffect(()=>{
       isLoginStatus();
+      getUserInfo();
   },[]);
   
 
