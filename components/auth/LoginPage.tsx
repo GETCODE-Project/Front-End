@@ -8,7 +8,7 @@ import AuthForm from "@/components/auth/authForm/AuthForm";
 // import { useAuth } from "@/components/auth/authContexts/AuthContexts";
 
 /** ------------------------------------------------------------- */
-/** 로그인 페이지 */
+/** 로그인 페이지 컴포넌트 */
 /** ------------------------------------------------------------- */
 /**[TODO]
  * [1] Input 폰트 사이즈 확대
