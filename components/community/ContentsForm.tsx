@@ -9,11 +9,12 @@ const ContentsForm = ({id}:any) => {
             <Layout>
                 <MainContantsLayout
                     // routePageName={`community/${id}`}
-                    routePageName={`community`}
+                    pageName={`community`}
                     title="커뮤니티"
                     subTitle="자유게시판"
                     sumTitle="게시글"
-                    id={id}
+                    id={id} 
+                    detailSearchSelectedData={undefined}                
                 />
             </Layout>
         </BackLayout>
