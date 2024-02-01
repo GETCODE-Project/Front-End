@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useRouter } from 'next/router';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GET, POST } from "@/pages/api/axios";
 import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
@@ -8,22 +8,58 @@ import AuthLayoutForm from "@/components/auth/authForm/AuthLayoutForm";
 import Toast from "@/components/common/notification/Toast";
 import { FailSVG, NoticeSVG } from "@/public/SVG/toast";
 
+/** ------------------------------------------------------------- */
+/** 회원가입 페이지 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] Toast 처리(이메일인증,인증번호인증, Toast로드 속도 향상)
+ * [2] 유효성문구처리(백엔드response필요, Input창 아래 문구 삽입-UI작성은되어있음 약간의 수정 필요)
+ * [3] 회원가입 API 연결(불필요request.body-'authority':'ROLE_USER'제거, 연결작동확인)
+ * [4] 회원가입 실패 유효성 처리
+ * [5] 회원가입 성공 전환 화면 연결(UI작성필요, 자동로그인 되는지 체크 필요)
+ */
+
 const SignUpPage = () => {
+
     const router = useRouter();
-    const [isSignUp, setIsSignUp] = useState<boolean>();
+
+    /** 회원가입 폼 입력 내용(이메일,인증번호,비밀번호,닉네임) */
     const [userEmail, setUserEmail] = useState<string>('');
     const [varificationNumber, setVarificationNumber] = useState<any>('');
     const [userPassword, setUserPassword] = useState<string>('');
     const [userNickname, setUserNickname] = useState<string>('');
+
+    /** 인증번호 발송|인증 상태 체크(isPostEmailVarification:인증메일발송성공여부,isVarificationSuccess:인증번호인증성공여부) */
+    const [isPostEmailVarification, setIsPostEmailVarification] = useState<boolean|undefined>(undefined);
     const [isVarificationSuccess, setIsVarificationSuccess] = useState<boolean|undefined>(undefined);
-    const [isPostEmailVarification, setIsPostEmailVarification] = useState<boolean>(true);//임시
+
+    /** Email 입력 수정 여부 체크 */
+    const [changeStateEmail, setChangeStateEmail] = useState<boolean>(false);
+
+    /** 토스트 연속 클릭 배열 */
+    const [toasts, setToasts] = useState<any[]>([]);
+
+    /** 토스트 추가 함수 */
+    const addToasts = (message:any) => {
+        setToasts(prevToasts => [...prevToasts, message]);
+    };
 
     /** 입력값 STATE 변경(email,varificationNumber,password,nickname) */
-
+    //
     //email 입력 (state 변경)
     const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;
         setUserEmail(target);
+        setVarificationNumber('');
+        if(target.length > 0){
+            if(userEmail !== target){
+                setChangeStateEmail(true);
+            }else{
+                setChangeStateEmail(false);
+            }
+        }else{
+            setChangeStateEmail(false);
+        }
     }
     //인증 번호 입력 (state 변경)
     const handleUserAuthenticationNumber = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -41,28 +77,28 @@ const SignUpPage = () => {
         setUserNickname(target);
     }
 
-    /** 이메일 인증 API */
-
+    /** 이메일 인증 번호 요청 및 확인 API */
+    //
     //이메일 인증 번호 요청 POST
     const postEmailAuthentication = async() => {
         await POST(`/api/emails/verification-requests?email=${userEmail}`)
         .then((res)=>{
             console.log(res)
-            // if(res === ''){
-            //     setIsPostEmailVarification(true);
-            // }else{
-            //     setIsPostEmailVarification(false);
-            // }
+            if(res.data === ''){
+                setIsPostEmailVarification(true);
+            }
         })
-        .catch((error)=>{console.log(error)});
+        .catch((error)=>{
+            console.log(error);
+            //토스트추가
+            addToasts({iconSVG:<FailSVG/>,notice:"잘못된 이메일입니다."});
+        });
     }
     //이메일 인증 번호 인증 GET
     const getVerification = async() => {
         await GET(`/api/emails/verifications?email=${userEmail}&code=${varificationNumber}`)
         .then((res)=>{
             setIsVarificationSuccess(res.data);
-            console.log(res,'success');
-            console.log(varificationNumber);
         })
         .catch((err)=>console.error(err));
     }
@@ -74,11 +110,15 @@ const SignUpPage = () => {
             nickname: {userNickname},
             password: {userPassword},      
         }).then((res)=>{
-            console.log(res.data);
         }).catch((err)=>{
             console.log(err);
         })
     }
+
+    useEffect(()=>{
+        setIsPostEmailVarification(undefined);
+        toasts.length = 0;
+    },[])
 
     /** [TODO] 유효성검사 validation,validationGuide연결해야함 */
     // validation은 patch유효성검사 boolean값
@@ -99,8 +139,13 @@ const SignUpPage = () => {
                 validation={true}
                 validationGuide=""
                 >
-                <CertifiedPOST onClick={postEmailAuthentication}>인증</CertifiedPOST>
+                <CertifiedPOST 
+                    onClick={postEmailAuthentication}
+                    isPostEmailVarification={isPostEmailVarification}
+                    changeStateEmail={changeStateEmail}
+                >인증</CertifiedPOST>
             </InputForm>
+            
             <InputForm
                 name="Authentication"
                 type="string"
@@ -110,7 +155,10 @@ const SignUpPage = () => {
                 validation={true}
                 validationGuide=""
                 >
-                <CertifiedGET onClick={getVerification} isPostEmailVarification={isPostEmailVarification}>완료</CertifiedGET>
+                <CertifiedGET 
+                    onClick={getVerification}
+                    isPostEmailVarification={isPostEmailVarification}
+                >완료</CertifiedGET>
                 {isVarificationSuccess === true?
                     <p>인증 완료되었습니다.</p>
                 :isVarificationSuccess === false?
@@ -134,7 +182,12 @@ const SignUpPage = () => {
                 onChange={handleUserNickname}
                 validation={true}
             />
-            <Toast iconSVG={<NoticeSVG/>} notice="인증메일이 발송되었습니다."/>
+            {isPostEmailVarification === true &&
+                <Toast iconSVG={<NoticeSVG/>} notice="인증메일이 발송되었습니다."/>
+            }
+            {toasts.map((i:any, idx:number)=>(
+                <Toast key={idx} iconSVG={i.iconSVG} notice={i.notice}/>
+            ))}
         </AuthForm>
         </AuthLayoutForm>
     )
@@ -142,7 +195,7 @@ const SignUpPage = () => {
 
 export default SignUpPage;
 
-const CertifiedPOST = styled.div`
+const CertifiedPOST = styled.div<{isPostEmailVarification:boolean|undefined; changeStateEmail:boolean}>`
         display:flex;
         position: absolute;
         right: 10px;
@@ -153,15 +206,16 @@ const CertifiedPOST = styled.div`
         height: 25px;
         padding-top: 3px;
 
-        background-color: #FF993A;
+        background-color: ${({isPostEmailVarification,changeStateEmail})=>(!isPostEmailVarification||changeStateEmail?'#FF993A':'#B7B7B7')};
         border-radius: 8px;
         
         color: #fff;
 
         cursor: pointer;
+        pointer-events: ${({isPostEmailVarification,changeStateEmail})=>(!isPostEmailVarification||changeStateEmail?'unset':'none')};
 `;
 
-const CertifiedGET = styled.div<{isPostEmailVarification:boolean}>`
+const CertifiedGET = styled.div<{isPostEmailVarification:boolean|undefined}>`
         display:flex;
         position: absolute;
         right: 10px;
