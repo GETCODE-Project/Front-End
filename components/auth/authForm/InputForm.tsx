@@ -30,6 +30,7 @@ const InputForm = ({name,type, placeholder, value, onChange, validation, childre
                 <>{children}</>
                 :
                 <>
+                <div id='children'>{children}</div>
                 <div id='icon'>
                     <EmailDeleteSVG/>
                 </div>
@@ -71,10 +72,15 @@ const InputWrapper = styled.div<{validation:boolean}>`
     }
     #icon{
         position: absolute;
-        right: 10px;
+        right: 70px;
         top: 37px;
 
         cursor: pointer;
+    }
+    #children{
+        position: absolute;
+        right: 0px;
+        
     }
 `;
 
