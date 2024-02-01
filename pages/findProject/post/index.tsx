@@ -1,10 +1,10 @@
 import FixedLayout from "@/components/common/layout/FixedLayout";
-import PostLayout from "@/components/common/layout/PostLayout";
+import FindProjectPostPage from "@/components/findProject/post/FindProjectPostPage";
 
 const FindProjectPost: React.FC = () => {
   return (
     <FixedLayout>
-      <PostLayout pageName="findProject"/>
+      <FindProjectPostPage />
     </FixedLayout>
   );
 };

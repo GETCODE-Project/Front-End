@@ -1,167 +1,325 @@
 import styled from "styled-components";
-import RoundBox from "@/components/common/selectObject/SelectRoundBox";
+import SelectRoundBox from "@/components/common/selectObject/SelectRoundBox";
 import { media } from "@/styles/mediaQuery";
-import Toggle from "@/components/common/selectObject/SelectToggle";
-import React, { useState } from "react";
-import Link from "@/components/common/selectObject/SelectSourceLink"
+import SelectToggle from "@/components/common/selectObject/SelectToggle";
+import React, { useState, useEffect } from "react";
+import SourceLink from "@/components/common/selectObject/SelectSourceLink";
 import ToggleRoundBox from "@/components/common/selectObject/SelectToggleBox";
-import SelectLocation from "@/components/common/selectObject/SelectLocation";
-export const SelectStatus = () => {
-  const [isClicked, setIsClicked] = useState<boolean>(false)
-  const backgroundColor = ["white", "#D9D9D9"]
+import { POST, GET } from "@/pages/api/axios";
+
+interface SelectStatusProps {
+  status: boolean;
+  setStatus: (newValue: boolean) => void;
+}
+
+export const SelectStatus = ({ status, setStatus }: SelectStatusProps) => {
+  const backgroundColor = ["white", "#00FF1A"];
+
   return (
-    <div style={{ display: "flex", flexDirection: "row"}}>
-      <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" backgroundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-      <RoundBox text="모집 완료" backgroundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+    <MobileLayaout>
+      <Query>
+        <SelectRoundBox text="모집 여부" />
+      </Query>
+      <SelectRoundBox
+        text="모집 중"
+        backgroundcolor={backgroundColor[Number(status)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setStatus(true);
+        }}
+      />
+      <SelectRoundBox
+        text="모집 완료"
+        backgroundcolor={backgroundColor[Number(!status)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setStatus(false);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
+
+interface SelectSubjectProps {
+  setSubject: (newValue: string) => void;
+}
+
+export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
+  const optionSubject = [
+    "주제를 입력하세요",
+    "여행",
+    "이커머스",
+    "소셜 네트워크",
+    "공유 서비스",
+    "의료",
+    "금융",
+    "교육",
+    "모임",
+    "스포츠",
+    "게임",
+    "부동산",
+    "뷰티",
+    "패션",
+  ];
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="주제" />
+      <SelectToggle
+        options={optionSubject}
+        onCreate={(value) => {
+          setSubject(value);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
+
+interface SelectTechProps {
+  tech: string[];
+  setTech: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
+  const optionSubject = [
+    "기술 스택을 선택하세요",
+    "Java",
+    "C#",
+    "Python",
+    "php",
+    "Node.js",
+    "Go",
+    "Ruby",
+    "Kotlin",
+    "Swift",
+    "Peal",
+    "Spring",
+    "Django",
+    "Express.js",
+    "Flask",
+    "Rails",
+    "vue.js",
+    "Springboot",
+    "Next.js",
+    "Nest.js",
+    "MySQL",
+    "Oracle",
+    "PostgreSQL",
+    "MariaDB",
+    "Redis",
+    "MongoDB",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "ReactNative",
+    "Html",
+    "Css",
+    "Flutter",
+    "Dart",
+    "Git",
+    "Github",
+    "AWS",
+  ];
+  const handleInput = (value: string) => {
+    if (value !== "기술 스택을 선택하세요" && !tech.includes(value)) {
+      setTech((prev) => [...prev, value]);
+    }
+  };
+
+  const deleteTopic = (value: string) => {
+    const newTopic = tech.filter((tech) => tech !== value);
+    setTech(newTopic);
+  };
+
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="기술 스택" />
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <SelectToggle
+          onCreate={(value) => {
+            handleInput(value);
+          }}
+          options={optionSubject}
+        />
+        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
+          {tech.map((value) => (
+            <ToggleRoundBox
+              key={value}
+              text={value}
+              deleteTopic={() => {
+                deleteTopic(value);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </MobileLayaout>
+  );
+};
+
+interface WishPartProps {
+  wishPart: string[];
+  setWishPart: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export const WishPart = ({ wishPart, setWishPart }: WishPartProps) => {
+  const InputSubject = [
+    "모집 분야를 선택하세요",
+    "분야1",
+    "분야2",
+    "분야3",
+    "분야4",
+    "분야5",
+  ];
+  const handleInput = (value: string) => {
+    if (value !== "모집 분야를 선택하세요" && !wishPart.includes(value)) {
+      setWishPart((prev) => [...prev, value]);
+    }
+  };
+  const deleteTopic = (value: string) => {
+    const newTopic = wishPart.filter((wishPart) => wishPart !== value);
+    setWishPart(newTopic);
+  };
+
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="모집 분야" />
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <SelectToggle
+          onCreate={(value) => {
+            handleInput(value);
+          }}
+          options={InputSubject}
+        />
+        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
+          {wishPart.map((value) => (
+            <ToggleRoundBox
+              key={value}
+              text={value}
+              deleteTopic={() => {
+                deleteTopic(value);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </MobileLayaout>
+  );
+};
+
+interface LinkProps {
+  linkType: string;
+  value: string;
+}
+interface AddLinkProps {
+  allLink: LinkProps[];
+  setAllLink: (newValue: LinkProps[]) => void;
+}
+export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="신청 방법" />
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="email"
+          color="#5200FF"
+          pattern={/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/}
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Phone"
+          color="#54E78F"
+          pattern={/[0-9]{3}-[0-9]{4}-[0-9]{4}/}
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Open-Kakao"
+          color="#FFA800"
+          fontSize="14px"
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Form"
+          color="#FF451D"
+        />
+      </div>
+    </MobileLayaout>
+  );
+};
+
+interface PostProps {
+  post: any;
+}
+export const TextArea = ({ post }: PostProps) => {
+  return (
+    <div>
+      <TextAreaDiv />
+      <Hr />
+      <div
+        style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}
+      >
+        <Button onClick={post} color="white" backgroundcolor="#FF4B13">
+          등록
+        </Button>
+        <Button color="#FF4B13" backgroundcolor="white">
+          삭제
+        </Button>
+      </div>
+      <Hr />
     </div>
   );
 };
 
-export const SelectSubject = () => {
-    const optionSubject = [
-      { key: 1, value: "주제1" },
-      { key: 2, value: "주제3" },
-    ];
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="주제" />
-        <Toggle options={optionSubject} />
-      </div>
-    );
-  };
-
-  
-  interface OptionItem {
-    key: number;
-    value: string;
-  }
-  
-export  const SelectTech = () => {
-
-    const optionSubject = [
-      { key: 0, value: "기술 스택을 선택하세요" },
-      { key: 1, value: "기술1" },
-      { key: 2, value: "기술2" },
-      { key: 3, value: "기술3" },
-      { key: 4, value: "기술4" },
-    ];
-    const [topics, setTopics] = useState<OptionItem[]>([]);
-
-    const handleInput = (key:number, value: string) => {
-      const inputText = {key: key, value: value}; 
-      if (key !== 0 && !(topics.some((topic) => topic.key === key))) {
-        setTopics((topic) => [...topic, inputText]);
-      }
-    }
-
-    const deleteTopic = (key:number)=>{
-      const newTopics = []
-      for(let i=0; i<topics.length; i++){
-        if(topics[i].key !== key){
-          newTopics.push(topics[i]);
-        }
-      }        
-      setTopics(newTopics);
-    }
-
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="기술 스택" />
-        <div style={{ display: "flex", flexWrap:"wrap"}}>
-        <Toggle onCreate={(key, value)=>{handleInput(key, value)}} options={optionSubject} />
-        <div style={{display:"flex",  width: "100%", flexWrap:"wrap"}}>
-        {topics.map((topic) => (
-          <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
-        ))}</div>
-        </div>
-      </div>
-    );
-  };
-
-
-  export  const WishPart = () => {
-
-    const optionSubject = [
-      { key: 0, value: "모집 분야 선택하세요" },
-      { key: 1, value: "분야1" },
-      { key: 2, value: "분야2" },
-      { key: 3, value: "분야3" },
-      { key: 4, value: "분야4" },
-    ];
-    const [topics, setTopics] = useState<OptionItem[]>([]);
-
-    const handleInput = (key:number, value: string) => {
-      const inputText = {key: key, value: value}; 
-      if (key !== 0 && !(topics.some((topic) => topic.key === key))) {
-        setTopics((topic) => [...topic, inputText]);
-      }
-    }
-
-    const deleteTopic = (key:number)=>{
-      const newTopics = []
-      for(let i=0; i<topics.length; i++){
-        if(topics[i].key !== key){
-          newTopics.push(topics[i]);
-        }
-      }        
-      setTopics(newTopics);
-    }
-
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="모집 분야" />
-        <div style={{ display: "flex", flexWrap:"wrap"}}>
-        <Toggle onCreate={(key, value)=>{handleInput(key, value)}} options={optionSubject} />
-        <div style={{display:"flex",  width: "100%", flexWrap:"wrap"}}>
-        {topics.map((topic) => (
-          <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
-        ))}</div>
-        </div>
-      </div>
-    );
-  };
-
-
-export const AddLink = () => {
-
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="신청 방법" />
-        <div style={{ display: "flex", flexDirection: "column", gap:"10px" }}>
-          <Link text="E-mail" color="#5200FF" type="email"/>
-          <Link text="Phone" color="#54E78F" type="tel" />
-          <Link text="Open-Kakao" color="#FFA800" fontSize="14px"/>
-          <Link text="Form" color="#FF451D"/>
-        </div>
-      </div>
-    );
-  }
-
-  export const TextArea = () =>{
-    return(
-      <div>
-        <textarea style={{ height: "500px", width:"calc(100% - 100px)", margin:"50px" }} />
-        <hr style={{ width: "100%", margin: "30px 0" }} />
-        <div style={{ display:"flex", flexDirection:"row-reverse", gap:"20px"}}>
-          <button style={{width:"100px"}}>등록</button>
-          <button style={{width:"100px"}}>취소</button>
-        </div>
-        <hr style={{ width: "100%",margin: "30px 0" }} />
-      </div>
-    );
-  }
-
-const ObjectForm = () =>{
-  return(
-    <>
-        <SelectStatus />
-        <SelectSubject />
-        <SelectTech />
-        <WishPart />
-        <SelectLocation text="오프라인 지역" />
-        <AddLink />
-    </>
-  );
+interface ButtonProps {
+  color: string;
+  backgroundcolor: string;
 }
-export default ObjectForm;
+const TextAreaDiv = styled.textarea`
+  height: 500px;
+  width: calc(100% - 100px);
+  margin: 50px;
+  ${media.mobile_550} {
+    display: flex;
+    width: 90%;
+    margin: 50px auto;
+  }
+`;
+const Button = styled.button<ButtonProps>`
+  width: 100px;
+  height: 23px;
+  background-color: ${(props) => props.backgroundcolor};
+  border: none;
+  color: ${(props) => props.color};
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid ${(props) => props.color};
+`;
+
+const Hr = styled.hr`
+  width: 100%;
+  margin: 30px 0;
+`;
+const MobileLayaout = styled.div`
+  display: flex;
+  ${media.mobile} {
+    width: 330px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+`;
+
+const Query = styled.div`
+  ${media.mobile} {
+    width: 100%;
+  }
+`;

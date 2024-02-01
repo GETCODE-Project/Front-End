@@ -1,44 +1,48 @@
-import styled from 'styled-components';
-import ProfileButtonForm from './ProfileButtonForm';
-import { BookMarkSVG } from '@/public/SVG/header';
-import { useState } from 'react';
-import { signOut } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import styled from "styled-components";
+import ProfileButtonForm from "./ProfileButtonForm";
+import { BookMarkSVG } from "@/public/SVG/header";
+import { useState } from "react";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { media } from "@/styles/mediaQuery";
 
 const Header = () => {
   const router = useRouter();
 
-  const { data: session, status} = useSession();
+  const { data: session, status } = useSession();
   const [isToggle, setIsToggle] = useState<boolean>(false);
 
-  return(  
+  return (
     <ContainerDiv>
       <HeaderDiv>
-        <LogoDiv href='/'>
-          GETCODE  
-        </LogoDiv>
+        <LogoDiv href="/">GETCODE</LogoDiv>
         <MenuDiv>
           <BookMark>
-                <BookMarkSVG/>
-                <span style={{color:'#3C3C3C'}}>내 찜</span>
+            <BookMarkSVG />
+            <span style={{ color: "#3C3C3C" }}>내 찜</span>
           </BookMark>
-          <ProfileButtonForm status={status} sesson={session} isToggle={isToggle} setIsToggle={setIsToggle}/>
+          <ProfileButtonForm
+            status={status}
+            sesson={session}
+            isToggle={isToggle}
+            setIsToggle={setIsToggle}
+          />
         </MenuDiv>
-        {isToggle?
+        {isToggle ? (
           <MenuCategory>
-            <Link onClick={()=>signOut({callbackUrl:`/`})}>로그아웃</Link>
-            <Link onClick={()=>router.push('/my')}>마이페이지</Link>
+            <Link onClick={() => signOut({ callbackUrl: `/` })}>로그아웃</Link>
+            <Link onClick={() => router.push("/my")}>마이페이지</Link>
           </MenuCategory>
-        :<></>
-        }
+        ) : (
+          <></>
+        )}
       </HeaderDiv>
     </ContainerDiv>
   );
 };
 
 export default Header;
-
 
 const ContainerDiv = styled.div`
   justify-content: center;
@@ -58,6 +62,9 @@ const HeaderDiv = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 1000px;
+  ${media.mobile_550} {
+    margin: 20px;
+  }
 `;
 
 const LogoDiv = styled.a`
@@ -73,6 +80,9 @@ const LogoDiv = styled.a`
 const MenuDiv = styled.div`
   display: flex;
   gap: 30px;
+  ${media.mobile_550} {
+    gap: 10px;
+  }
 `;
 
 const BookMark = styled.div`
@@ -88,21 +98,29 @@ const BookMark = styled.div`
   line-height: 1rem;
 
   cursor: pointer;
+  ${media.mobile_550} {
+    font-size: 0.8rem;
+    gap: 0;
+  }
 `;
 
 const MenuCategory = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    position: absolute;
-    right: 0;
-    bottom: -500px;
-    width: 280px;
-    min-height: 31.25rem;
-    z-index: 1004;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  bottom: -500px;
+  width: 280px;
+  min-height: 31.25rem;
+  z-index: 1004;
 
-    background: linear-gradient(180deg, #fff0e3 43.23%, rgba(255, 240, 227, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    #fff0e3 43.23%,
+    rgba(255, 240, 227, 0) 100%
+  );
 `;
 const Link = styled.div`
   display: flex;
@@ -111,13 +129,13 @@ const Link = styled.div`
   width: 100%;
   height: 50px;
 
-  color: #E5A964;
+  color: #e5a964;
   font-size: 1rem;
   font-weight: 700;
 
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background-color: #ffebd4;
     font-weight: 900;
   }
