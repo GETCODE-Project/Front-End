@@ -13,7 +13,15 @@ interface InputProps{
     validationGuide?: string;
 }
 
+/** ------------------------------------------------------------- */
 /** Auth Input칸 재사용 폼 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] Input 폰트 사이즈 확대
+ * [2] 유효성 UI
+ * [3] 유효성 UI에 다른 X버튼 수정
+ * [4] X버튼 기능 추가
+ */
 
 const InputForm = ({name,type, placeholder, value, onChange, validation, children, validationGuide}:InputProps) => {
 
@@ -30,6 +38,7 @@ const InputForm = ({name,type, placeholder, value, onChange, validation, childre
                 <>{children}</>
                 :
                 <>
+                <div id='children'>{children}</div>
                 <div id='icon'>
                     <EmailDeleteSVG/>
                 </div>
@@ -71,10 +80,15 @@ const InputWrapper = styled.div<{validation:boolean}>`
     }
     #icon{
         position: absolute;
-        right: 10px;
+        right: 70px;
         top: 37px;
 
         cursor: pointer;
+    }
+    #children{
+        position: absolute;
+        right: 0px;
+        
     }
 `;
 

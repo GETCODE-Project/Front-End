@@ -4,6 +4,10 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
+/** ------------------------------------------------------------- */
+/** Google 소셜 로그인 버튼 */ //authForm/loginButton in 각 소셜로그인 버튼
+/** ------------------------------------------------------------- */
+
 const GoogleLoginButton = () => {
     const { data: session } = useSession();
     const router = useRouter();

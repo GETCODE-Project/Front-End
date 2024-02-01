@@ -4,6 +4,19 @@ import InputForm from "@/components/auth/authForm/InputForm";
 import { useState } from "react";
 import styled from "styled-components";
 
+/** ------------------------------------------------------------- */
+/** 비밀번호 찾기 페이지 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] Input 폰트 사이즈 확대
+ * [2] 비밀번호 찾기 실패 알림창 설정
+ * [3] 구글 소셜 로그인 구현
+ * [4] 이메일 인증 버튼 - 전송성공여부 알림창, 버튼 활성화 조건
+ * [5] 인증번호 인증 버튼 - 인증성공여부 알림창, 버튼 활성화 조건
+ * [6] 비밀번호찾기가 A.새로운 비번 제공인지, B.기존 비번 넘겨주는지
+ * [7] A라면 비번 변경 UI작성 필요
+ */
+
 const FindPage = () => {
     const [userEmail, setUserEmail] = useState<string>('');
     const [varificationNumber, setVarificationNumber] = useState<any>('');

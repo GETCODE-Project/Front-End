@@ -7,6 +7,15 @@ import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
 // import { useAuth } from "@/components/auth/authContexts/AuthContexts";
 
+/** ------------------------------------------------------------- */
+/** 로그인 페이지 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] Input 폰트 사이즈 확대
+ * [2] 로그인 실패 알림창 설정
+ * [3] 구글 소셜 로그인 구현
+ */
+
 const LoginPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
