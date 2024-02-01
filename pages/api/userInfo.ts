@@ -2,6 +2,13 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react";
 import { GET } from "./axios";
 
+/** ------------------------------------------------------------- */
+/** 소셜로그인 사용자 인증 상태 관리 */ //OAuth사용을 위한 서버리스 API라우트
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] 소셜로그인 사용 시 재가공 필요
+ */
+
 const UserInfo = async (req: NextApiRequest, res: NextApiResponse)=>{
     try{
         const session = await getSession({req});
