@@ -10,7 +10,12 @@ interface AuthFormProps{
     loginFC?: any;
 }
 
-/** 로그인/회원가입 폼 */
+/** ------------------------------------------------------------- */
+/** Auth 컨텐츠 폼 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] 반응형화면, 컨텐츠 상우하좌 중앙정렬
+ */
 
 const AuthForm = ({title, children, buttonName, session, loginFC}:AuthFormProps) => {
 

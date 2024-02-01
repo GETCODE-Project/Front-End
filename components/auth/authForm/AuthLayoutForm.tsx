@@ -7,7 +7,13 @@ interface AuthLayoutFormProps {
     children: any;
 }
 
-/** Auth Layout 틀 */
+/** ------------------------------------------------------------- */
+/** Auth Layout 폼 */ //구성:(로고,컨텐츠)
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] 반응형화면, 로고 위치 조절
+ * [2] 반응형화면, 컨텐츠 상우하좌 중앙정렬
+ */
 
 const AuthLayoutForm = ({children}:AuthLayoutFormProps) => {
     const router = useRouter();
