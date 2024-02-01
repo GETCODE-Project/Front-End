@@ -10,16 +10,16 @@ import styled from "styled-components";
 
 interface LayoutProps{
     children: React.ReactNode;
-    fontWeight?: number;
+    menuClicked?: number;
     id?: any;
 }
 
-const FixedLayout:React.FC<LayoutProps> = ({children, fontWeight, id})=>{
+const FixedLayout:React.FC<LayoutProps> = ({children, menuClicked, id})=>{
     return(
         <Layout>
             <div style={{ display:"block", height:"100px", zIndex:1004}}>
                 <Header/>
-                <MenuBar fontWeight={fontWeight} id={id}/>     
+                <MenuBar menuClicked={menuClicked} id={id}/>     
             </div>
             <Content>
                 {children}
