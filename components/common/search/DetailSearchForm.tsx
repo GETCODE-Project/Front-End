@@ -1,41 +1,63 @@
-import { ExitToggleIcon, ToggleIcon } from "@/public/SVG/search";
+import { ExitIcon, ExitToggleIcon, ToggleIcon } from "@/public/SVG/search";
 import { media } from "@/styles/mediaQuery";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Props{
-    title?: string;
-    data?: string[];
+    title?: string; //선택 제목(ex-기술스택or주제or연도)
+    data?: string[]; //토글전체리스트=상세검색항목리스트(ex-'전체','spring','django',..)
+    currentSelected: any; //마지막으로 선택된 토글
+    setCurrentSelected: any; //마지막으로 선택된 토글()
+    selectedAll?: any; //선택된 토글 전체 - 다중선택토글폼
+    setSelectedAll?: any; //선택된 토글 전체() - 다중선택토글폼
 }
-/** 다중 선택 토글 폼 -------------------------------------------- */
-export const MultipleSelectToggle = ({title, data}:Props) => {
+/** ------------------------------------------------------------- */
+// 다중 선택 토글 폼
+/** ------------------------------------------------------------- */
 
-    const dataArray:string[] = data??[];
-    const [toggleList, setToggleList] = useState<string[]>(dataArray);
+export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSelected, selectedAll, setSelectedAll}:Props) => {
+
+    // 토글전체리스트:상세 검색 항목 리스트 (ex-'전체','spring','django','express')
+    const [toggleList, setToggleList] = useState<string[]>(data??[]);
+    // 토글리스트On/Off
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
-    const [currentSelected, setCurrentSelected]=useState<string>('--');
-    const [selectedList, setSelectedList] = useState<string[]>([]);
 
-    const handleSelectedToggle = (i:string) => {
-        let array:string[] =[...selectedList];
-        array.push(i);
-        setSelectedList(array);
+    /** 토글 선택 (ST:SelectedToggle,현재선택된토글) */ 
+    const handleSelectedToggle = (ST:string) => {
 
+        //현재선택된토글을 선택된토글리스트에 넣음
+        let tumpselectedAll:string[] =[...selectedAll];
+        tumpselectedAll.push(ST);
+        setSelectedAll(tumpselectedAll);
+
+        //토글리스트OFF
         setIsToggleOn(!isToggleOn);
-        setCurrentSelected(i);
 
-        if(toggleList.includes(i)){
-            let array:any[] = toggleList.filter((item)=>item!=i);
+        //마지막으로선택된토글(현재선택된토글ST)
+        setCurrentSelected(ST);
+
+        //토글전체리스트에서 현재선택된토글ST를 제외함
+        if(toggleList.includes(ST)){
+            let array:any[] = toggleList.filter((item)=>item!=ST);
             setToggleList(array);
         }
     };
 
-    const handleUnSelectedToggle = (i:string) => {
-        let toggleListArray:any[] = [...toggleList,i];
-        setToggleList(toggleListArray);
+    /** 토글 선택 취소 (ST:SelectedToggle,현재선택취소된토글) */ 
+    const handleUnSelectedToggle = (ST:string) => {
 
-        let seletedListArray:any[] = selectedList.filter((item)=>item!=i);
-        setSelectedList(seletedListArray);
+        //토글 전체 리스트에 현재선택취소된토글을 넣음
+        let tumpToggleList:any[] = [...toggleList,ST];
+        setToggleList(tumpToggleList);
+
+        //선택된토글리스트에서 현재선택취소된토글을 제외함
+        let seletedListArray:any[] = selectedAll.filter((item: string)=>item!=ST);
+        setSelectedAll(seletedListArray);
+
+        //선택된토글리스트가 아무것도 없다면 현재선택된토글은'전체'로 지정함
+        if(seletedListArray.length == 0){
+            setCurrentSelected('전체');
+        }
     };
 
     return(
@@ -46,6 +68,9 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                         <span>{currentSelected}</span>
                         <ToggleIcon/>
+                        <ExitIconWrapper>
+                            <ExitIcon/>
+                        </ExitIconWrapper>
                         {isToggleOn ?
                             <ToggleListWrapper>
                                 {toggleList.map((i:any, idx:number)=>(
@@ -56,10 +81,10 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
                         }
                     </Toggle>
                     <SelectedToggleWrapper>
-                        {selectedList.map((i:any, idx:number)=>(
+                        {selectedAll?.map((i:any, idx:number)=>(
                             <SelectedToggle key={idx}>
-                                {selectedList[idx]}
-                                <div id="exitToggle" onClick={()=>handleUnSelectedToggle(selectedList[idx])}>
+                                {selectedAll[idx]}
+                                <div id="exitToggle" onClick={()=>handleUnSelectedToggle(selectedAll[idx])}>
                                     <ExitToggleIcon/>
                                 </div>
                             </SelectedToggle>
@@ -71,13 +96,14 @@ export const MultipleSelectToggle = ({title, data}:Props) => {
     )
 }
 
-/** 단일 선택 토글 폼 -------------------------------------------- */
-export const SingleSelectToggle = ({title, data}:Props) => {
+/** ------------------------------------------------------------- */
+// 단일 선택 토글 폼
+/** ------------------------------------------------------------- */
+export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSelected}:Props) => {
 
     const dataArray:string[] = data??[];
     const [toggleList, setToggleList] = useState<string[]>(dataArray);
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
-    const [currentSelected, setCurrentSelected]=useState<string>('--');
 
     return(
         <BackLayout>
@@ -87,11 +113,15 @@ export const SingleSelectToggle = ({title, data}:Props) => {
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                             <span>{currentSelected}</span>
                             <ToggleIcon/>
+                            <ExitIconWrapper>
+                                <ExitIcon/>
+                            </ExitIconWrapper>
                             {isToggleOn ?
                                 <ToggleListWrapper>
-                                {toggleList.map((i:any, idx:number)=>(
-                                    <ToggleList key={idx} onClick={()=>setCurrentSelected(i)}>{i}</ToggleList>
-                                ))}</ToggleListWrapper>
+                                    {toggleList.map((i:any, idx:number)=>(
+                                        <ToggleList key={idx} onClick={()=>setCurrentSelected(i)}>{i}</ToggleList>
+                                    ))}
+                                </ToggleListWrapper>
                             : <></>
                             }
                     </Toggle>
@@ -110,7 +140,7 @@ const Layout = styled.div`
     display: grid;
     grid-template-columns: 1fr 4fr;
     flex-wrap: nowrap;
-    width: 90%;
+    width: 100%;
     gap: 10px;
     margin-top: 20px;
 
@@ -163,6 +193,13 @@ const Toggle = styled.div`
         width: 100%;
     }
 `;
+const ExitIconWrapper = styled.div`
+    display: flex;
+    position: absolute;
+    right: -25px;
+
+    cursor: pointer;
+`;
 const ToggleListWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -172,6 +209,8 @@ const ToggleListWrapper = styled.div`
     z-index: 1000;
     justify-content: start;
     width: 421px;
+    max-height: 150px;
+    overflow-y: scroll;
     
     background-color: #d9d9d9;
 

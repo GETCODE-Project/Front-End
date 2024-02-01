@@ -1,4 +1,4 @@
-import { HartOnSVG, HartOffSVG, BookMarkOnSVG, BookMarkOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
+import { HartOnSVG, HartOffSVG, WishOnSVG, WishOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
 import { media } from '@/styles/mediaQuery';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -7,34 +7,73 @@ interface ObjectFormProps{
     style?:any;
     data?: any;
 }
-
+/** 불러온 Respons 데이터 형식 참고 */
+interface ProjectObjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    dateTime: string;
+    projectSubjects:[{
+        id: number;
+        subject: string;
+    }]
+    techStackList: [{
+        id: number;
+        techStack: string;
+    }];
+    imageUrl: {
+        id: number;
+        imageUrl: string;
+    };
+    memberNickName: string;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+}
+/** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
-
+/** ------------------------------------------------------------- */
 export const ObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
-    const arr:string [] = data?.technologyStack;
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+    const subject:any [] = data?.projectSubjects;
 
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(data.Wishs);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(data.Wishs);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
+    },[]);
 
     useEffect(()=>{
-        setIsBookMarkOn(data.bookmarks);
+        // console.log(data);
     },[]);
 
     return(
         <Layout style={style}>
             <Thumbnail>
-                <Img></Img>
+                <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>{data.likes[0]}</span>
+                        <span>{data.likeCnt}</span>
                     </Wrapper>
                     <Wrapper>
                         <ViewCountSVG/>
                         <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
                 </ReactionCount>
             </Thumbnail>
@@ -44,15 +83,15 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
                 </Title>
                 <Info>
                     <Intro>
-                        {data.subTitle}
+                        {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${data.topic}`}</Topic>
+                    <Topic>{`주제 : ${subject[0].subject}`}</Topic>
                     <Stack>
-                        {data.technologyStack?.map((i:any,idx:number)=>(
-                            <StackName key={idx}>{i}</StackName>
+                        {data.techStackList?.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i.techStack}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>{`작성자 : ${data.writer}`}</div><div>{`작성일 : ${data.createdDate}`}</div></Create>
+                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.dateTime}`}</div></Create>
                 </Info>
             </Content>
               
@@ -60,22 +99,24 @@ export const ObjectForm = ({style, data}:ObjectFormProps) => {
     )
 }
 
+/** ------------------------------------------------------------- */
 /** 인기 게시물 객체 폼 */
-
+/** ------------------------------------------------------------- */
 export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
     const arr:string [] = data?.technologyStack;
 
     useEffect(()=>{
-        setIsBookMarkOn(data.bookmarks);
+        setIsWishOn(data.Wishs);
     },[]);
 
     return(
         <Layout style={style}>
             <Thumbnail>
                 <Img></Img>
-                <ReactionCount>
+            </Thumbnail>
+            <ReactionCount>
                     <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
                         <span>{data.likes}</span>
@@ -84,11 +125,10 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                         <ViewCountSVG/>
                         <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
-                </ReactionCount>
-            </Thumbnail>
+            </ReactionCount>
             <Content>
                 <Title>
                     <span>{data.title}</span>
@@ -99,7 +139,7 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                     </Intro>
                     <Topic>{`주제 : ${data.topic}`}</Topic>
                     <Stack>
-                        {arr?.map((i:any,idx:number)=>(
+                        {data.techStackList?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
                         ))}
                     </Stack>
@@ -117,7 +157,7 @@ const Layout = styled.div`
     display: flex;
     flex-direction: column;
     width: 250px;
-    height: 300px;
+    height: 320px;
     padding: 0 10px;
     padding-bottom: 30px;
 
@@ -133,14 +173,18 @@ const Layout = styled.div`
 `;
 
 const Thumbnail = styled.div`
+    display: flex;
     position: relative;
     width: 100%;
-    /* height: 170px; */
     flex: 1;
+    overflow: hidden;
 
     background-color: #777777;
 `;
-const Img = styled.div`
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 const ReactionCount = styled.div`
     display: flex;
@@ -153,9 +197,10 @@ const ReactionCount = styled.div`
     width: 100%;
     height: 35px;
 
-    background: rgba(0, 0, 0, 0.34);
+    /* background: rgba(0, 0, 0, 0.34); */
+    background: #FF993A;
 
-    #bookMark{
+    #Wish{
         position: absolute;
         right: 15px;
     }
@@ -178,7 +223,7 @@ const Content = styled.div`
     padding: 0 15px;
     box-sizing: border-box;
     width: 100%;
-    flex:1;
+    flex:0.85;
 
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;

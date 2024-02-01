@@ -3,7 +3,7 @@ import { media } from "@/styles/mediaQuery";
 import React, { useState, useEffect } from "react";
 
 interface DetailLayoutProps{
-    pageName: string;
+    routePageName: string;
     writerName?: string;
 }
 
@@ -21,14 +21,14 @@ export const TextArea = () =>{
     );
   }
 
-const PostLayout = ({pageName}:DetailLayoutProps) => {
+const PostLayout = ({routePageName}:DetailLayoutProps) => {
     const [ObjectForm, setObjectForm] = useState(null);
 
     useEffect(() => {
-        import(`@/components/${pageName}/post/ObjectForm`)
+        import(`@/components/${routePageName}/post/ObjectForm`)
         .then(module => setObjectForm(()=>module.default))
         .catch(error => console.error(error))
-    },[pageName]);
+    },[routePageName]);
 
     return(
         <Layout>

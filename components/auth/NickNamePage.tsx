@@ -7,6 +7,7 @@ import InputForm from "@/components/auth/authForm/InputForm";
 
 /** 구글 회원가입 시, 마지막 절차 : 닉네임 등록 */
 const NickNamePage = () => {
+    
     const router = useRouter();
     const [isSignUp, setIsSignUp] = useState<boolean>();
     const [userNickname, setUserNickname] = useState<string>('');

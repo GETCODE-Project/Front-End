@@ -1,9 +1,9 @@
-import FixedLayout from "@/components/common/layout/FixedLayout";
-import PostLayout from "@/components/common/layout/PostLayout";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
+import CommunityPostPage from "@/components/community/post/CommunityPostPage";
 const CommunityPost: React.FC = () => {
   return (
     <FixedLayout>
-      <PostLayout pageName="community" />
+      <CommunityPostPage />
     </FixedLayout>
   );
 };

@@ -1,3 +1,4 @@
+import { GET } from '@/pages/api/axios';
 import { GoogleLogoSVG } from '@/public/SVG/auth';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -7,8 +8,18 @@ const GoogleLoginButton = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
+    const handleGoogleLogin = async() => {
+        try {
+            // await GET('/api/auth/google'); // 백엔드 구글 인가 엔드포인트로 get요청
+            signIn('google',{callbackUrl:`${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}`})
+        }
+        catch (error) {
+            console.error('Google login error:', error);
+        }
+    }
+
     return(
-        <Layout onClick={()=>signIn("google",{callbackUrl:"/auth/signup/nickname"})}>
+        <Layout onClick={()=>handleGoogleLogin()}>
             <GoogleLogoSVG/><span>Google Login</span>
         </Layout>
     )

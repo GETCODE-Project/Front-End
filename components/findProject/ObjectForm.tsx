@@ -1,26 +1,83 @@
-import { BookMarkOffSVG, BookMarkOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = ({data}:any) => {
+interface ObjectFormProps{
+    style?:any;
+    data?: any;
+}
+/** 불러온 Respons 데이터 형식 참고 */
+//[TODO] 모집파트 추가해야함,?
+interface FindProjectObjectData{
+    projectRecruitmentId: number;
+    title: string;
+    content: string;
+    siDo: string;
+    guGun: string;
+    online: boolean;
+    recruitment: boolean;
+    views: number;
+    likeCnt: number;
+    createDate: string;
+    modifiedDate: string;
+    subjects: [{
+        id: number;
+        subject: string;
+    }]
+    techStacks: [{
+        id: number;
+        teckStack: string;
+    },]
+    memberNickName: string;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+}
+/** ------------------------------------------------------------- */
+/** 프로젝트모집 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+const ObjectForm = ({style,data}:ObjectFormProps) => {
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
-    const arr:string[] = [...data.topic];
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+    const subjects:any[] = data.subjects;
+    const techStacks:any[] = [...data.techStacks];
+    const [recruitMentBoolean, setRecruitMentBoolean] = useState<boolean>(false);
 
-    useEffect(() =>{
-        setIsBookMarkOn(data.bookmarks);
-        setIsHartOn(data.likes[1]);
+    /**[TODO]recruitment속성이 boolean인지, boolean|다른무엇 인지 정확하지 않아서 작성 */
+    useEffect(() => {
+        if(data.recruitment === true){
+            setRecruitMentBoolean(true);
+        }if(data.recruitment === false){
+            setRecruitMentBoolean(false);
+        }if(data.recruitment !== true||false){
+            setRecruitMentBoolean(false);
+        }
+    },[]);
+
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(data.Wishs);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(data.Wishs);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
     },[]);
     
     return (
         <Layout>
-            <BookMark onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
-            </BookMark>
+            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+                {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
+            </Wish>
             <Content>
                 <Info>
                     <div id='title'>{data?.title}</div>
-                    <div id='intro'>{data.subTitle}</div>
+                    <div id='intro'>{data.content}</div>
                     <Reaction>
                         <Wrapper>
                             <ViewCountSVG/>
@@ -28,28 +85,28 @@ const ObjectForm = ({data}:any) => {
                         </Wrapper>
                         <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                            <span>{data.likes[0]}</span>
+                            <span>{data.likeCnt}</span>
                         </Wrapper>
-                        <RecruitmentStatus recruitment={data?.recruitStatus}>
-                            {data?.recruitStatus===true ? '모집 중':'모집 완료'}
+                        <RecruitmentStatus recruitment={recruitMentBoolean}>
+                            {recruitMentBoolean===true ? '모집 중':'모집 완료'}
                         </RecruitmentStatus>
                     </Reaction>
                 </Info>
                 <Stack>
                     <div>
-                        {arr.map((i:any,idx:number)=>(
-                            <StackName key={idx}>{i}</StackName>
+                        {data.techStacks.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i.teckStack}</StackName>
                         ))}
                     </div>
                     <div>
-                        {data?.recruitField?.map((i:any,idx:number)=>(
-                            <StackName id='part' key={idx}>{i}</StackName>
+                        {subjects.map((i:any,idx:number)=>(
+                            <StackName id='part' key={idx}>{i.subject}</StackName>
                         ))}
                     </div>
                 </Stack>
                 <Create>
-                    <span>{`작성자 : ${data.writer}`}</span>
-                    <span>{`작성일 : ${data.createdDate}`}</span>
+                    <span>{`작성자 : ${data.memberNickName}`}</span>
+                    <span>{`작성일 : ${data.createDate}`}</span>
                 </Create>
             </Content>
         </Layout>
@@ -67,7 +124,7 @@ const Layout = styled.div`
     filter: drop-shadow(-4px 4px 40px rgba(0, 0, 0, 0.25));
 `;
 
-const BookMark = styled.div`
+const Wish = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -122,6 +179,7 @@ const StackName = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 22px;
     padding: 2px 15px;
     padding-top: 4px;
     box-sizing: border-box;

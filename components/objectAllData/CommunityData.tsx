@@ -3,7 +3,7 @@ interface FindProjectObjectData{
     category: {};
     views: number;
     likes: any[];
-    bookmarks: boolean;
+    Wishs: boolean;
     title: string;
     subTitle: string;
     writer: string;
@@ -18,7 +18,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {1:'freeBoard'},
         views: 1234,
         likes: [1234, true],
-        bookmarks: true,
+        Wishs: true,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -29,7 +29,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {1:'freeBoard'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: false,
+        Wishs: false,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -40,7 +40,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {1:'freeBoard'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: false,
+        Wishs: false,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -51,7 +51,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {2:'QnA'},
         views: 1234,
         likes: [1234, true],
-        bookmarks: true,
+        Wishs: true,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -62,7 +62,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {2:'QnA'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: false,
+        Wishs: false,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -73,7 +73,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {2:'QnA'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: true,
+        Wishs: true,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -84,7 +84,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {3: 'counseling'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: true,
+        Wishs: true,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -95,7 +95,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {3: 'counseling'},
         views: 1234,
         likes: [1234, true],
-        bookmarks: true,
+        Wishs: true,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',
@@ -106,7 +106,7 @@ export const DummyData: FindProjectObjectData[] = [
         category: {3: 'counseling'},
         views: 1234,
         likes: [1234, false],
-        bookmarks: false,
+        Wishs: false,
         title: 'GETCODE 커뮤니티 게시글 제목',
         subTitle: 'GETCODE 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용 커뮤니티 게시글 내용',
         writer: '닉네임',

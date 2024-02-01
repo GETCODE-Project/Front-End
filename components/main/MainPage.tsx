@@ -3,7 +3,8 @@ import styled from "styled-components";
 import {PopularityObjectForm} from "@/components/project/ObjectForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import {PopularityDummyData} from '@/components/dummy/ProjectData';
+import {getObjectData} from '@/components/objectAllData/ProjectData';
+import { GET } from "@/pages/api/axios";
 
 const MainPage = () => {
 
@@ -12,39 +13,54 @@ const MainPage = () => {
     
     const [ObjectForm, setObjectForm] = useState(null);
     const [ObjectData, setObjectData] = useState<[]>([]);
-    const [pageName, setPageName] = useState<string>('project');
+    const [routePageName, setroutePageName] = useState<string>('project');
     const [dataName, setDataName] = useState<string>('ProjectData');
 
     const dotArr: any[] = [1,2,3,4,5];
 
     const [popularityProjectData, setPopularityProjectData] = useState<any[]>([]);
 
-    const handlePageName = (pageName:string, dataName:string) => {
-        setPageName(pageName);
+    /** 프로젝트 게시물 전체 목록 불러오기 GET 파라미터 데이터 */
+    //year,keyword,size,page,sort,subject,techStack
+    const [year, setYear] = useState<string>('');
+    const [keyword, setKeyword] = useState<string>('');
+    const [size, setSize] = useState<number>(10);
+    const [page, setPage] = useState<number>(1);
+    const [sort, setSort] = useState<string>('');
+    const [subject, setSubject] = useState<string>('');
+    const [techStack, setTechStack] = useState<string>('');
+
+    const handleroutePageName = (routePageName:string, dataName:string) => {
+        setroutePageName(routePageName);
         setDataName(dataName);
     }
 
-    useEffect(() => {
-        import(`@/components/${pageName}/ObjectForm`)
-        .then(module => {pageName=='project'?
-            setObjectForm(()=>module.ObjectForm)
-        : setObjectForm(()=>module.default)})
-        .catch(error => console.error(error))
-    },[pageName]);
+/** [TODO] 데이터연결 ----------------------------------------------------------------
+    // /** 페이지 별 객체 폼(UI) 불러오기 */
+    // useEffect(() => {
+    //     import(`@/components/${routePageName}/ObjectForm`)
+    //     .then(module => {routePageName=='project'?
+    //         setObjectForm(()=>module.ObjectForm)
+    //     : setObjectForm(()=>module.default)})
+    //     .catch(error => console.error(error))
+    // },[routePageName]);
 
-    useEffect(() => {
-        import(`@/components/dummy/${dataName}`)
-        .then(module =>setObjectData(()=>module.DummyData))
-        .catch(error => console.error(error))
-    },[dataName]);
-
-    useEffect(()=>{
-        let tumpArray:any[] = [...PopularityDummyData];
-        tumpArray.sort((a,b)=>b.likes - a.likes);
-        tumpArray.slice(0,9);
-        setPopularityProjectData(tumpArray);
-    },[dataName])
-
+    // /** 페이지 별 더미 데이터 불러오기 */
+    // useEffect(() => {
+    //     import(`@/components/objectAllData/${dataName}`)
+    //     .then(module =>(
+    //         module.getObjectData(
+    //             year,keyword,size,page,sort,subject,techStack,setObjectData
+    //         )
+    //     ))
+    //     .catch(error => console.error(error))
+    // },[dataName]);
+/**--------------------------------------------------------------------------------*/
+// useEffect(()=>{
+//     const test = localStorage.getItem('accessToken');
+//     console.log(test,'test');
+//     localStorage.removeItem('accessToken');
+//   },[]);
     return (
         <BackLayout>
             <Layout>
@@ -66,12 +82,12 @@ const MainPage = () => {
                 </TopContents>
                 <BottomContents>
                     <Title>
-                        <span onClick={()=>handlePageName('project','ProjectData')}>프로젝트 |</span>
-                        <span onClick={()=>handlePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
-                        <span onClick={()=>handlePageName('findStudy','FindStudyData')}>스터디 모집</span>
+                        <span onClick={()=>handleroutePageName('project','ProjectData')}>프로젝트 |</span>
+                        <span onClick={()=>handleroutePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
+                        <span onClick={()=>handleroutePageName('findStudy','FindStudyData')}>스터디 모집</span>
                     </Title>
-                    <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
-                    <ObjectList ref={objectListRef} pageName={pageName}>
+                    <MoreViewButton onClick={()=>router.push(`/${routePageName}`)}>더보기</MoreViewButton>
+                    <ObjectList ref={objectListRef} routePageName={routePageName}>
                         {ObjectData?.map((i:any,idx:number)=>(
                             ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                         ))}
@@ -93,14 +109,14 @@ const BackLayout = styled.div`
 `;
 
 const Layout = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1000px;
 
-    ${media.tablet || media.mobile}{
-        width: 100%;
-    }
+  ${media.tablet || media.mobile} {
+    width: 100%;
+  }
 `;
 
 const TopContents = styled.div`
@@ -113,43 +129,43 @@ const TopContents = styled.div`
     box-sizing: border-box;
     overflow: hidden;
 
-    background-color: #ff4b13;
+  background-color: #ff4b13;
 `;
 
 const Contents = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
 
-    & #topObject{
-        flex-wrap: nowrap;
-    }
+  & #topObject {
+    flex-wrap: nowrap;
+  }
 `;
 const Title = styled.div`
-    & > span{
-        padding: 0 5px;
-        box-sizing: border-box;
-
-        cursor: pointer;
-        &:hover{
-            font-weight: 700;
-        }
-    }
-`;
-const MoreViewButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 32px;
+  & > span {
+    padding: 0 5px;
     box-sizing: border-box;
 
-    background-color: #000;
-
-    color: #fff;
-
     cursor: pointer;
+    &:hover {
+      font-weight: 700;
+    }
+  }
+`;
+const MoreViewButton = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 32px;
+  box-sizing: border-box;
+  text-decoration: none;
+  background-color: #000;
+
+  color: #fff;
+
+  cursor: pointer;
 `;
 const ObjectWrapper = styled.div`
     display: flex;
@@ -158,38 +174,38 @@ const ObjectWrapper = styled.div`
     flex-wrap: wrap;
 `;
 const PageDots = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
 `;
 const Dot = styled.div`
-    width: 17px;
-    aspect-ratio: 1/1;
+  width: 17px;
+  aspect-ratio: 1/1;
 
-    border-radius: 100px;
-    background-color: #fff;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 100px;
+  background-color: #fff;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
-    cursor: pointer;
-    &:hover{
-        background-color: #ff3d00;
-    }
+  cursor: pointer;
+  &:hover {
+    background-color: #ff3d00;
+  }
 `;
 
 const BottomContents = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-    width: 100%;
-    padding: 45px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  width: 100%;
+  padding: 45px 0;
 `;
 
-const ObjectList = styled.div<{pageName:string}>`
+const ObjectList = styled.div<{routePageName:string}>`
     display: flex;
-    flex-direction: ${({pageName})=>(pageName='project'?'unset':'column')};
+    flex-direction: ${({routePageName})=>(routePageName='project'?'unset':'column')};
     flex-wrap: wrap;
     align-items: center;
     width: 100%;
