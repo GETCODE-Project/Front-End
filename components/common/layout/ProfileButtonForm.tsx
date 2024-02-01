@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import styled from "styled-components";
 
-const ProfileButtonForm = ({status, session, isToggle, setIsToggle}:any) => {
+const ProfileButtonForm = ({isLogin, userInfo, isToggle, setIsToggle}:any) => {
 
     const router = useRouter();
 
     return(
         <Layout>
-            {status == 'authenticated' ?
+            {isLogin ?
             <>
                 <Wrapper onClick={()=>setIsToggle(!isToggle)}>
                     <Profile>
@@ -17,7 +18,7 @@ const ProfileButtonForm = ({status, session, isToggle, setIsToggle}:any) => {
                             <path d="M7 22C7 19.1875 10.75 19.1875 12.625 17.3125C13.5625 16.375 10.75 16.375 10.75 11.6875C10.75 8.56281 11.9997 7 14.5 7C17.0003 7 18.25 8.56281 18.25 11.6875C18.25 16.375 15.4375 16.375 16.375 17.3125C18.25 19.1875 22 19.1875 22 22" stroke="#BEBEBE" strokeLinecap="round"/>
                         </svg>
                     </Profile>
-                    <span style={{width:'calc(100% - 30px)'}}>닉네임 님</span>
+                    <span style={{width:'calc(100% - 30px)'}}>{`${userInfo?.nickname} 님`}</span>
                 </Wrapper>
             </>
             :

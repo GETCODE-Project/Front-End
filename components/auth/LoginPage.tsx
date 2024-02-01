@@ -5,6 +5,7 @@ import { POST } from '@/pages/api/axios';
 import { useEffect, useState } from "react";
 import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
+// import { useAuth } from "@/components/auth/authContexts/AuthContexts";
 
 const LoginPage = () => {
 
@@ -13,16 +14,20 @@ const LoginPage = () => {
 
     const [userEmail, setUserEmail] = useState<string>('');
     const [userPassword, setUserPassword] = useState<string>('');
+    // const { setAccessToken, setRefreshToken } = useAuth();
 
-    /** [POST] Login(Email,Password) */
     const handleLogin = async() => {
-        await POST('',{
+        await POST('/api/auth/login',{
             email: userEmail,
             password: userPassword,
         }).then((res)=>{
-            localStorage.setItem('accessToken', res.data.accessToken);
-            localStorage.setItem('refreshToken', res.data.refreshToken);
-            console.log(res.data);
+            localStorage.setItem('accessToken',res.data.accessToken);
+            localStorage.setItem('refreshToken',res.data.refreshToken);
+
+            // setAccessToken(res.data.accessToken);
+            // setRefreshToken(res.data.refreshToken);
+
+            router.push('/');
         }).catch((err)=>{
             console.log(err);
             alert(err);

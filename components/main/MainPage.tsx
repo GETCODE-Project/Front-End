@@ -4,6 +4,7 @@ import {PopularityObjectForm} from "@/components/project/ObjectForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import {getObjectData} from '@/components/objectAllData/ProjectData';
+import { GET } from "@/pages/api/axios";
 
 const MainPage = () => {
 
@@ -28,42 +29,38 @@ const MainPage = () => {
     const [sort, setSort] = useState<string>('');
     const [subject, setSubject] = useState<string>('');
     const [techStack, setTechStack] = useState<string>('');
+
     const handleroutePageName = (routePageName:string, dataName:string) => {
         setroutePageName(routePageName);
         setDataName(dataName);
     }
 
-    const getObjectData = async () => {
-        
-    }
+/** [TODO] 데이터연결 ----------------------------------------------------------------
+    // /** 페이지 별 객체 폼(UI) 불러오기 */
+    // useEffect(() => {
+    //     import(`@/components/${routePageName}/ObjectForm`)
+    //     .then(module => {routePageName=='project'?
+    //         setObjectForm(()=>module.ObjectForm)
+    //     : setObjectForm(()=>module.default)})
+    //     .catch(error => console.error(error))
+    // },[routePageName]);
 
-    /** 페이지 별 객체 폼(UI) 불러오기 */
-    useEffect(() => {
-        import(`@/components/${routePageName}/ObjectForm`)
-        .then(module => {routePageName=='project'?
-            setObjectForm(()=>module.ObjectForm)
-        : setObjectForm(()=>module.default)})
-        .catch(error => console.error(error))
-    },[routePageName]);
-
-    /** 페이지 별 더미 데이터 불러오기 */
-    useEffect(() => {
-        import(`@/components/objectAllData/${dataName}`)
-        .then(module =>(
-            module.getObjectData(
-                year,keyword,size,page,sort,subject,techStack,setObjectData
-            )
-        ))
-        .catch(error => console.error(error))
-    },[dataName]);
-
-    // useEffect(()=>{
-    //     let tumpArray:any[] = [...PopularityDummyData];
-    //     tumpArray.sort((a,b)=>b.likes - a.likes);
-    //     tumpArray.slice(0,9);
-    //     setPopularityProjectData(tumpArray);
-    // },[dataName])
-
+    // /** 페이지 별 더미 데이터 불러오기 */
+    // useEffect(() => {
+    //     import(`@/components/objectAllData/${dataName}`)
+    //     .then(module =>(
+    //         module.getObjectData(
+    //             year,keyword,size,page,sort,subject,techStack,setObjectData
+    //         )
+    //     ))
+    //     .catch(error => console.error(error))
+    // },[dataName]);
+/**--------------------------------------------------------------------------------*/
+// useEffect(()=>{
+//     const test = localStorage.getItem('accessToken');
+//     console.log(test,'test');
+//     localStorage.removeItem('accessToken');
+//   },[]);
     return (
         <BackLayout>
             <Layout>

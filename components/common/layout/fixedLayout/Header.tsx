@@ -5,22 +5,48 @@ import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { GET, PATCH } from '@/pages/api/axios';
 
 const Header = () => {
   const router = useRouter();
 
-  const { data: session, status} = useSession();
+  // const { data: session, status} = useSession();
   const [isToggle, setIsToggle] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [userInfo, setUserinfo] = useState<any>();
 
-  const test = () => {
-    if(session){
-      console.log(session.user);
-    }
+  const isLoginStatus = () => {
+      if(localStorage.getItem('accessToken')!==null){
+          setIsLogin(true);
+          getUserInfo();
+      }
+      else{
+          setIsLogin(false);
+      }
   }
 
-  useEffect(() => {
-    test();
+  const handleLogout = async() => {
+    // signOut({callbackUrl:`/`});
+    await PATCH(`/api/logout`)
+    .then((res)=>{
+      console.log(res);
+    })
+    .catch((err) => console.error(err));
+  }
+
+  const getUserInfo = async() => {
+      await GET(`/api/userInfo`)
+      .then((res)=>{
+          setUserinfo(res.data);      
+      })
+      .catch((err)=>console.error(err));
+  }
+
+  useEffect(()=>{
+      isLoginStatus();
   },[]);
+  
+
 
   return(  
     <ContainerDiv>
@@ -33,11 +59,12 @@ const Header = () => {
                 <WishSVG/>
                 <span style={{color:'#3C3C3C'}}>내 찜</span>
           </Wish>
-          <ProfileButtonForm status={status} sesson={session} isToggle={isToggle} setIsToggle={setIsToggle}/>
+          <ProfileButtonForm isLogin={isLogin} userInfo={userInfo} isToggle={isToggle} setIsToggle={setIsToggle}/>
+          
         </MenuDiv>
         {isToggle?
           <MenuCategory>
-            <Link onClick={()=>signOut({callbackUrl:`/`})}>로그아웃</Link>
+            <Link onClick={handleLogout}>로그아웃</Link>
             <Link onClick={()=>router.push('/my')}>마이페이지</Link>
           </MenuCategory>
         :<></>
