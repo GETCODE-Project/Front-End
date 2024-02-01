@@ -3,9 +3,9 @@ import ProjectPage from "@/components/project/ProjectPage";
 
 const ProjectPost: React.FC = () => {
   return (
-    <FixedLayout fontWeight={1}>
-        <ProjectPage/>
-    </FixedLayout> 
+    <FixedLayout menuClicked={1}>
+      <ProjectPage />
+    </FixedLayout>
   );
 };
 

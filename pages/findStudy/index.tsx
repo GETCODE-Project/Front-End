@@ -4,10 +4,9 @@ import FindStudyPage from "@/components/findStudy/FindStudyPage";
 export default function FindStudy() {
   return (
     <div>
-      <FixedLayout fontWeight={3}>
-        <FindStudyPage/>
-      </FixedLayout> 
+      <FixedLayout menuClicked={3}>
+        <FindStudyPage />
+      </FixedLayout>
     </div>
   );
-
 }

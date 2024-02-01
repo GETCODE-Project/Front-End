@@ -1,20 +1,18 @@
 import styled from "styled-components";
-import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react'
-import { POST } from '@/pages/api/axios';
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import { POST } from "@/pages/api/axios";
 import { useEffect, useState } from "react";
 import InputForm from "@/components/auth/authForm/InputForm";
 import AuthForm from "@/components/auth/authForm/AuthForm";
 // import { useAuth } from "@/components/auth/authContexts/AuthContexts";
 
 const LoginPage = () => {
-
-    const router = useRouter();
-    const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session } = useSession();
 
     const [userEmail, setUserEmail] = useState<string>('');
     const [userPassword, setUserPassword] = useState<string>('');
-    // const { setAccessToken, setRefreshToken } = useAuth();
 
     const handleLogin = async() => {
         await POST('/api/auth/login',{
@@ -44,26 +42,6 @@ const LoginPage = () => {
         const target = e.target.value;
         setUserPassword(target);
     }
-
-    /** 버튼 클릭 이벤트 함수 */
-    const handleSubmit = async (e:any) => {
-        e.preventDefault();
-        const result = await signIn('credentials',{
-            redirect: false,
-            userEmail,
-            userPassword
-        })
-        if (result && !result.error){
-            //로그인 성공 처리
-        }
-        else{
-            //에러 처리
-        }
-    }
-
-    useEffect(() => {
-        // console.log(userEmail);
-    },[userEmail]);
 
     return(
         <AuthForm
@@ -96,12 +74,12 @@ const LoginPage = () => {
 export default LoginPage;
 
 const ForgetPassWord = styled.div`
-    display: flex;
-    justify-content: end;
-    width: 100%;
+  display: flex;
+  justify-content: end;
+  width: 100%;
 
-    color: #ff4b13;
-    font-size: 0.75rem;
+  color: #ff4b13;
+  font-size: 0.75rem;
 
-    cursor: pointer;
+  cursor: pointer;
 `;

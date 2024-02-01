@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import styled from "styled-components";
+import { media } from "@/styles/mediaQuery";
 
 const ProfileButtonForm = ({isLogin, userInfo, isToggle, setIsToggle}:any) => {
 
@@ -31,44 +32,49 @@ const ProfileButtonForm = ({isLogin, userInfo, isToggle, setIsToggle}:any) => {
 export default ProfileButtonForm;
 
 const Layout = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 145px;
-    height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 145px;
+  height: 40px;
 
-    border-radius: 100px;
-    background-color: #ff993a;
+  border-radius: 100px;
+  background-color: #ff993a;
 
-    font-size: 1rem;
-    text-align: center;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1rem;
 
-    #notLoginText{
-        color: #FFF1E4;
-    }
+  #notLoginText {
+    color: #fff1e4;
+  }
 
-    cursor: pointer;
+  cursor: pointer;
+  ${media.mobile_550} {
+    width: 100px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
 `;
 
 const Wrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    width: 100%;
-    padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  padding: 0 8px;
 `;
 
 const Profile = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    aspect-ratio: 1/1;
-    overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  aspect-ratio: 1/1;
+  overflow: hidden;
 
-    border-radius: 100px;
-    border: 1px solid #848383;
+  border-radius: 100px;
+  border: 1px solid #848383;
 `;

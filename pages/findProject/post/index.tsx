@@ -1,7 +1,8 @@
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
-import PostLayout from "@/components/common/layout/PostLayout";
+import FindProjectPostPage from "@/components/findProject/post/FindProjectPostPage";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+
 
 const FindProjectPost: React.FC = () => {
   
@@ -40,7 +41,7 @@ const FindProjectPost: React.FC = () => {
   
   return (
     <FixedLayout>
-      <PostLayout routePageName="findProject"/>
+      <FindProjectPostPage />
     </FixedLayout>
   );
 };

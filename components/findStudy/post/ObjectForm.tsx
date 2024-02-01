@@ -1,137 +1,249 @@
 import styled from "styled-components";
-import RoundBox from "@/components/common/selectObject/SelectRoundBox";
+import SelectRoundBox from "@/components/common/selectObject/SelectRoundBox";
 import { media } from "@/styles/mediaQuery";
-import Toggle from "@/components/common/selectObject/SelectToggle";
+import SelectToggle from "@/components/common/selectObject/SelectToggle";
 import React, { useState, useEffect } from "react";
-import Link from "@/components/common/selectObject/SelectSourceLink"
+import SourceLink from "@/components/common/selectObject/SelectSourceLink";
 import ToggleRoundBox from "@/components/common/selectObject/SelectToggleBox";
 import SelectLocation from "@/components/common/selectObject/SelectLocation";
-export const SelectStatus = () => {
-  const [isClicked, setIsClicked] = useState<boolean>(false)
-  const backgroundColor = ["white", "#D9D9D9"]
+import { POST, GET } from "@/pages/api/axios";
+
+interface ObjectFormProps {
+  status: boolean;
+  setStatus: (newValue: boolean) => void;
+}
+
+export const SelectStatus = ({ status, setStatus }: ObjectFormProps) => {
+  const backgroundColor = ["white", "#00FF1A"];
+
   return (
-    <div style={{ display: "flex", flexDirection: "row"}}>
-      <RoundBox text="모집 여부" />
-      <RoundBox text="모집 중" backgroundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-      <RoundBox text="모집 완료" backgroundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
+    <MobileLayaout>
+      <Query>
+        <SelectRoundBox text="모집 여부" />
+      </Query>
+      <SelectRoundBox
+        text="모집 중"
+        backgroundcolor={backgroundColor[Number(status)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setStatus(true);
+        }}
+      />
+      <SelectRoundBox
+        text="모집 완료"
+        backgroundcolor={backgroundColor[Number(!status)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setStatus(false);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
+
+interface SelectPartProps {
+  part: string[];
+  setPart: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export const SelectPart = ({ part, setPart }: SelectPartProps) => {
+  const InputSubject = [
+    "모집 분야를 선택하세요",
+    "분야1",
+    "분야2",
+    "분야3",
+    "분야4",
+    "분야5",
+  ];
+  const handleInput = (value: string) => {
+    if (value !== "모집 분야를 선택하세요" && !part.includes(value)) {
+      setPart((prev) => [...prev, value]);
+    }
+  };
+  const deleteTopic = (value: string) => {
+    const newTopic = part.filter((part) => part !== value);
+    setPart(newTopic);
+  };
+
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="모집 분야" />
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <SelectToggle
+          onCreate={(value) => {
+            handleInput(value);
+          }}
+          options={InputSubject}
+        />
+        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
+          {part.map((value) => (
+            <ToggleRoundBox
+              key={value}
+              text={value}
+              deleteTopic={() => {
+                deleteTopic(value);
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </MobileLayaout>
+  );
+};
+
+interface SelectOnOffProps {
+  onoff: boolean;
+  setOnoff: (newValue: boolean) => void;
+}
+
+export const SelectOnOff = ({ onoff, setOnoff }: SelectOnOffProps) => {
+  const backgroundColor = ["white", "#00FF1A"];
+  return (
+    <MobileLayaout>
+      <Query>
+        <SelectRoundBox text="온/오프라인" />
+      </Query>
+      <SelectRoundBox
+        text="온라인"
+        backgroundcolor={backgroundColor[Number(onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(true);
+        }}
+      />
+      <SelectRoundBox
+        text="오프라인"
+        backgroundcolor={backgroundColor[Number(!onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(false);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
+
+interface LinkProps {
+  linkType: string;
+  value: string;
+}
+interface AddLinkProps {
+  allLink: LinkProps[];
+  setAllLink: (newValue: LinkProps[]) => void;
+}
+
+export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
+  return (
+    <MobileLayaout>
+      <SelectRoundBox text="신청 방법" />
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="email"
+          color="#5200FF"
+          pattern={/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/}
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Phone"
+          color="#54E78F"
+          pattern={/[0-9]{3}-[0-9]{3}-[0-9]{4}/}
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Open-Kakao"
+          color="#FFA800"
+          fontSize="14px"
+        />
+        <SourceLink
+          allLink={allLink}
+          setAllLink={setAllLink}
+          text="Form"
+          color="#FF451D"
+        />
+      </div>
+    </MobileLayaout>
+  );
+};
+
+interface PostProps {
+  post: any;
+}
+export const TextArea = ({ post }: PostProps) => {
+  return (
+    <div>
+      <TextAreaDiv />
+      <Hr />
+      <div
+        style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}
+      >
+        <Button onClick={post} color="white" backgroundcolor="#FF4B13">
+          등록
+        </Button>
+        <Button color="#FF4B13" backgroundcolor="white">
+          삭제
+        </Button>
+      </div>
+      <Hr />
     </div>
   );
 };
 
-
-  interface OptionItem {
-    key: number;
-    value: string;
-  }
-
-  export  const SelectPart = () => {
-
-    const optionSubject = [
-      { key: 0, value: "분야을 선택하세요" },
-      { key: 1, value: "분야1" },
-      { key: 2, value: "분야2" },
-      { key: 3, value: "분야3" },
-      { key: 4, value: "분야4" },
-      { key: 5, value: "분야5" },
-    ];
-    const [topics, setTopics] = useState<OptionItem[]>([]);
-
-    const handleInput = (key:number, value: string) => {
-      const inputText = {key: key, value: value}; 
-      if (key !== 0 && !(topics.some((topic) => topic.key === key))) {
-        setTopics((topic) => [...topic, inputText]);
-      }
-    }
-
-    const deleteTopic = (key:number)=>{
-      const newTopics = []
-      for(let i=0; i<topics.length; i++){
-        if(topics[i].key !== key){
-          newTopics.push(topics[i]);
-        }
-      }        
-      setTopics(newTopics);
-    }
-
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="모집 분야" />
-        <div style={{ display: "flex", flexWrap:"wrap",}}>
-        <Toggle onCreate={(key, value)=>{handleInput(key, value)}} options={optionSubject} />
-        <div style={{display:"flex",  width: "100%", flexWrap:"wrap"}}>
-        {topics.map((topic) => (
-          <ToggleRoundBox key={topic.key} text={topic.value} deleteTopic={()=>{deleteTopic(topic.key)}}/>
-        ))}</div>
-        </div>
-      </div>
-    );
-  };
-
-
-  export const SelectWheretoMeet = () => {
-    const [isClicked, setIsClicked] = useState<boolean>(false)
-    const backgroundColor = ["white", "#D9D9D9"]
-    return (
-      <div style={{ display: "flex", flexDirection: "row"}}>
-        <RoundBox text="온/오프라인" />
-        <RoundBox text="온라인" backgroundcolor={backgroundColor[Number(!isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(false)}}/>
-        <RoundBox text="오프라인" backgroundcolor={backgroundColor[Number(isClicked)]} border="black" color="black" fontWeight={500} cursor={"pointer"} onClick={()=>{setIsClicked(true)}}/>
-
-      </div>
-    );
-  };
-export  const SelectTech = () => {
-    const [option, selectOption] = useState("선택 해제");
-    const optionSubject = [
-      { key: 1, value: "기술1" },
-      { key: 2, value: "기술2" },
-    ];
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="기술 스택" />
-      </div>
-    );
-  };
-
-
-  export  const WishPart = () => {
-    const [option, selectOption] = useState("선택 해제");
-    const optionSubject = [
-      { key: 1, value: "기술1" },
-      { key: 2, value: "기술2" },
-    ];
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="모집 파트" />
-      </div>
-    );
-  };
-
-export  const AddLink = () => {
-
-    return (
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <RoundBox text="신청 방법" />
-        <div style={{ display: "flex", flexDirection: "column", gap:"10px" }}>
-        <Link text="E-mail" color="#5200FF" type="email"/>
-          <Link text="Phone" color="#54E78F" type="tel" />
-          <Link text="Open-Kakao" color="#FFA800" fontSize="14px"/>
-          <Link text="Form" color="#FF451D"/>
-        </div>
-      </div>
-    );
-  }
-
-
-const ObjectForm = () =>{
-  return(
-    <>
-        <SelectStatus />
-        <SelectPart />
-        <SelectWheretoMeet />
-        <SelectLocation text="스터디 지역" />
-        <AddLink />
-    </>
-  );
+interface ButtonProps {
+  color: string;
+  backgroundcolor: string;
 }
-export default ObjectForm;
+const TextAreaDiv = styled.textarea`
+  height: 500px;
+  width: calc(100% - 100px);
+  margin: 50px;
+  ${media.mobile_550} {
+    display: flex;
+    width: 90%;
+    margin: 50px auto;
+  }
+`;
+const Button = styled.button<ButtonProps>`
+  width: 100px;
+  height: 23px;
+  background-color: ${(props) => props.backgroundcolor};
+  border: none;
+  color: ${(props) => props.color};
+  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid ${(props) => props.color};
+`;
+
+const Hr = styled.hr`
+  width: 100%;
+  margin: 30px 0;
+`;
+const MobileLayaout = styled.div`
+  display: flex;
+  ${media.mobile} {
+    width: 330px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+`;
+
+const Query = styled.div`
+  ${media.mobile} {
+    width: 100%;
+  }
+`;

@@ -1,10 +1,11 @@
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
-import PostLayout from "@/components/common/layout/PostLayout";
+import ProjectPostPage from "@/components/project/post/ProjectPostPage";
+
 
 const ProjectPost = () => {
   return (
     <FixedLayout>
-      <PostLayout routePageName="project"/>
+      <ProjectPostPage />
     </FixedLayout>
   );
 };

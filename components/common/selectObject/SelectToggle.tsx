@@ -1,31 +1,22 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { media } from "@/styles/mediaQuery";
+type onCreateProps = (value: string) => void;
 
-interface Options {
-  key: number;
-  value: string;
-}
-type onCreateProps = (key: number, value: string) => void;
 interface OptionProps {
-  options: Options[];
-  // onCreate?: React.Dispatch<React.SetStateAction<string>>;
+  options: string[];
   onCreate?: onCreateProps;
 }
-
-
 
 const SelectToggle: React.FC<OptionProps> = ({ options, onCreate }) => {
   return (
     <Select
-      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>{
-        onCreate?.(Number(event.target.selectedOptions[0]?.id), event.target.value )
-      }
-      }
+      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+        onCreate?.(e.target.value);
+      }}
     >
       {options.map((option) => (
-        <Option key={option.key} value={option.value} id={String(option.key)}>
-          {option.value}
-        </Option>
+        <Option key={option}>{option}</Option>
       ))}
     </Select>
   );
@@ -38,9 +29,13 @@ const Option = styled.option`
 `;
 
 const Select = styled.select`
+  display: flex;
   width: 364px;
   height: 28px;
   border-radius: 30px;
   border: 1px solid #3c3c3c;
   background: #fff;
+  ${media.mobile} {
+    width: 330px;
+  }
 `;

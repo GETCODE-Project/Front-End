@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosRequestConfig } from 'axios';
+import axios, { Axios, AxiosRequestConfig } from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -42,11 +42,11 @@ axios.interceptors.response.use((response) => {
 })
 
 interface AxiosType {
-    url: string;
-    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
-    body?: object;
-    params?: object;
-    log?: boolean;
+  url: string;
+  method: "get" | "post" | "put" | "delete" | "patch";
+  body?: object;
+  params?: object;
+  log?: boolean;
 }
 
 const axiosWrap = async ({url,method, body, params, log}:AxiosType) => {
@@ -70,14 +70,19 @@ const axiosWrap = async ({url,method, body, params, log}:AxiosType) => {
     }
 };
 
-export const GET = (url: string, params?: {}) => axiosWrap({ url, method: "get", params });
+export const GET = (url: string, params?: {}) =>
+  axiosWrap({ url, method: "get", params });
 
-export const POST = (url: string, body?: {}, params?: {}) => axiosWrap({ url, method: "post", body, params });
+export const POST = (url: string, body?: {}, params?: {}) =>
+  axiosWrap({ url, method: "post", body, params });
 
-export const PUT = (url: string, body?: {}, params?: {}) => axiosWrap({ url, method: "put", body, params });
+export const PUT = (url: string, body?: {}, params?: {}) =>
+  axiosWrap({ url, method: "put", body, params });
 
-export const PATCH = (url: string, body?: {}, params?: {}) => axiosWrap({ url, method: "patch", body, params });
+export const PATCH = (url: string, body?: {}, params?: {}) =>
+  axiosWrap({ url, method: "patch", body, params });
 
 export const DELETE = (url: string) => axiosWrap({ url, method: "delete" });
 
-export const LOG = (url: string, body?: {}, params?: {}) => axiosWrap({ url, method: "post", body, params, log: true });
+export const LOG = (url: string, body?: {}, params?: {}) =>
+  axiosWrap({ url, method: "post", body, params, log: true });
