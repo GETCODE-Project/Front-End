@@ -1,8 +1,15 @@
 import axios, { Axios, AxiosRequestConfig } from "axios";
 
+/** ------------------------------------------------------------- */
+/** Axios라이브러리 사용, API 관리 훅 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] 응답 인터셉터 추가 - refresh토큰으로 access토큰 새로 발급받기
+ */
+
 axios.defaults.withCredentials = true;
 
-// 요청 인터셉터 추가
+/** 요청 인터셉터 추가 */ 
 axios.interceptors.request.use((config) => {
     const accessToken = localStorage.getItem('accessToken');
     const refreshToken = localStorage.getItem('refreshToken');
@@ -15,7 +22,7 @@ axios.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-// 응답 인터셉터 추가
+/** 응답 인터셉터 추가 */ 
 axios.interceptors.response.use((response) => {
     return response;
 }, async (error) => {
@@ -41,6 +48,7 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(error);
 })
 
+/** axiosWrap */
 interface AxiosType {
   url: string;
   method: "get" | "post" | "put" | "delete" | "patch";
