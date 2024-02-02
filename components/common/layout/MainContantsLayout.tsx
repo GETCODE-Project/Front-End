@@ -101,7 +101,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         import(`@/components/${pageName}/ObjectForm`)
         .then(module => {pageName=='project'?
             setObjectForm(()=>module.ObjectForm)
-        : setObjectForm(()=>module.default)})
+        : setObjectForm(()=>module.default)
+        })
         .catch(error => console.error(error))
     },[pageName, setObjectData]);
 
