@@ -8,7 +8,7 @@ const ContentsForm = ({id}:any) => {
         <BackLayout>
             <Layout>
                 <MainContantsLayout
-                    // routePageName={`community/${id}`}
+                    // pageName={`community/${id}`}
                     pageName={`community`}
                     title="커뮤니티"
                     subTitle="자유게시판"
