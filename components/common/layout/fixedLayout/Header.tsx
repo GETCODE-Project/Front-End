@@ -31,7 +31,7 @@ const Header = () => {
   const handleLogout = async() => {
     await PATCH(`/api/logout`)
     .then((res)=>{
-      console.log(res);
+      // console.log(res);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       router.reload();
