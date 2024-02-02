@@ -2,20 +2,25 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 interface AlertProps{
-    setIsLoginAlertOn?: any;
+    setIsAlertOn?: any;
+    notice?: React.ReactNode | string;
+    yesButtonFC?: () => void;
+    noButtonFC?: () => void;
 }
 
-const Alert = ({setIsLoginAlertOn}:AlertProps) => {
+const Alert = ({setIsAlertOn, notice, yesButtonFC, noButtonFC}:AlertProps) => {
 
     const router = useRouter();
+
+    console.log(notice);
 
     return(
         <BackLayout>
             <Layout>
-                <Notice>로그인이 필요한 서비스입니다.<br/>로그인 하시겠습니까?</Notice>
+                <Notice>{notice}</Notice>
                 <ButtonWrapper>
-                    <Button onClick={()=>router.push('/auth/login')}>확인</Button>
-                    <Button onClick={()=>setIsLoginAlertOn(false)}>취소</Button>
+                    <Button onClick={yesButtonFC}>확인</Button>
+                    <Button onClick={noButtonFC}>취소</Button>
                 </ButtonWrapper>
             </Layout>
         </BackLayout>
