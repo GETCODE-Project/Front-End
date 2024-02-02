@@ -1,10 +1,16 @@
+import { POST } from "@/pages/api/axios";
 import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+/** ------------------------------------------------------------- */
+/** 프로젝트모집 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+
 interface ObjectFormProps{
     style?:any;
     data?: any;
+    setIsLoginAlertOn?: any;
 }
 /** 불러온 Respons 데이터 형식 참고 */
 //[TODO] 모집파트 추가해야함,?
@@ -32,15 +38,57 @@ interface FindProjectObjectData{
     checkLike: boolean|null;
     checkWish: boolean|null;
 }
-/** ------------------------------------------------------------- */
-/** 프로젝트모집 게시물 객체 폼 */
-/** ------------------------------------------------------------- */
-const ObjectForm = ({style,data}:ObjectFormProps) => {
+
+const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
+
+    /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
+
+    /** 해당 프로젝트모집 게시물의 주제,기술 배열,모집중여부 */
     const subjects:any[] = data.subjects;
     const techStacks:any[] = [...data.techStacks];
     const [recruitMentBoolean, setRecruitMentBoolean] = useState<boolean>(false);
+
+    /** 좋아요 버튼 클릭 이벤트 */
+    const handleHeartClick = async() => {
+        await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/like`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            if(res.data==='프로젝트 좋아요 성공'){
+                setIsHartOn(true);
+            }if(res.data==='프로젝트 좋아요 삭제 성공'){
+                setIsHartOn(false);
+            }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+            }
+        });
+    }
+    /** 찜하기 버튼 클릭 이벤트 */
+    const handleWishClick = async() => {
+        await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/wish`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            if(res.data==='프로젝트 좋아요 성공'){
+                setIsWishOn(true);
+            }if(res.data==='프로젝트 좋아요 삭제 성공'){
+                setIsWishOn(false);
+            }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+            }
+        });
+    }
+
 
     /**[TODO]recruitment속성이 boolean인지, boolean|다른무엇 인지 정확하지 않아서 작성 */
     useEffect(() => {
@@ -68,10 +116,14 @@ const ObjectForm = ({style,data}:ObjectFormProps) => {
             setIsWishOn(false);
         }
     },[]);
+
+    useEffect(()=>{
+        // console.log(data,'findProjectObject');
+    },[]);
     
     return (
         <Layout>
-            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+            <Wish onClick={handleWishClick}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
@@ -83,7 +135,7 @@ const ObjectForm = ({style,data}:ObjectFormProps) => {
                             <ViewCountSVG/>
                             <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                        <Wrapper onClick={handleHeartClick}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                             <span>{data.likeCnt}</span>
                         </Wrapper>
