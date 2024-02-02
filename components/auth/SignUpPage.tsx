@@ -33,6 +33,9 @@ const SignUpPage = () => {
     const [isPostEmailVarification, setIsPostEmailVarification] = useState<boolean|undefined>(undefined);
     const [isVarificationSuccess, setIsVarificationSuccess] = useState<boolean|undefined>(undefined);
 
+    /** 버튼 활성화 상태(인증,완료 버튼) */
+    const [isAuthenticationButtonOn, setIsAuthenticationButtonOn] = useState<boolean>(false);
+
     /** Email 입력 수정 여부 체크 */
     const [changeStateEmail, setChangeStateEmail] = useState<boolean>(false);
 
@@ -50,10 +53,11 @@ const SignUpPage = () => {
     const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;
         setUserEmail(target);
-        setVarificationNumber('');
+        // setVarificationNumber('');
         if(target.length > 0){
             if(userEmail !== target){
                 setChangeStateEmail(true);
+                setIsVarificationSuccess(undefined);
             }else{
                 setChangeStateEmail(false);
             }
@@ -85,7 +89,10 @@ const SignUpPage = () => {
         .then((res)=>{
             console.log(res)
             if(res.data === ''){
+                //이메일 인증 번호 요청 성공
                 setIsPostEmailVarification(true);
+                //인증번호 인증버튼 ON
+                setIsAuthenticationButtonOn(true);
             }
         })
         .catch((error)=>{
@@ -98,18 +105,24 @@ const SignUpPage = () => {
     const getVerification = async() => {
         await GET(`/api/emails/verifications?email=${userEmail}&code=${varificationNumber}`)
         .then((res)=>{
-            setIsVarificationSuccess(res.data);
+            setIsVarificationSuccess(res.data.result);
         })
-        .catch((err)=>console.error(err));
+        .catch((err)=>{
+            console.error(err);
+            setIsAuthenticationButtonOn(true);
+        });
     }
 
     /** POST - 회원가입 */
     const handleSignUp = async() => {
         await POST(`/api/sign-up`,{
-            email: {userEmail},
-            nickname: {userNickname},
-            password: {userPassword},      
+            email: userEmail,
+            nickname: userNickname,
+            password: userPassword,      
         }).then((res)=>{
+            console.log(res.data);
+            router.push('/auth/login/celebration');
+
         }).catch((err)=>{
             console.log(err);
         })
@@ -120,6 +133,11 @@ const SignUpPage = () => {
         toasts.length = 0;
     },[])
 
+    useEffect(()=>{
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    },[]);
+
     /** [TODO] 유효성검사 validation,validationGuide연결해야함 */
     // validation은 patch유효성검사 boolean값
     // validationGuide는 patch,post유효성검사 error메세지
@@ -129,6 +147,7 @@ const SignUpPage = () => {
         <AuthForm
             title="회원가입"
             buttonName="회원가입"
+            loginFC={handleSignUp}
         >
             <InputForm
                 name="Email"
@@ -152,15 +171,15 @@ const SignUpPage = () => {
                 placeholder="인증 번호를 입력해주세요."
                 value={varificationNumber}
                 onChange={handleUserAuthenticationNumber}
-                validation={true}
-                validationGuide=""
+                validation={isVarificationSuccess}
+                validationGuide="인증 번호가 일치하지 않습니다."
                 >
                 <CertifiedGET 
                     onClick={getVerification}
-                    isPostEmailVarification={isPostEmailVarification}
-                >완료</CertifiedGET>
+                    isAuthenticationButtonOn={isAuthenticationButtonOn}
+                >{isVarificationSuccess?'완료':'인증'}</CertifiedGET>
                 {isVarificationSuccess === true?
-                    <p>인증 완료되었습니다.</p>
+                    <p style={{fontSize:'12px', color:'#FF993A'}}>인증 완료되었습니다.</p>
                 :isVarificationSuccess === false?
                     <Toast iconSVG={<FailSVG/>} notice="인증 번호가 일치하지 않습니다."/>
                 :<></>
@@ -215,7 +234,7 @@ const CertifiedPOST = styled.div<{isPostEmailVarification:boolean|undefined; cha
         pointer-events: ${({isPostEmailVarification,changeStateEmail})=>(!isPostEmailVarification||changeStateEmail?'unset':'none')};
 `;
 
-const CertifiedGET = styled.div<{isPostEmailVarification:boolean|undefined}>`
+const CertifiedGET = styled.div<{isAuthenticationButtonOn:boolean|undefined}>`
         display:flex;
         position: absolute;
         right: 10px;
@@ -226,11 +245,11 @@ const CertifiedGET = styled.div<{isPostEmailVarification:boolean|undefined}>`
         height: 25px;
         padding-top: 3px;
 
-        background-color: ${({isPostEmailVarification})=>(isPostEmailVarification?'#FF993A':'#B7B7B7')};
+        background-color: ${({isAuthenticationButtonOn})=>(isAuthenticationButtonOn?'#FF993A':'#B7B7B7')};
         border-radius: 8px;
         
         color: #fff;
 
         cursor: pointer;
-        pointer-events: ${({isPostEmailVarification})=>(isPostEmailVarification?'unset':'none')};
+        pointer-events: ${({isAuthenticationButtonOn})=>(isAuthenticationButtonOn?'unset':'none')};
 `;

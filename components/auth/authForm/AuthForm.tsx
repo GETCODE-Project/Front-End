@@ -8,6 +8,7 @@ interface AuthFormProps{
     buttonName: string;
     session?: any;
     loginFC?: any;
+    subTitle?: string;
 }
 
 /** ------------------------------------------------------------- */
@@ -17,13 +18,14 @@ interface AuthFormProps{
  * [1] 반응형화면, 컨텐츠 상우하좌 중앙정렬
  */
 
-const AuthForm = ({title, children, buttonName, session, loginFC}:AuthFormProps) => {
+const AuthForm = ({title, children, buttonName, session, loginFC, subTitle}:AuthFormProps) => {
 
     const router = useRouter();
     const isSiginUpPage = router.pathname === '/auth/signup';
     const isLoginPage = router.pathname === '/auth/login';
     const isNickNamePage = router.pathname === '/auth/signup/nickname';
     const isFindPage = router.pathname === '/auth/login/find';
+    const isCelebratingLoginPage = router.pathname === '/auth/login/celebration';
 
     /** 라우터 페이지 이동 함수 */
     const handleRouterPush = () => {
@@ -37,7 +39,8 @@ const AuthForm = ({title, children, buttonName, session, loginFC}:AuthFormProps)
 
     return (
         <Layout>
-            <Title>{title}</Title>
+            <Title style={isCelebratingLoginPage?{justifyContent:'center'}:undefined}>{title}</Title>
+            <SubTitle>{subTitle}</SubTitle>
             <Content>
                 {children}
             </Content>
@@ -80,6 +83,15 @@ const Title = styled.div`
 
     color: #3C3C3C;
     font-size: 2.5rem;
+    font-weight: 700;
+`;
+const SubTitle = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #3C3C3C;
+    font-size: 1.125rem;
     font-weight: 700;
 `;
 
