@@ -191,7 +191,14 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 </Contents>
                 <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
-            {isLoginAlertOn?<Alert setIsLoginAlertOn={setIsLoginAlertOn}/>:null}
+            {isLoginAlertOn?
+                <Alert 
+                    setIsAlertOn={setIsLoginAlertOn}
+                    notice={<>{'로그인이 필요한 서비스입니다.'}<br/>{'로그인 하시겠습니까?'}</>}
+                    yesButtonFC={()=>router.push('/auth/login')}
+                    noButtonFC={()=>setIsLoginAlertOn(false)}
+                />
+            :null}
         </BackLayout>
     )
 }
