@@ -18,9 +18,9 @@ const ProjectPage = () => {
     const yearDataArray:string[] = ['전체','2020','2021','2022','2023','2024'];
   
     /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
-    const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('');
-    const [currentSelectedTopic, setCurrentSelectedTopic]=useState<string>('');
-    const [currentSelectedYear, setCurrentSelectedYear]=useState<string>('');
+    const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('전체');
+    const [currentSelectedTopic, setCurrentSelectedTopic]=useState<string>('전체');
+    const [currentSelectedYear, setCurrentSelectedYear]=useState<string>('전체');
     /** 현재 선택된 상세 검색 항목(총 선택된 항목) - 다중선택토글폼에만 해당 */
     const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
 
@@ -28,9 +28,6 @@ const ProjectPage = () => {
     const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any[]>([]);
 
     useEffect(() =>{
-      // console.log(selectedStackAll,'기술스택');
-      // console.log(currentSelectedTopic,'주제');
-      // console.log(currentSelectedYear,'년도');
       let tumpArray:any[] = [{
         stack:selectedStackAll,
         topic:currentSelectedTopic,

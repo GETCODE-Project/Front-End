@@ -28,14 +28,10 @@ interface ProjectProps {
 /** 프로젝트 전체 게시물 데이터 */
 export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
 
-    console.log(params,'params');
-
     const techStackQueryString = () => {
         let techStack = '';
         if(params.techStack.length > 0){
             techStack = params.techStack?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
-        }else{
-            techStack = '';
         }
         return techStack;
     }

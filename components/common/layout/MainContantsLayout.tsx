@@ -52,6 +52,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [sort, setSort] = useState<string>('latestOrder');//정렬
     const [subject, setSubject] = useState<string>('');//주제
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
+    const [part, setPart] = useState<string[]>([]);//모집파트
+    const [recruitment, setRecruitment] = useState<string>('');//모집여부
     const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
@@ -127,30 +129,24 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 return;
         }
         setModuleName(moduleName);
-    },[pageName, sort, year, keyword, size, page, subject, techStack, memberId]);
+    },[pageName, sort, year, keyword, size, page, subject, techStack, part, recruitment, memberId]);
 
     /** 페이지 별 데이터 불러오기 */
     useEffect(()=>{
         if(!moduleName) return;
         getData();
-    },[moduleName])
+    },[sort,moduleName])
 
     useEffect(()=>{
-        console.log(detailSearchSelectedData[0],'detailSearchSelectedData');
-        if(detailSearchSelectedData[0]?.year === '전체'){
-            setYear('');
-        }else{
-            setYear(detailSearchSelectedData[0]?.year);
-        }
-        if(detailSearchSelectedData[0]?.topic === '전체'){
-            setSubject('');
-        }else{
-            setSubject(detailSearchSelectedData[0]?.topic);
-        }
-        if(detailSearchSelectedData[0]?.stack === '전체'){
-            setTechStack([]);
-        }else{
-            setTechStack(detailSearchSelectedData[0]?.stack);
+        if (detailSearchSelectedData && detailSearchSelectedData.length > 0) {
+            const data = detailSearchSelectedData[0];
+            
+            setYear(data?.year === '전체' ? '' : data?.year || '');
+            setSubject(data?.topic === '전체' ? '' : data?.topic || '');
+            setTechStack(data?.stack === '전체' ? [] : data?.stack || []);
+            setPart(data?.part === '전체' ? [] : data?.part || []);
+            setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment || '');
+
         }
     },[detailSearchSelectedData]);
 
