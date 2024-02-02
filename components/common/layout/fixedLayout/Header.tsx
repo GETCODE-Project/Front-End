@@ -38,15 +38,15 @@ const Header = () => {
   }
 
   const getUserInfo = async() => {
-      await GET(`/api/userInfo`)
+      localStorage.getItem('accessToken')!==null&&await GET(`/api/userInfo`)
       .then((res)=>{
-          setUserinfo(res.data);      
+          setUserinfo(res.data);
+          console.log(res.data,'userInfo');  
       })
-      .catch((err)=>console.error(err));
+      .catch((err)=>console.error(err.response.data.message));
   }
 
   useEffect(()=>{
-      isLoginStatus();
       getUserInfo();
   },[]);
   
@@ -86,18 +86,19 @@ const ContainerDiv = styled.div`
   background-color: white;
   width: 100%;
   height: 50px;
-  z-index: 100;
+  z-index: 1005;
   background-color: #fff;
 `;
 
 const HeaderDiv = styled.div`
   display: flex;
   margin: 0 70px;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   width: 1000px;
   ${media.mobile_550} {
-    margin: 20px;
+    margin: 0 20px;
   }
 `;
 
@@ -148,7 +149,7 @@ const MenuCategory = styled.div`
   bottom: -500px;
   width: 280px;
   min-height: 31.25rem;
-  z-index: 1004;
+  z-index: 1005;
 
   background: linear-gradient(
     180deg,
