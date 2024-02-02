@@ -29,7 +29,7 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 
     return await GET(`/api/search/studies?page=${params.pageNumber}&keyword=${params.keyword}&region=${params.region}&recruitment=${params.recruitment}&online=${params.online}&year=${params.year}&subject=${subjectQueryString}&criteria=${params.criteria}`,{})
     .then((res)=>{
-        setObjectData(res);
+        setObjectData(res.data);
     })
     .catch((err)=>{console.error(err)});
 }

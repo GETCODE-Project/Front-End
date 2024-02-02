@@ -29,7 +29,7 @@ export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
     
     return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&page=${params.page}&size=${params.size}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString}&${params.memberId}`,{})
     .then((res)=>{
-        setObjectData(res);
+        setObjectData(res.data);
     })
     .catch((err)=>{console.error(err)});
 }

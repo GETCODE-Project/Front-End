@@ -1,9 +1,16 @@
+import { POST } from "@/pages/api/axios";
 import { WishOnSVG, WishOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
+/** ------------------------------------------------------------- */
+/** 스터디모집 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+
 interface ObjectFormProps{
     style?:any;
     data?: any;
+    setIsLoginAlertOn?: any;
 }
 /** 불러온 Respons 데이터 형식 참고 */
 //[TODO] 분야(다중선택)=subject라고 생각하고 작업.
@@ -34,13 +41,55 @@ interface FindStudyObjectData{
       string
     ]
 }
-/** ------------------------------------------------------------- */
-/** 스터디모집 게시물 객체 폼 */
-/** ------------------------------------------------------------- */
-const ObjectForm = ({data}:ObjectFormProps) => {
+
+const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
+
+    /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
+
     const subject:any[] = [data.subjects];
+
+    /** 좋아요 버튼 클릭 이벤트 */
+    //[TODO: 스터디모집글 더미데이터 작성된 후 테스트 가능]
+    const handleHeartClick = async() => {
+        await POST(`/api/study-like/${data.projectId}`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            // if(res.data==='프로젝트 좋아요 성공'){
+            //     setIsHartOn(true);
+            // }if(res.data==='프로젝트 좋아요 삭제 성공'){
+            //     setIsHartOn(false);
+            // }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            // if(err.response.data.message.includes('사용자')){
+            //     setIsLoginAlertOn(true);
+            // }
+        });
+    }
+    /** 찜하기 버튼 클릭 이벤트 */
+    //[TODO: 스터디모집글 더미데이터 작성된 후 테스트 가능]
+    const handleWishClick = async() => {
+        await POST(`/api/project/${data.projectId}/wish`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            // if(res.data==='프로젝트 좋아요 성공'){
+            //     setIsWishOn(true);
+            // }if(res.data==='프로젝트 좋아요 삭제 성공'){
+            //     setIsWishOn(false);
+            // }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            // if(err.response.data.message.includes('사용자')){
+            //     setIsLoginAlertOn(true);
+            // }
+        });
+    }
 
     /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
     useEffect(()=>{
@@ -60,7 +109,7 @@ const ObjectForm = ({data}:ObjectFormProps) => {
 
     return(
         <Layout>
-            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+            <Wish onClick={handleWishClick}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
@@ -72,7 +121,7 @@ const ObjectForm = ({data}:ObjectFormProps) => {
                     <ViewCountSVG/>
                     <span>{data?.views}</span>
                 </Wrapper>
-                <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                <Wrapper onClick={handleHeartClick}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                     <span>{data?.count}</span>
                 </Wrapper>

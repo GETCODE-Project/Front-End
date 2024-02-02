@@ -4,6 +4,13 @@ import {PopularityObjectForm} from "@/components/project/ObjectForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 
+/** ------------------------------------------------------------- */
+/** 메인 페이지 컴포넌트 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] 
+ */
+
 const MainPage = () => {
 
     const router = useRouter();
@@ -11,7 +18,7 @@ const MainPage = () => {
     
     const [ObjectForm, setObjectForm] = useState(null);
     const [ObjectData, setObjectData] = useState<[]>([]);
-    const [routePageName, setroutePageName] = useState<string>('project');
+    const [pageName, setpageName] = useState<string>('project');
     const [dataName, setDataName] = useState<string>('ProjectData');
 
     const dotArr: any[] = [1,2,3,4,5];
@@ -28,20 +35,20 @@ const MainPage = () => {
     const [subject, setSubject] = useState<string>('');
     const [techStack, setTechStack] = useState<string>('');
 
-    const handleroutePageName = (routePageName:string, dataName:string) => {
-        setroutePageName(routePageName);
+    const handlepageName = (pageName:string, dataName:string) => {
+        setpageName(pageName);
         setDataName(dataName);
     }
 
 /** [TODO] 데이터연결 ----------------------------------------------------------------
     // /** 페이지 별 객체 폼(UI) 불러오기 */
     // useEffect(() => {
-    //     import(`@/components/${routePageName}/ObjectForm`)
-    //     .then(module => {routePageName=='project'?
+    //     import(`@/components/${pageName}/ObjectForm`)
+    //     .then(module => {pageName=='project'?
     //         setObjectForm(()=>module.ObjectForm)
     //     : setObjectForm(()=>module.default)})
     //     .catch(error => console.error(error))
-    // },[routePageName]);
+    // },[pageName]);
 
     // /** 페이지 별 더미 데이터 불러오기 */
     // useEffect(() => {
@@ -80,12 +87,12 @@ const MainPage = () => {
                 </TopContents>
                 <BottomContents>
                     <Title>
-                        <span onClick={()=>handleroutePageName('project','ProjectData')}>프로젝트 |</span>
-                        <span onClick={()=>handleroutePageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
-                        <span onClick={()=>handleroutePageName('findStudy','FindStudyData')}>스터디 모집</span>
+                        <span onClick={()=>handlepageName('project','ProjectData')}>프로젝트 |</span>
+                        <span onClick={()=>handlepageName('findProject','FindProjectData')}>프로젝트 모집 |</span>
+                        <span onClick={()=>handlepageName('findStudy','FindStudyData')}>스터디 모집</span>
                     </Title>
-                    <MoreViewButton onClick={()=>router.push(`/${routePageName}`)}>더보기</MoreViewButton>
-                    <ObjectList ref={objectListRef} routePageName={routePageName}>
+                    <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
+                    <ObjectList ref={objectListRef} pageName={pageName}>
                         {ObjectData?.map((i:any,idx:number)=>(
                             ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
                         ))}
@@ -201,9 +208,9 @@ const BottomContents = styled.div`
   padding: 45px 0;
 `;
 
-const ObjectList = styled.div<{routePageName:string}>`
+const ObjectList = styled.div<{pageName:string}>`
     display: flex;
-    flex-direction: ${({routePageName})=>(routePageName='project'?'unset':'column')};
+    flex-direction: ${({pageName})=>(pageName='project'?'unset':'column')};
     flex-wrap: wrap;
     align-items: center;
     width: 100%;

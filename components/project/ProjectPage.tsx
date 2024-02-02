@@ -2,6 +2,14 @@ import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
 import { useEffect, useState } from "react";
 
+/** ------------------------------------------------------------- */
+/** 프로젝트 목록 페이지 컴포넌트 */ //검색단(메인컴포넌트의children)
+/** ------------------------------------------------------------- */
+// 기술스택(다중선택), 주제(단일선택), 년도(단일선택)
+/**[TODO]
+ * [1] 
+ */
+
 const ProjectPage = () => {
 
     /** 상세 검색 항목 리스트 */
@@ -20,9 +28,9 @@ const ProjectPage = () => {
     const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any>();
 
     useEffect(() =>{
-      console.log(selectedStackAll,'기술스택');
-      console.log(currentSelectedTopic,'주제');
-      console.log(currentSelectedYear,'년도');
+      // console.log(selectedStackAll,'기술스택');
+      // console.log(currentSelectedTopic,'주제');
+      // console.log(currentSelectedYear,'년도');
     },[currentSelectedStack,currentSelectedTopic,currentSelectedYear]);
 
     return(
