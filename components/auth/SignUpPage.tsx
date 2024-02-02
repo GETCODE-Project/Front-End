@@ -9,7 +9,7 @@ import Toast from "@/components/common/notification/Toast";
 import { FailSVG, NoticeSVG } from "@/public/SVG/toast";
 
 /** ------------------------------------------------------------- */
-/** 회원가입 페이지 */
+/** 회원가입 페이지 컴포넌트 */
 /** ------------------------------------------------------------- */
 /**[TODO]
  * [1] Toast 처리(이메일인증,인증번호인증, Toast로드 속도 향상)

@@ -4,6 +4,15 @@ import { media } from "@/styles/mediaQuery";
 import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useRouter } from "next/router";
+import Alert from '@/components/common/notification/Alert';
+
+/** ------------------------------------------------------------- */
+/** 게시물 목록 페이지 레이아웃 재사용 폼 */ //
+/** ------------------------------------------------------------- */
+// 페이지타이틀,소타이틀,검색단,총NN개,정렬(최신순/과거순/인기순),게시물목록,글쓰기버튼
+/**[TODO]
+ * [1] 
+ */
 
 // 게시물 목록 페이지 레이아웃에 필요한 Props
 interface MainContentsLayoutProps {
@@ -22,21 +31,25 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const router = useRouter();
     const objectListRef = useRef<HTMLDivElement>(null);
 
+    /** 로그인Alert OnOff */
+    const [isLoginAlertOn, setIsLoginAlertOn] = useState<boolean>(false);
+
+    /** 게시물 데이터를 불러 올 모듈 이름 */
     const [moduleName, setModuleName] = useState<string>('');
 
     /** 정렬 구성(최신순,과거순,좋아요순) */
     const sortArr:any [] = ["최신순","과거순","좋아요순"];
 
     /** 페이지 별 게시물 폼, 데이터 */
-    const [ObjectData, setObjectData] = useState<any>();
-    const [ObjectForm, setObjectForm] = useState(null);
+    const [objectData, setObjectData] = useState<any[]>([]);
+    const [objectForm, setObjectForm] = useState(null);
 
     /** 게시물 전체 목록 불러오기 GET 파라미터 데이터 리스트 */
     const [year, setYear] = useState<string>('');
     const [keyword, setKeyword] = useState<string>('');
     const [size, setSize] = useState<number>(10);
     const [page, setPage] = useState<number>(1);
-    const [sort, setSort] = useState<string>('');
+    const [sort, setSort] = useState<string>('latestOrder');
     const [subject, setSubject] = useState<string>('');
     const [techStack, setTechStack] = useState<string[]>([]);
     const [memberId, setMemberId] = useState<number>();
@@ -101,7 +114,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 return;
         }
         setModuleName(moduleName);
-    },[pageName]);
+    },[pageName, sort, year, keyword, size, page, subject, techStack, memberId]);
 
     /** 페이지 별 데이터 불러오기 */
     useEffect(()=>{
@@ -109,8 +122,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
         const getData = async() => {
             try{
-                const getModule = await import(`@/components/objectAllData/${moduleName}`);
-                const data = await getModule.getObjectData({
+                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
+                await getModule.getObjectData({
                     params,setObjectData
                 });
             }
@@ -119,12 +132,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             }
         };
         getData();
+        
     },[params, moduleName])
-
-    useEffect(()=>{
-        console.log(detailSearchSelectedData,'findProjectData');
-    },[]);
-    
 
     return(
         <BackLayout>
@@ -148,8 +157,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 <Contents>
                     <TotalSortWrapper>
                         {subTitle?
-                            <Total>{`총 ${ObjectData?.length}개 ${sumTitle}`}</Total>
-                        :   <Total>{`총 ${ObjectData?.length}개 ${title}`}</Total>
+                            <Total>{`총 ${objectData?.length}개 ${sumTitle}`}</Total>
+                        :   <Total>{`총 ${objectData?.length}개 ${title}`}</Total>
                         }
                         <Sort>
                             {sortArr.map((i:any,idx:number)=>(
@@ -157,14 +166,17 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                             ))}
                         </Sort>
                     </TotalSortWrapper>
-                    <ObjectList ref={objectListRef} routePageName={pageName}>
-                        {ObjectData?.map((i:any,idx:number)=>(
-                            ObjectForm ? React.createElement(ObjectForm, {key:idx, data:i}) : null
+                    <ObjectList ref={objectListRef} pageName={pageName}>
+                        {Array.isArray(objectData)&&objectData?.map((i:any,idx:number)=>(
+                            objectForm ? React.createElement(objectForm, {
+                                key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
+                            }) : null
                         ))}
                     </ObjectList>
                 </Contents>
                 <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
+            {isLoginAlertOn?<Alert setIsLoginAlertOn={setIsLoginAlertOn}/>:null}
         </BackLayout>
     )
 }
@@ -249,15 +261,15 @@ const Sort = styled.div`
     }
 `;
 
-const ObjectList = styled.div<{routePageName:string}>`
+const ObjectList = styled.div<{pageName:string}>`
     display: flex;
-    flex-direction: ${({routePageName})=>(routePageName==='project'?'unset':'column')};
+    flex-direction: ${({pageName})=>(pageName==='project'?'unset':'column')};
     flex-wrap: wrap;
     align-items: center;
     width: 100%;
 
     ${media.tablet || media.mobile}{
-        justify-content: ${({routePageName})=>(routePageName==='project'?'center':'unset')};
+        justify-content: ${({pageName})=>(pageName==='project'?'center':'unset')};
     }
 `;
 
