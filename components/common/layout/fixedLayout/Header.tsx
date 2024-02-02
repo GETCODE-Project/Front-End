@@ -29,10 +29,12 @@ const Header = () => {
   }
 
   const handleLogout = async() => {
-    // signOut({callbackUrl:`/`});
     await PATCH(`/api/logout`)
     .then((res)=>{
       console.log(res);
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      router.reload();
     })
     .catch((err) => console.error(err));
   }
