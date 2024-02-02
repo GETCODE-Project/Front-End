@@ -30,9 +30,7 @@ const LoginPage = () => {
         }).then((res)=>{
             localStorage.setItem('accessToken',res.data.accessToken);
             localStorage.setItem('refreshToken',res.data.refreshToken);
-
-            // setAccessToken(res.data.accessToken);
-            // setRefreshToken(res.data.refreshToken);
+            // console.log(res.data.accessToken);
 
             router.push('/');
         }).catch((err)=>{

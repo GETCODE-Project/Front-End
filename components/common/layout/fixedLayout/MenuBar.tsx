@@ -55,7 +55,6 @@ export default MenuBar;
 
 const ContainerDiv = styled.div`
   position: fixed;
-  z-index: 100;
   height: 50px;
   top: 50px;
   display: flex;
