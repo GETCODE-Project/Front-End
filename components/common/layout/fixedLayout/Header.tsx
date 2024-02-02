@@ -43,7 +43,6 @@ const Header = () => {
       localStorage.getItem('accessToken')!==null&&await GET(`/api/userInfo`)
       .then((res)=>{
           setUserinfo(res.data);
-          console.log(res.data,'userInfo');  
       })
       .catch((err)=>console.error(err.response.data.message));
   }
