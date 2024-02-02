@@ -3,8 +3,6 @@ import styled from "styled-components";
 import {PopularityObjectForm} from "@/components/project/ObjectForm";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import {getObjectData} from '@/components/objectAllData/ProjectData';
-import { GET } from "@/pages/api/axios";
 
 const MainPage = () => {
 
