@@ -45,14 +45,14 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [objectForm, setObjectForm] = useState(null);
 
     /** 게시물 전체 목록 불러오기 GET 파라미터 데이터 리스트 */
-    const [year, setYear] = useState<string>('');
-    const [keyword, setKeyword] = useState<string>('');
-    const [size, setSize] = useState<number>(10);
-    const [page, setPage] = useState<number>(1);
-    const [sort, setSort] = useState<string>('latestOrder');
-    const [subject, setSubject] = useState<string>('');
-    const [techStack, setTechStack] = useState<string[]>([]);
-    const [memberId, setMemberId] = useState<number>();
+    const [year, setYear] = useState<string>('');//연도
+    const [keyword, setKeyword] = useState<string>('');//검색키워드
+    const [size, setSize] = useState<number>(10);//페이지객체수
+    const [page, setPage] = useState<number>(1);//페이지
+    const [sort, setSort] = useState<string>('latestOrder');//정렬
+    const [subject, setSubject] = useState<string>('');//주제
+    const [techStack, setTechStack] = useState<string[]>([]);//기술스택
+    const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<any>();
@@ -78,6 +78,19 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             setSort('likeCnt');
         }
     } 
+
+    /** 페이지 별 데이터 불러오기 함수 */
+    const getData = async() => {
+            try{
+                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
+                await getModule.getObjectData({
+                    params,setObjectData
+                });
+            }
+            catch (error){
+                console.error(error);
+            }
+        };
 
     /** 상세 검색 적용 */
 
@@ -119,21 +132,27 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     /** 페이지 별 데이터 불러오기 */
     useEffect(()=>{
         if(!moduleName) return;
-
-        const getData = async() => {
-            try{
-                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
-                await getModule.getObjectData({
-                    params,setObjectData
-                });
-            }
-            catch (error){
-                console.error(error);
-            }
-        };
         getData();
-        
-    },[params, moduleName])
+    },[moduleName])
+
+    useEffect(()=>{
+        console.log(detailSearchSelectedData[0],'detailSearchSelectedData');
+        if(detailSearchSelectedData[0]?.year === '전체'){
+            setYear('');
+        }else{
+            setYear(detailSearchSelectedData[0]?.year);
+        }
+        if(detailSearchSelectedData[0]?.topic === '전체'){
+            setSubject('');
+        }else{
+            setSubject(detailSearchSelectedData[0]?.topic);
+        }
+        if(detailSearchSelectedData[0]?.stack === '전체'){
+            setTechStack([]);
+        }else{
+            setTechStack(detailSearchSelectedData[0]?.stack);
+        }
+    },[detailSearchSelectedData]);
 
     return(
         <BackLayout>
@@ -145,12 +164,12 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                     :   <></>
                     }
                 </Title>
-                <SearchInput>
+                <SearchInput setKeyword={setKeyword} searchButtonFC={getData}>
                     <Search>
                         <div>
                             {children}
                         </div>
-                        <SearchButton>검색하기</SearchButton>
+                        <SearchButton onClick={getData}>검색하기</SearchButton>
                     </Search>
                 </SearchInput>
                 
