@@ -1,4 +1,4 @@
-import { GET, PATCH } from "@/pages/api/axios";
+import { GET, PATCH, POST } from "@/pages/api/axios";
 import { NickNameEditSVG, ProfileEditSVG } from "@/public/SVG/profile";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -10,10 +10,11 @@ const MyPage = () => {
     const router = useRouter();
 
     const [isLogoutAlertOn, setIsLogoutAlertOn] = useState<boolean>(false);
+    const [isUpdateProfileOn, setIsUpdateProfileOn] = useState<boolean>(false);
 
     const [userEmail, setUserEmail] = useState<string>('');
     const [userNickname, setUserNickname] = useState<string>('');
-    const [userProfileImage, setUserProfileImage] = useState<string>('');
+    const [userProfileImg, setUserProfileImg] = useState<string>('');
 
     /** 회원 정보 조회 GET */
     const getUserInfo = async() => {
@@ -21,7 +22,7 @@ const MyPage = () => {
         .then((res)=>{
             setUserEmail(res.data.email);
             setUserNickname(res.data.nickname);
-            //[TODO: 프로필이미지도 불러와야 함]
+            setUserProfileImg(res.data.profileImg);
         })
     }
     /** 로그아웃 PATCH */
@@ -35,6 +36,19 @@ const MyPage = () => {
         .catch((err)=>console.error(err));
     }
 
+    /** 프로필 이미지 변경 POST */
+    const updateProfileImg = async() => {
+        const inputImg = document.getElementById('profileInput');
+        // if(inputImg.files[0]){
+
+        // }
+        await POST(`/api/update-profile`)
+        .then((res)=>{
+
+        })
+        .catch((err)=>console.error(err));
+    }
+
     useEffect(() => {
         getUserInfo();
     },[]);
@@ -44,10 +58,26 @@ const MyPage = () => {
             <Layout>
                 <Wrapper className="Profile">
                     <Profile>
-                        <ProfilEditButton>
+                        <ProfilEditButton onClick={()=>setIsUpdateProfileOn(true)}>
                             <ProfileEditSVG/>
                         </ProfilEditButton>
+                        {userProfileImg?
+                            <ProfileImg src={userProfileImg}></ProfileImg>
+                        :   <>
+                                {/** 프로필 기본 이미지 임시 설정 SVG */}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="114" height="114" viewBox="0 0 30 30" fill="none">
+                                    <rect x="0.5" y="0.5" width="29" height="29" rx="14.5" fill="white" stroke="#848383"/>
+                                    <path d="M7 22C7 19.1875 10.75 19.1875 12.625 17.3125C13.5625 16.375 10.75 16.375 10.75 11.6875C10.75 8.56281 11.9997 7 14.5 7C17.0003 7 18.25 8.56281 18.25 11.6875C18.25 16.375 15.4375 16.375 16.375 17.3125C18.25 19.1875 22 19.1875 22 22" stroke="#BEBEBE" strokeLinecap="round"/>
+                                </svg>
+                            </>
+                        }
                     </Profile>
+                    {isUpdateProfileOn?
+                        <UpdateProfile>
+                            <input id="profileInput" type="file"/>
+                        </UpdateProfile>
+                    : null
+                    }
                     <NickName>{`${userNickname} 님`}</NickName>
                     <LogOut onClick={()=>setIsLogoutAlertOn(true)}>로그아웃</LogOut>
                 </Wrapper>
@@ -137,12 +167,25 @@ const Wrapper = styled.div`
 
 const Profile = styled.div`
     display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     width: 114px;
-    aspect-ratio: 1/1;
+    height: 114px;
+    /* aspect-ratio: 1/1; */
 
     border: 3px solid #ff4b13;
     border-radius: 100%;
+`;
+
+const UpdateProfile = styled.div`
+    display: flex;
+    justify-content: center;
+
+    #profileInput{
+        display: flex;
+        justify-content: center;
+    }
 `;
 
 const NickName = styled.div`
@@ -165,6 +208,8 @@ const ProfilEditButton = styled.div`
     cursor: pointer;
 `;
 
+const ProfileImg = styled.img``;
+
 const InfoMenu = styled.div`
     display: flex;
     justify-content: start;
@@ -172,6 +217,7 @@ const InfoMenu = styled.div`
 
     & #menu{
         width: 80px;
+        white-space: nowrap;
     }
     & #info{        
         display: flex;
