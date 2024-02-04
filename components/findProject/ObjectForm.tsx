@@ -135,7 +135,7 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
                             <ViewCountSVG/>
                             <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper onClick={handleHeartClick}>
+                        <Wrapper id="hartClick" onClick={handleHeartClick}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                             <span>{data.likeCnt}</span>
                         </Wrapper>
@@ -184,6 +184,8 @@ const Wish = styled.div`
     min-width: 60px;
     
     background-color: #FFF1E4;
+
+    cursor: pointer;
 `;
 
 const Content = styled.div`
@@ -258,6 +260,10 @@ const Reaction = styled.div`
     align-items: start;
     gap: 15px;
     padding: 15px;
+
+    #hartClick {
+        cursor: pointer;
+    }
 `;
 const Wrapper = styled.div`
     display: flex;
