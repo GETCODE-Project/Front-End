@@ -35,11 +35,12 @@ export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
         }
         return techStack;
     }
-    console.log(techStackQueryString(),'techStack');
+    // console.log(params,'params');
     
     return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&page=${params.page}&size=${params.size}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}&${params.memberId}`,{})
     .then((res)=>{
         setObjectData(res.data);
+        // console.log(res.data,'res.data-ObjectData');
     })
     .catch((err)=>{console.error(err)});
 }

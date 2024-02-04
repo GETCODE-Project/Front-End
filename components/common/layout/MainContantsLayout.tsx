@@ -92,7 +92,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             catch (error){
                 console.error(error);
             }
-        };
+    };
 
     /** 상세 검색 적용 */
 
@@ -150,6 +150,10 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
         }
     },[detailSearchSelectedData]);
+
+    useEffect(() => {
+        // console.log(objectData,'objectData');
+    },[]);
 
     return(
         <BackLayout>
