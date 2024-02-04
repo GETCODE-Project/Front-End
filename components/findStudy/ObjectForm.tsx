@@ -30,12 +30,12 @@ interface FindStudyObjectData{
       nickname: string //작성자닉네임
     },
     comments: [
-      {
-        ontent: string, //?내용?
-        modifiedDate: string, //모집일
-        email: string, //
-        nickname: string //
-      }
+    //   {
+    //     ontent: string, //?내용?
+    //     modifiedDate: string, //모집일
+    //     email: string, //
+    //     nickname: string //
+    //   }
     ],
     subjects: [ //주제?
       string

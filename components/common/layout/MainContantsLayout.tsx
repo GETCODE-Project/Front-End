@@ -54,6 +54,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
     const [part, setPart] = useState<string[]>([]);//모집파트
     const [recruitment, setRecruitment] = useState<string>('');//모집여부
+    const [region, setRegion] = useState<string>('');//지역
     const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
