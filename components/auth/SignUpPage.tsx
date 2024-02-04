@@ -124,7 +124,7 @@ const SignUpPage = () => {
             router.push('/auth/login/celebration');
 
         }).catch((err)=>{
-            console.log(err);
+            console.log(err.response.data);
         })
     }
 
