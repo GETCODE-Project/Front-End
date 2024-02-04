@@ -32,6 +32,7 @@ export const getMyWriteObjectData = async ({params,setMyObjectData}:FindStudyPro
     return await GET(`/api/mypage/studies`)
     .then((res)=>{
         setMyObjectData(res.data);
+        console.log(res.data,'스터디모집게시물my');
     })
     .catch((err)=>{console.error(err)});
 }

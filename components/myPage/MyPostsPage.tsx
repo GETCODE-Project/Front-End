@@ -17,8 +17,8 @@ const MyPostsPage = () => {
     // const sortArr:any [] = ["최신순","과거순","좋아요순"]; //정렬은 개발 제외하기로 함
 
     /** 게시물 데이터를 불러 올 모듈 이름, 객체 폼을 불러 올 페이지 이름 */
-    const [moduleName, setModuleName] = useState<string>('');
-    const [pageName, setPageName] = useState<string>('');
+    const [moduleName, setModuleName] = useState<string>('myProjectData');
+    const [pageName, setPageName] = useState<string>('project');
 
     /** 카테고리 별 게시물 폼, 데이터 */
     const [myObjectData, setMyObjectData] = useState<any[]>([]);
@@ -72,7 +72,7 @@ const MyPostsPage = () => {
         const getObjectForm = () => {
             import(`@/components/${pageName}/ObjectForm`)
             .then(module => {
-                pageName=='project' ? setMyObjectForm(()=>module.ObjectForm) : setMyObjectForm(()=>module.default)
+                pageName=='project'?setMyObjectForm(()=>module.ObjectForm):setMyObjectForm(()=>module.default)
             })
             .catch(error=>console.error(error));
         }
@@ -93,7 +93,11 @@ const MyPostsPage = () => {
             }
         }
         getData();
-    },[selectedCategory])
+    },[setSelectedCategory,moduleName])
+
+    useEffect(()=>{
+        console.log(moduleName,'moduleName');
+    },[selectedCategory]);
 
 
     return(
