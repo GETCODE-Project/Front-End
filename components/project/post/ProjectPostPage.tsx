@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { media } from "@/styles/mediaQuery";
 import React, { useState, useEffect } from "react";
 import { POST, GET } from "@/pages/api/axios";
-import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
 import {
   SelectSubject,
   AddLink,
@@ -21,6 +21,21 @@ const ProjectPostPage = () => {
   const [subject, setSubject] = useState<string>("");
   const [tech, setTech] = useState<string[]>([]);
   const [allLink, setAllLink] = useState<LinkProps[]>([]);
+  const [content, setContent] = useState<string>();
+
+  const router = useRouter();
+  useEffect(() => {
+    if (router) {
+      const getData = router.query;
+      console.log(getData);
+      console.log(getData.techStacks);
+      setTitle(String(getData.title));
+      setContent(String(getData.content));
+      setIntroduction(String(getData.introduction));
+      // setTech((getData.techStacks));
+      setSubject(String(getData.subject));
+    }
+  }, [router]);
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
@@ -28,33 +43,29 @@ const ProjectPostPage = () => {
   };
 
   const Post = () => {
-    //   if (title && subject !== "주제를 입력하세요" && tech && allLink) {
-    //     const handleLogin = async () => {
-    //       await POST(localStorage.getItem("token"), "", {
-    //         title: "Java 스터디",
-    //         content: "Java 스터디 모집합니다.",
-    //         region: "서울",
-    //         online: true,
-    //         contact: "kyun9151@naver.com",
-    //         subjects: "코딩 테스트, 자격증",
-    //       })
-    //         .then((res) => {
-    //           console.log(res);
-    //           alert(res.data);
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //           alert(err);
-    //         });
-    //     };
-    //   handleLogin();
-    //   // console.log(title);
-    //   // console.log(subject);
-    //   // console.log(tech);
-    //   // console.log(allLink);
-    // } else {
-    //   alert("추가입력");
-    // }
+    if (title && subject !== "주제를 입력하세요" && tech && allLink) {
+      const handleLogin = async () => {
+        await POST("api/project/add", {
+          title: title,
+          content: content,
+          introduction: introduction,
+          githubUrl: "sdfsdf",
+          techStacks: tech,
+          subject: subject,
+        })
+          .then((res) => {
+            console.log(res);
+            alert(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+      };
+      handleLogin();
+    } else {
+      alert("추가입력");
+    }
   };
 
   return (
@@ -66,7 +77,6 @@ const ProjectPostPage = () => {
         value={title}
         onChange={handleTitle}
       />
-      <UserName>작성자 닉네임</UserName>
       <hr style={{ width: "100%" }} />
       <Content>
         <WriteIntroduction setIntroduction={setIntroduction} />
@@ -74,7 +84,7 @@ const ProjectPostPage = () => {
         <SelectTech tech={tech} setTech={setTech} />
         <AddLink allLink={allLink} setAllLink={setAllLink} />
       </Content>
-      <TextArea post={() => Post()} />
+      <TextArea post={() => Post()} content={content} setContent={setContent} />
     </Layout>
   );
 };

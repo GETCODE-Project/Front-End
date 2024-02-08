@@ -4,7 +4,7 @@ import DetailLayout from "@/components/common/layout/DetailLayout";
 const ProjectDetail = () => {
   return (
     <FixedLayout>
-      <DetailLayout pageName="project" pageApi="project" />
+      <DetailLayout pageName="project" pageApi="project/detail" />
     </FixedLayout>
   );
 };

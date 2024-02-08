@@ -84,7 +84,43 @@ interface SelectTechProps {
   tech: string[];
   setTech: React.Dispatch<React.SetStateAction<string[]>>;
 }
+interface SelectOnOffProps {
+  onoff: boolean;
+  setOnoff: (newValue: boolean) => void;
+}
 
+export const SelectOnOff = ({ onoff, setOnoff }: SelectOnOffProps) => {
+  const backgroundColor = ["white", "#00FF1A"];
+  return (
+    <MobileLayaout>
+      <Query>
+        <SelectRoundBox text="온/오프라인" />
+      </Query>
+      <SelectRoundBox
+        text="온라인"
+        backgroundcolor={backgroundColor[Number(onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(true);
+        }}
+      />
+      <SelectRoundBox
+        text="오프라인"
+        backgroundcolor={backgroundColor[Number(!onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(false);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
 export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
   const optionSubject = [
     "기술 스택을 선택하세요",
@@ -167,51 +203,6 @@ interface WishPartProps {
   setWishPart: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export const WishPart = ({ wishPart, setWishPart }: WishPartProps) => {
-  const InputSubject = [
-    "모집 분야를 선택하세요",
-    "분야1",
-    "분야2",
-    "분야3",
-    "분야4",
-    "분야5",
-  ];
-  const handleInput = (value: string) => {
-    if (value !== "모집 분야를 선택하세요" && !wishPart.includes(value)) {
-      setWishPart((prev) => [...prev, value]);
-    }
-  };
-  const deleteTopic = (value: string) => {
-    const newTopic = wishPart.filter((wishPart) => wishPart !== value);
-    setWishPart(newTopic);
-  };
-
-  return (
-    <MobileLayaout>
-      <SelectRoundBox text="모집 분야" />
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <SelectToggle
-          onCreate={(value) => {
-            handleInput(value);
-          }}
-          options={InputSubject}
-        />
-        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
-          {wishPart.map((value) => (
-            <ToggleRoundBox
-              key={value}
-              text={value}
-              deleteTopic={() => {
-                deleteTopic(value);
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </MobileLayaout>
-  );
-};
-
 interface LinkProps {
   linkType: string;
   value: string;
@@ -258,12 +249,16 @@ export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
 };
 
 interface PostProps {
-  post: any;
+  post: () => void;
+  setContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
-export const TextArea = ({ post }: PostProps) => {
+export const TextArea = ({ post, setContent }: PostProps) => {
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <div>
-      <TextAreaDiv />
+      <TextAreaDiv onChange={handleTextArea} />
       <Hr />
       <div
         style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}

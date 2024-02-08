@@ -55,11 +55,11 @@ interface SelectPartProps {
 export const SelectPart = ({ part, setPart }: SelectPartProps) => {
   const InputSubject = [
     "모집 분야를 선택하세요",
-    "분야1",
-    "분야2",
-    "분야3",
-    "분야4",
-    "분야5",
+    "모의면접",
+    "모각코",
+    "Algorithm",
+    "CodingTest",
+    "자격증",
   ];
   const handleInput = (value: string) => {
     if (value !== "모집 분야를 선택하세요" && !part.includes(value)) {
@@ -182,12 +182,16 @@ export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
 };
 
 interface PostProps {
-  post: any;
+  post: () => void;
+  setContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
-export const TextArea = ({ post }: PostProps) => {
+export const TextArea = ({ post, setContent }: PostProps) => {
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <div>
-      <TextAreaDiv />
+      <TextAreaDiv onChange={handleTextArea} />
       <Hr />
       <div
         style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}

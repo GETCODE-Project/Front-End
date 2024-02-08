@@ -5,10 +5,11 @@ import React, { useState, useEffect } from "react";
 
 interface Props {
   text: string;
-  setLocation: (newValue: string) => void;
+  setSiDo: React.Dispatch<React.SetStateAction<string>>;
+  setGuGun: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const SelectLocation = ({ setLocation, text }: Props) => {
+const SelectLocation = ({ setSiDo, setGuGun, text }: Props) => {
   const optionSubject = [
     { key: 0, siDo: "시/도 선택", guGun: ["구/군 선택"] },
     {
@@ -344,7 +345,9 @@ const SelectLocation = ({ setLocation, text }: Props) => {
   };
 
   useEffect(() => {
-    setLocation(selectedOption?.siDo + "/" + gu);
+    if (selectedOption) {
+      setSiDo(selectedOption.siDo), setGuGun(gu);
+    }
   }, [gu]);
   return (
     <MobileLayaout>

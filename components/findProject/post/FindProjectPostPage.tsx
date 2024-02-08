@@ -9,7 +9,7 @@ import {
   AddLink,
   TextArea,
   SelectTech,
-  WishPart,
+  SelectOnOff,
 } from "@/components/findProject/post/ObjectForm";
 import SelectLocation from "@/components/common/selectObject/SelectLocation";
 
@@ -22,9 +22,11 @@ const FindProjectPostPage = () => {
   const [status, setStatus] = useState<boolean>(true);
   const [subject, setSubject] = useState<string>("");
   const [tech, setTech] = useState<string[]>([]);
-  const [wishPart, setWishPart] = useState<string[]>([]);
-  const [location, setLocation] = useState<string>("");
+  const [onoff, setOnoff] = useState<boolean>(true);
+  const [siDo, setSiDo] = useState<string>("");
+  const [guGun, setGuGun] = useState<string>("");
   const [allLink, setAllLink] = useState<LinkProps[]>([]);
+  const [content, setContent] = useState<string>();
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
@@ -32,21 +34,29 @@ const FindProjectPostPage = () => {
   };
 
   const Post = () => {
-    if (
-      title &&
-      subject !== "주제를 입력하세요" &&
-      tech &&
-      wishPart &&
-      location &&
-      allLink
-    ) {
-      console.log(title);
-      console.log(status);
-      console.log(subject);
-      console.log(tech);
-      console.log(wishPart);
-      console.log(location);
-      console.log(allLink);
+    if (title && subject !== "주제를 입력하세요" && tech && guGun && allLink) {
+      const handleLogin = async () => {
+        await POST("api/projectrecruitment/add", {
+          title: title,
+          content: content,
+          siDo: siDo,
+          guGun: guGun,
+          online: onoff,
+          recruitment: status,
+          contact: ["string"],
+          subject: subject,
+          techStack: tech,
+        })
+          .then((res) => {
+            console.log(res);
+            alert(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+      };
+      handleLogin();
     } else {
       alert("추가입력");
     }
@@ -61,17 +71,20 @@ const FindProjectPostPage = () => {
         value={title}
         onChange={handleTitle}
       />
-      <UserName>작성자 닉네임</UserName>
       <hr style={{ width: "100%" }} />
       <Content>
-        <SelectStatus status={status} setStatus={setStatus} />
         <SelectSubject setSubject={setSubject} />
+        <SelectStatus status={status} setStatus={setStatus} />{" "}
+        <SelectOnOff onoff={onoff} setOnoff={setOnoff} />
         <SelectTech tech={tech} setTech={setTech} />
-        <WishPart wishPart={wishPart} setWishPart={setWishPart} />
-        <SelectLocation setLocation={setLocation} text="스터디 지역" />
+        <SelectLocation
+          setSiDo={setSiDo}
+          setGuGun={setGuGun}
+          text="모임 지역"
+        />
         <AddLink allLink={allLink} setAllLink={setAllLink} />
       </Content>
-      <TextArea post={() => Post()} />
+      <TextArea post={() => Post()} setContent={setContent} />
     </Layout>
   );
 };

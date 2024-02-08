@@ -194,12 +194,17 @@ export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
 };
 
 interface PostProps {
-  post: any;
+  post: () => void;
+  content?:string;
+  setContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
-export const TextArea = ({ post }: PostProps) => {
+export const TextArea = ({ post, content, setContent }: PostProps) => {
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <div>
-      <TextAreaDiv />
+      <TextAreaDiv value={content} onChange={handleTextArea} />
       <Hr />
       <div
         style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}

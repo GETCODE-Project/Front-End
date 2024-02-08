@@ -11,6 +11,7 @@ import {
 const CommunityPostPage = () => {
   const [title, setTitle] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
+  const [content, setContent] = useState<string>();
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
@@ -19,6 +20,22 @@ const CommunityPostPage = () => {
 
   const Post = () => {
     if (title && subject !== "주제를 입력하세요") {
+      const handleLogin = async () => {
+        await POST("api/community", {
+          title: title,
+          content: content,
+          category: subject,
+        })
+          .then((res) => {
+            console.log(res);
+            alert(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+      };
+      handleLogin();
       console.log(title);
       console.log(subject);
     } else {
@@ -40,7 +57,7 @@ const CommunityPostPage = () => {
       <Content>
         <SelectSubject setSubject={setSubject} />
       </Content>
-      <TextArea post={() => Post()} />
+      <TextArea post={() => Post()} setContent={setContent} />
     </Layout>
   );
 };
