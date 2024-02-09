@@ -42,12 +42,16 @@ export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
 };
 
 interface PostProps {
-  post: any;
+  post: () => void;
+  setContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
-export const TextArea = ({ post }: PostProps) => {
+export const TextArea = ({ post, setContent }: PostProps) => {
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <div>
-      <TextAreaDiv />
+      <TextAreaDiv onChange={handleTextArea} />
       <Hr />
       <div
         style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}

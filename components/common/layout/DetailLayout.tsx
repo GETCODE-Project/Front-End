@@ -5,10 +5,11 @@ import DetailTextArea from "@/components/common/layout/DetailTextArea";
 import DetailCommentForm from "@/components/common/selectObject/DetailCommentform";
 import SelectRoundBox from "@/components/common/selectObject/SelectRoundBox";
 import DetailMarks from "@/components/common/selectObject/DetailMarks";
-import { GET } from "@/pages/api/axios";
+import { GET, PUT } from "@/pages/api/axios";
+import { useRouter } from "next/router";
 interface DetailLayoutProps {
   pageName: string;
-  pageApi?: string;
+  pageApi: string;
 }
 interface commnetProps {
   content: string;
@@ -34,30 +35,49 @@ interface dataProps {
   subjects: string[];
 }
 
-const DetailLayout = ({ pageName }: DetailLayoutProps) => {
+const DetailLayout = ({ pageName, pageApi }: DetailLayoutProps) => {
   const [ObjectForm, setObjectForm] = useState(null);
   const [getData, setData] = useState<dataProps>();
-
-  const studyId = 11;
+  const router = useRouter();
+  const studyId = 15;
   useEffect(() => {
     import(`@/components/${pageName}/detail/ObjectForm`)
       .then((module) => setObjectForm(() => module.default))
       .catch((error) => console.error(error));
-    const apiUrl = `/api/studies`;
-    // const apiUrl = `/api/${pageApi}/${studyId}`;
-
     const getFindStudyBulletinData = async () => {
-      await GET(apiUrl)
+      await GET(`/api/${pageApi}/${studyId}`)
         .then((res) => {
           setData(res.data);
-          console.log(res);
         })
         .catch((err) => console.log(err));
     };
     getFindStudyBulletinData();
   }, [pageName]);
-  console.log(getData?.content);
+  // console.log(getData);
+  // console.log(getData?.content);
 
+  const Update = () => {
+    // router.push({ pathname: `/project/post`, query: getData });
+    // const handleLogin = async () => {
+    //   await PUT(`api/project/${studyId}/update`, {
+    //     title: "string",
+    //     content: "strinZXCXZcXZcXZCg",
+    //     introduction: "string",
+    //     githubUrl: "string",
+    //     techStackList: ["Css"],
+    //     subject: "여행",
+    //   })
+    //     .then((res) => {
+    //       console.log(res);
+    //       alert(res.data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       alert(err);
+    //     });
+    //   handleLogin();
+    // };
+  };
   return (
     getData && (
       <Layout>
@@ -81,12 +101,17 @@ const DetailLayout = ({ pageName }: DetailLayoutProps) => {
         <Content>
           {ObjectForm && React.createElement(ObjectForm, getData)}
         </Content>
-        <DetailTextArea content={getData.content} />
+        <DetailTextArea
+          content={getData.content}
+          isWriter={true}
+          Update={Update}
+        />
         {/* <DetailCommentForm comments={getData.comments} /> */}
       </Layout>
     )
   );
 };
+
 export default DetailLayout;
 
 const Layout = styled.div`
