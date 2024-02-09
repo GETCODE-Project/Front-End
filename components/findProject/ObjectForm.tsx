@@ -12,7 +12,7 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
-/** 불러온 Respons 데이터 형식 참고 */
+/** 불러온 Respons 데이터 형식 참고 : 프로젝트 모집 데이터 */
 //[TODO] 모집파트 추가해야함,?
 interface FindProjectObjectData{
     projectRecruitmentId: number;
@@ -38,6 +38,28 @@ interface FindProjectObjectData{
     checkLike: boolean|null;
     checkWish: boolean|null;
 }
+/** 불러온 Respons 데이터 형식 참고 : 내가 작성한 프로젝트 모집 데이터 */
+/**[TODO: 변수명 통일 및 미사용 변수명 처리 요청 중(240206)] */
+interface MyWriteFindProjectObjectData{
+    projectId: number; //변수명통일요청
+    title: string;
+    introduction: string; //변수명통일요청
+    views: number;
+    likeCnt: number;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+    dateTime: string; //변수명통일요청
+    imageUrl: string|null; //알수없는변수명
+    memberNickName: string;
+    projectSubjects: [{ //변수명통일요청
+        id: number;
+        subject: string;
+    }];
+    techStackList: [{ //변수명통일요청
+        id: number;
+        techStack: string;
+    }]
+}
 
 const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
 
@@ -47,7 +69,8 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
 
     /** 해당 프로젝트모집 게시물의 주제,기술 배열,모집중여부 */
     const subjects:any[] = data.subjects;
-    const techStacks:any[] = [...data.techStacks];
+    // const techStacks:any[] = [...data.techStacks];
+    const techStacks:any[] = data.techStacks;
     const [recruitMentBoolean, setRecruitMentBoolean] = useState<boolean>(false);
 
     /** 좋아요 버튼 클릭 이벤트 */
@@ -118,7 +141,7 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
     },[]);
 
     useEffect(()=>{
-        // console.log(data,'findProjectObject');
+        // console.log(data,'findProjectObjectData');
     },[]);
     
     return (
@@ -135,7 +158,7 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
                             <ViewCountSVG/>
                             <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper onClick={handleHeartClick}>
+                        <Wrapper id="hartClick" onClick={handleHeartClick}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                             <span>{data.likeCnt}</span>
                         </Wrapper>
@@ -145,16 +168,17 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
                     </Reaction>
                 </Info>
                 <Stack>
+                    {/* [TODO: 변수명 통일 후 작업 가능 부분(240206)]
                     <div>
                         {data.techStacks.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i.teckStack}</StackName>
                         ))}
-                    </div>
-                    <div>
+                    </div> */}
+                    {/* <div>
                         {subjects.map((i:any,idx:number)=>(
                             <StackName id='part' key={idx}>{i.subject}</StackName>
                         ))}
-                    </div>
+                    </div> */}
                 </Stack>
                 <Create>
                     <span>{`작성자 : ${data.memberNickName}`}</span>
@@ -184,6 +208,8 @@ const Wish = styled.div`
     min-width: 60px;
     
     background-color: #FFF1E4;
+
+    cursor: pointer;
 `;
 
 const Content = styled.div`
@@ -258,6 +284,10 @@ const Reaction = styled.div`
     align-items: start;
     gap: 15px;
     padding: 15px;
+
+    #hartClick {
+        cursor: pointer;
+    }
 `;
 const Wrapper = styled.div`
     display: flex;

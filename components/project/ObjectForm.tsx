@@ -13,7 +13,7 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
-/** 불러온 Respons 데이터 형식 참고 */
+/** 불러온 Respons 데이터 형식 참고 : 프로젝트 데이터 */
 interface ProjectObjectData{
     projectId: number;
     title: string;
@@ -32,11 +32,34 @@ interface ProjectObjectData{
     imageUrl: {
         id: number;
         imageUrl: string;
-    };
+    }|null;
     memberNickName: string;
     checkLike: boolean|null;
     checkWish: boolean|null;
 }
+/** 불러온 Respons 데이터 형식 참고 : 내가 작성한 프로젝트 데이터 */
+//[TODO: My프로젝트데이터와 프로젝트데이터 변수 통일되었는지 비교용 작성 ]
+interface MyProjectObjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+    dateTime: string;
+    imageUrl: null; //정확한 형식 무엇인지?
+    memberNickName: string;
+    projectSubjects: [{
+        id: number;
+        subject: string;
+    }];
+    techStackList: [{
+        id: number;
+        techStack: string;
+    }];
+}
+
 /** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
 /** ------------------------------------------------------------- */
@@ -104,7 +127,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     },[]);
 
     useEffect(()=>{
-        // console.log(data.projectId);
+        console.log(data,'projectData');
     },[]);
 
     return(

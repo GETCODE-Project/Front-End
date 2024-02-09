@@ -12,7 +12,7 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
-/** 불러온 Respons 데이터 형식 참고 */
+/** 불러온 Respons 데이터 형식 참고: 스터디모집 게시글 */
 //[TODO] 분야(다중선택)=subject라고 생각하고 작업.
 //[TODO] 좋아요클릭여부,찜하기클릭여부 필요
 interface FindStudyObjectData{
@@ -30,17 +30,34 @@ interface FindStudyObjectData{
       nickname: string //작성자닉네임
     },
     comments: [
-      {
-        ontent: string, //?내용?
-        modifiedDate: string, //모집일
-        email: string, //
-        nickname: string //
-      }
+    //   {
+    //     ontent: string, //?내용?
+    //     modifiedDate: string, //모집일
+    //     email: string, //
+    //     nickname: string //
+    //   }
     ],
     subjects: [ //주제?
       string
     ]
 }
+/** 불러온 Respons 데이터 형식 참고: 내가 작성한 스터디모집 게시글 */
+interface MyWriteFindStudyObjectData{
+    comments: [];
+    contact: [string];
+    content: string;
+    count: number;
+    date: string;
+    member: {
+        email: string;
+        nickname: string;
+        profileImg: null|string; //이 형식이 맞나?
+    };
+    online: boolean;
+    recruitment: boolean;
+    
+}
+
 
 const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
 

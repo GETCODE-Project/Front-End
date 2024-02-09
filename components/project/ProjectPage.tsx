@@ -14,12 +14,12 @@ const ProjectPage = () => {
 
     /** 상세 검색 항목 리스트 */
     const stackDataArray:string[] = ['전체','Spring','Django','Express.js','Flask','Rails','vue.js','Springboot','Next.js','Nest.js','MySQL','Oracle','PostgreSQL','MariaDB','Redis','MongoDB','JavaScript','TypeScript','React','ReactNative','Html','Css','Flutter','Dart','Git','Github','AWS'];
-    const topicDataArray:string[] = ['전체','여행','이커머스','소셜네트워크','공유서비스','의료','금융','교육','모임','스포츠','게임','부동산','뷰티','패션'];
+    const subjectDataArray:string[] = ['전체','여행','이커머스','소셜네트워크','공유서비스','의료','금융','교육','모임','스포츠','게임','부동산','뷰티','패션'];
     const yearDataArray:string[] = ['전체','2020','2021','2022','2023','2024'];
   
     /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
     const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('전체');
-    const [currentSelectedTopic, setCurrentSelectedTopic]=useState<string>('전체');
+    const [currentSelectedSubject, setCurrentSelectedSubject]=useState<string>('전체');
     const [currentSelectedYear, setCurrentSelectedYear]=useState<string>('전체');
     /** 현재 선택된 상세 검색 항목(총 선택된 항목) - 다중선택토글폼에만 해당 */
     const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
@@ -30,11 +30,11 @@ const ProjectPage = () => {
     useEffect(() =>{
       let tumpArray:any[] = [{
         stack:selectedStackAll,
-        topic:currentSelectedTopic,
+        subject:currentSelectedSubject,
         year:currentSelectedYear
       }];
       setDetailSearchSelectedData(tumpArray);
-    },[currentSelectedStack,currentSelectedTopic,currentSelectedYear]);
+    },[currentSelectedStack,currentSelectedSubject,currentSelectedYear]);
 
     return(
       <MainContantsLayout
@@ -48,9 +48,9 @@ const ProjectPage = () => {
             selectedAll={selectedStackAll}
             setSelectedAll={setSelectedStackAll}
         />
-        <SingleSelectToggle title="주제" data={topicDataArray}
-            currentSelected={currentSelectedTopic}
-            setCurrentSelected={setCurrentSelectedTopic}
+        <SingleSelectToggle title="주제" data={subjectDataArray}
+            currentSelected={currentSelectedSubject}
+            setCurrentSelected={setCurrentSelectedSubject}
         />
         <SingleSelectToggle title="연도" data={yearDataArray}
             currentSelected={currentSelectedYear}
