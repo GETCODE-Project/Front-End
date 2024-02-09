@@ -83,7 +83,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     }
     /** 찜하기 버튼 클릭 이벤트 */
     const handleWishClick = async() => {
-        
+        setIsWishOn(!isWishOn);
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
             //[TODO: res.data 값 확인, boolean값으로 조건 설정]
@@ -98,6 +98,8 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
             }
         });
     }

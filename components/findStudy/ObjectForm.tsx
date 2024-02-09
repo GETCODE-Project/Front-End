@@ -59,6 +59,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
 
     /** 좋아요 버튼 클릭 이벤트 */
     const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
         await POST(`/api/study-like/${data.id}`)
         .then((res)=>{
             //[TODO: res.data 값 확인, boolean값으로 조건 설정]
@@ -73,12 +74,15 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
+
             }
         });
     }
     /** 찜하기 버튼 클릭 이벤트 */
     //[TODO: 스터디모집글 더미데이터 작성된 후 테스트 가능]
     const handleWishClick = async() => {
+        setIsWishOn(!isWishOn);
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
             //[TODO: res.data 값 확인, boolean값으로 조건 설정]
@@ -93,6 +97,8 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
             }
         });
     }
@@ -100,13 +106,13 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
     useEffect(()=>{
         if(data.checkLike===true){
-            setIsHartOn(data.Wishs);
+            setIsHartOn(true);
         }
         if(data.checkLike===false||null){
             setIsHartOn(false);
         }
         if(data.checkWish===true){
-            setIsWishOn(data.Wishs);
+            setIsWishOn(true);
         }
         if(data.checkWish===false||null){
             setIsWishOn(false);
