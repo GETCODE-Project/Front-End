@@ -69,34 +69,30 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
 
     /** 좋아요 버튼 클릭 이벤트 */
     const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
         await POST(`/api/project/${data.projectId}/like`)
         .then((res)=>{
-            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
-            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
-            if(res.data==='프로젝트 좋아요 성공'){
-                setIsHartOn(true);
-            }if(res.data==='프로젝트 좋아요 삭제 성공'){
-                setIsHartOn(false);
-            }
         })
         .catch((err)=>{
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
             }
         });
     }
     /** 찜하기 버튼 클릭 이벤트 */
     const handleWishClick = async() => {
+        
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
             //[TODO: res.data 값 확인, boolean값으로 조건 설정]
             //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
-            if(res.data==='프로젝트 좋아요 성공'){
-                setIsWishOn(true);
-            }if(res.data==='프로젝트 좋아요 삭제 성공'){
-                setIsWishOn(false);
-            }
+            // if(res.data==='프로젝트 좋아요 성공'){
+            //     setIsWishOn(true);
+            // }if(res.data==='프로젝트 좋아요 삭제 성공'){
+            //     setIsWishOn(false);
+            // }
         })
         .catch((err)=>{
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
@@ -109,13 +105,13 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
     useEffect(()=>{
         if(data.checkLike===true){
-            setIsHartOn(data.Wishs);
+            setIsHartOn(true);
         }
         if(data.checkLike===false||null){
             setIsHartOn(false);
         }
         if(data.checkWish===true){
-            setIsWishOn(data.Wishs);
+            setIsWishOn(true);
         }
         if(data.checkWish===false||null){
             setIsWishOn(false);
@@ -131,7 +127,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
             <Thumbnail>
                 <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
-                    <Wrapper onClick={handleHeartClick}>
+                    <Wrapper onClick={()=>handleHeartClick()}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
                         <span>{data.likeCnt}</span>
                     </Wrapper>
