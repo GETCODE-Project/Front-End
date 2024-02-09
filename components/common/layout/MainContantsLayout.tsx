@@ -25,6 +25,16 @@ interface MainContentsLayoutProps {
     id?:any;
 }
 
+interface Params {
+    year?: string;
+    keyword?: string;
+    size?: number;
+    pageNumber?: number;
+    sort?: string;
+    subjeck?: string;
+    techStack?: string[];
+}
+
 /** 프로젝트, 프로젝트모집, 스터디모집의 메인 페이지 레이아웃 컴포넌트*/
 
 const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, detailSearchSelectedData, id}:MainContentsLayoutProps) => {
@@ -48,7 +58,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [year, setYear] = useState<string>('');//연도
     const [keyword, setKeyword] = useState<string>('');//검색키워드
     const [size, setSize] = useState<number>(10);//페이지객체수
-    const [page, setPage] = useState<number>(1);//페이지
+    const [pageNumber, setPageNumber] = useState<number>(1);//페이지
     const [sort, setSort] = useState<string>('latestOrder');//정렬
     const [subject, setSubject] = useState<string>('');//주제
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
@@ -58,11 +68,11 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
-    const [params, setParams] = useState<any>();
-    const projectParams = {year, keyword, size, page, sort, subject, techStack, memberId};
-    const findProjectParams = {year, keyword, size, page, sort, subject, techStack, memberId};
-    const findStudyParams = [{}];
-    const communityParams = [{}];
+    const [params, setParams] = useState<Params>();
+    const projectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
+    const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
+    const findStudyParams = {};
+    const communityParams = {};
 
     /** 상세 검색 항목 SET */
     
@@ -131,20 +141,22 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 return;
         }
         setModuleName(moduleName);
-    },[pageName, sort, year, keyword, size, page, subject, techStack, part, recruitment, memberId]);
+        setParams((prevParams: any) => ({ ...prevParams, sort}));
 
-    /** 페이지 별 데이터 불러오기 */
+    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, part, recruitment, memberId]);
+
+    /** 페이지 별 데이터 불러오기, 정렬 상태 반영 */
     useEffect(()=>{
         if(!moduleName) return;
         getData();
-    },[sort,moduleName])
+    },[moduleName,params?.sort]);
 
     useEffect(()=>{
         if (detailSearchSelectedData && detailSearchSelectedData.length > 0) {
             const data = detailSearchSelectedData[0];
             
             setYear(data?.year === '전체' ? '' : data?.year || '');
-            setSubject(data?.topic === '전체' ? '' : data?.topic || '');
+            setSubject(data?.subject === '전체' ? '' : data?.subject || '');
             setTechStack(data?.stack === '전체' ? [] : data?.stack || []);
             setPart(data?.part === '전체' ? [] : data?.part || []);
             setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment || '');
@@ -153,7 +165,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     },[detailSearchSelectedData]);
 
     useEffect(() => {
-        // console.log(objectData,'objectData');
+        console.log(detailSearchSelectedData,'SearchSelected');
     },[]);
 
     return(

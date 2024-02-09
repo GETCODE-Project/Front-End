@@ -1,22 +1,20 @@
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
+import { GET } from "@/pages/api/axios";
 import { useEffect, useState } from "react";
 
 /** ------------------------------------------------------------- */
 /** 프로젝트 목록 페이지 컴포넌트 */ //검색단(메인컴포넌트의children)
 /** ------------------------------------------------------------- */
 // 기술스택(다중선택), 주제(단일선택), 년도(단일선택)
-/**[TODO]
- * [1] 
- */
 
 const ProjectPage = () => {
 
     /** 상세 검색 항목 리스트 */
-    const stackDataArray:string[] = ['전체','Spring','Django','Express.js','Flask','Rails','vue.js','Springboot','Next.js','Nest.js','MySQL','Oracle','PostgreSQL','MariaDB','Redis','MongoDB','JavaScript','TypeScript','React','ReactNative','Html','Css','Flutter','Dart','Git','Github','AWS'];
-    const subjectDataArray:string[] = ['전체','여행','이커머스','소셜네트워크','공유서비스','의료','금융','교육','모임','스포츠','게임','부동산','뷰티','패션'];
-    const yearDataArray:string[] = ['전체','2020','2021','2022','2023','2024'];
-  
+    const [stackDataArray, setStackDataArray] = useState<string[]>([]);
+    const [subjectDataArray, setSubjectDataArray] = useState<string[]>([]);
+    const yearDataArray: string[] = ['전체', '2020', '2021', '2022', '2023', '2024'];
+
     /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
     const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('전체');
     const [currentSelectedSubject, setCurrentSelectedSubject]=useState<string>('전체');
@@ -27,6 +25,7 @@ const ProjectPage = () => {
     /** 검색하기에 반영될 선택된 토글 항목들 */
     const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any[]>([]);
 
+    /** 최종 선택 된 검색 토글 항목들 */
     useEffect(() =>{
       let tumpArray:any[] = [{
         stack:selectedStackAll,
@@ -35,6 +34,24 @@ const ProjectPage = () => {
       }];
       setDetailSearchSelectedData(tumpArray);
     },[currentSelectedStack,currentSelectedSubject,currentSelectedYear]);
+
+    /** 상세 검색 기술스택, 주제 항목 리스트 불러오기 */
+    useEffect(() => {
+      const getSearchListData = async() => {
+        // 기술스택 토글 리스트
+        await GET(`/api/techStacks`)
+        .then((res)=>{
+          setStackDataArray(res.data);
+        })
+        .catch((err) => {console.error(err)});
+        // 주제 토글 리스트
+        await GET(`/api/subjects`)
+        .then((res)=>setSubjectDataArray(res.data))
+        .catch((err)=>console.error(err));
+      };
+
+      getSearchListData();
+    },[]);
 
     return(
       <MainContantsLayout

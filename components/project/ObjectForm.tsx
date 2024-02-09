@@ -13,33 +13,29 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
+
 /** 불러온 Respons 데이터 형식 참고 : 프로젝트 데이터 */
-interface ProjectObjectData{
+/**[TODO: 썸네일(이미지) 데이터 누락됨 - 요청중] */
+interface ProjectData{
     projectId: number;
     title: string;
     introduction: string;
     views: number;
     likeCnt: number;
-    dateTime: string;
-    projectSubjects:[{
-        id: number;
-        subject: string;
-    }]
-    techStackList: [{
+    createDate: string;
+    modifiedDate: string;
+    techStacks: [{
         id: number;
         techStack: string;
     }];
-    imageUrl: {
-        id: number;
-        imageUrl: string;
-    }|null;
+    subject: string;
     memberNickName: string;
     checkLike: boolean|null;
     checkWish: boolean|null;
 }
 /** 불러온 Respons 데이터 형식 참고 : 내가 작성한 프로젝트 데이터 */
 //[TODO: My프로젝트데이터와 프로젝트데이터 변수 통일되었는지 비교용 작성 ]
-interface MyProjectObjectData{
+interface MyProjectData{
     projectId: number;
     title: string;
     introduction: string;
@@ -69,7 +65,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
 
-    const subject:any [] = data?.projectSubjects;
+    const subject:any [] = data?.subjects;
 
     /** 좋아요 버튼 클릭 이벤트 */
     const handleHeartClick = async() => {
@@ -127,7 +123,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     },[]);
 
     useEffect(()=>{
-        console.log(data,'projectData');
+        // console.log(data,'projectData');
     },[]);
 
     return(
@@ -156,13 +152,13 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
                     <Intro>
                         {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${subject[0].subject}`}</Topic>
+                    <Topic>{`주제 : ${data?.subject}`}</Topic>
                     <Stack>
-                        {data.techStackList?.map((i:any,idx:number)=>(
+                        {data.techStacks?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i.techStack}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.dateTime}`}</div></Create>
+                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.createDate}`}</div></Create>
                 </Info>
             </Content>
               
@@ -206,9 +202,9 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                 </Title>
                 <Info>
                     <Intro>
-                        {data.subTitle}
+                        {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${data.topic}`}</Topic>
+                    <Topic>{`주제 : ${data.subject}`}</Topic>
                     <Stack>
                         {data.techStackList?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
@@ -216,7 +212,7 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                     </Stack>
                     <Create>
                         <div>{`작성자 : ${data.writer}`}</div>
-                        <div>{`작성일 : ${data.createdDate}`}</div>
+                        <div>{`작성일 : ${data.createDate}`}</div>
                     </Create>
                 </Info>
             </Content>
