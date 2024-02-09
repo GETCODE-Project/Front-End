@@ -1,10 +1,43 @@
+import { GET, PATCH } from "@/pages/api/axios";
 import { NickNameEditSVG, ProfileEditSVG } from "@/public/SVG/profile";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import Alert from "@/components/common/notification/Alert";
 
 const MyPage = () => {
 
     const router = useRouter();
+
+    const [isLogoutAlertOn, setIsLogoutAlertOn] = useState<boolean>(false);
+
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userNickname, setUserNickname] = useState<string>('');
+    const [userProfileImage, setUserProfileImage] = useState<string>('');
+
+    /** 회원 정보 조회 GET */
+    const getUserInfo = async() => {
+        await GET(`/api/userInfo`)
+        .then((res)=>{
+            setUserEmail(res.data.email);
+            setUserNickname(res.data.nickname);
+            //[TODO: 프로필이미지도 불러와야 함]
+        })
+    }
+    /** 로그아웃 PATCH */
+    const handleLogout = async() => {
+        await PATCH(`/api/logout`)
+        .then((res)=>{
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            router.push('/');
+        })
+        .catch((err)=>console.error(err));
+    }
+
+    useEffect(() => {
+        getUserInfo();
+    },[]);
 
     return (
         <BackLayout>
@@ -15,20 +48,20 @@ const MyPage = () => {
                             <ProfileEditSVG/>
                         </ProfilEditButton>
                     </Profile>
-                    <NickName>홍길동 님</NickName>
-                    <LogOut>로그아웃</LogOut>
+                    <NickName>{`${userNickname} 님`}</NickName>
+                    <LogOut onClick={()=>setIsLogoutAlertOn(true)}>로그아웃</LogOut>
                 </Wrapper>
                 <Wrapper className="UserInfo">
                     <InfoMenu>
                         <span id="menu">닉네임</span>
                         <span id="info">
-                            <span>닉네임_G</span>
+                            <span>{userNickname}</span>
                             <div style={{cursor:'pointer'}}><NickNameEditSVG/></div>
                         </span>
                     </InfoMenu>
                     <InfoMenu>
                         <span id="menu">이메일</span>
-                        <span id="info">email@email.com</span>
+                        <span id="info">{userEmail}</span>
                     </InfoMenu>
                 </Wrapper>
                 <Wrapper className="PageMenu">
@@ -36,12 +69,21 @@ const MyPage = () => {
                         <span id="icon"></span>
                         <span id="menu">작성한 게시글</span>
                     </PageMenu>
-                    <PageMenu>
+                    <PageMenu onClick={()=>router.push('/my/myWishs')}>
                         <span id="icon"></span>
                         <span id="menu">찜한 게시글</span>
                     </PageMenu>
                 </Wrapper>
             </Layout>
+            {isLogoutAlertOn?
+                <Alert
+                    setIsAlertOn={setIsLogoutAlertOn}
+                    notice='정말로 로그아웃 하시겠습니까?'
+                    yesButtonFC={handleLogout}
+                    noButtonFC={()=>setIsLogoutAlertOn(false)}
+                />
+            :   <></>
+            }
         </BackLayout>
     )
 }
@@ -51,6 +93,7 @@ const BackLayout = styled.div`
     display: flex;
     align-items: start;
     justify-content: center;
+    width: 100%;
     height: 100vh;
     padding-top: 50px;
 `;

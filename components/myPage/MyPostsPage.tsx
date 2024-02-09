@@ -1,14 +1,103 @@
 import { DownWardToggleSVG } from "@/public/SVG/profile";
 import { media } from "@/styles/mediaQuery";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 
 const MyPostsPage = () => {
 
-    const data:any[] = ['프로젝트','프로젝트 모집','스터디 모집','커뮤니티'];
+    /** 로그인Alert OnOff */
+    const [isLoginAlertOn, setIsLoginAlertOn] = useState<boolean>(false);
+
+    /** 나의 작성 게시글 카테고리, 카테고리 토글 OnOff, 현재 선택된 카테고리 */
+    const postCategory:any[] = ['프로젝트','프로젝트 모집','스터디 모집','커뮤니티'];
     const [isToggleOn, setIsToggleOn] = useState<boolean>(false);
-    const [selectedToggle, setSelectedToggle] = useState<string>('프로젝트');
-    const sortArr:any [] = ["최신순","과거순","좋아요순"];
+    const [selectedCategory, setSelectedCategory] = useState<string>('프로젝트');
+
+    // const sortArr:any [] = ["최신순","과거순","좋아요순"]; //정렬은 개발 제외하기로 함
+
+    /** 게시물 데이터를 불러 올 모듈 이름, 객체 폼을 불러 올 페이지 이름 */
+    const [moduleName, setModuleName] = useState<string>('myProjectData');
+    const [pageName, setPageName] = useState<string>('project');
+
+    /** 카테고리 별 게시물 폼, 데이터 */
+    const [myObjectData, setMyObjectData] = useState<any[]>([]);
+    const [myObjectForm, setMyObjectForm] = useState(null);
+
+    /** 게시물 불러오기 파라미터 (쿼리스트링) */
+    const [page, setPage] = useState<string>('');
+    const [size, setSize] = useState<string>('');
+    /** 카테고리 별 게시물 전체 목록 불러오기 파라미터 SET */
+    const [params, setParams] = useState<any>();
+    const projectParams = {};
+    const findProjectParams = {page, size};
+    const findStudyParams = {};
+    const communityParams = {};
+
+    /** 카테고리 별 ModuleName, ParamsSet 설정 */
+    useEffect(() => {
+        const categorySettings = () => {
+            let moduleName = '';
+            switch (selectedCategory){
+                case '프로젝트':
+                    moduleName = 'myProjectData';
+                    setParams(projectParams);
+                    setPageName('project');
+                    break;
+                case '프로젝트 모집':
+                    moduleName = 'myFindProjectData';
+                    setParams(findProjectParams);
+                    setPageName('findProject');
+                    break;
+                case '스터디 모집':
+                    moduleName = 'myFindStudyData';
+                    setParams(findStudyParams);
+                    setPageName('findStudy');
+                    break;
+                case '커뮤니티':
+                    moduleName = 'myCommunityData';
+                    setParams(communityParams);
+                    setPageName('community');
+                    break;
+                default:
+                    return;
+            }
+            setModuleName(moduleName);
+        }
+        categorySettings();
+    },[selectedCategory]);
+
+    /** 카테고리 별 객체 폼 불러오기 */
+    useEffect(() => {
+        const getObjectForm = () => {
+            import(`@/components/${pageName}/ObjectForm`)
+            .then(module => {
+                pageName=='project'?setMyObjectForm(()=>module.ObjectForm):setMyObjectForm(()=>module.default)
+            })
+            .catch(error=>console.error(error));
+        }
+        getObjectForm();
+    },[pageName, setMyObjectData]);
+
+    /** 카테고리 별 데이터 불러오기 */
+    useEffect(()=>{
+        const getData = async() => {
+            try{
+                const getModule = await import(`@/components/myPage/myObjectAllData/${moduleName}`);
+                await getModule.getMyWriteObjectData({
+                    params, setMyObjectData
+                })
+            }
+            catch (error){
+                console.error(error);
+            }
+        }
+        getData();
+    },[setSelectedCategory,moduleName])
+
+    useEffect(()=>{
+        console.log(moduleName,'moduleName');
+    },[selectedCategory]);
 
 
     return(
@@ -17,12 +106,12 @@ const MyPostsPage = () => {
                 <Wrapper>
                     <Title>나의 작성 게시글</Title>
                     <PostsToggle onClick={()=>setIsToggleOn(!isToggleOn)}>
-                        <span id="selectedToggle">{selectedToggle}</span>
+                        <span id="selectedToggle">{selectedCategory}</span>
                         <DownWardToggleSVG/>
                         {isToggleOn?
                             <ToggleList>
-                                {data.map((i:any, idx:number)=>(
-                                    <Toggle key={idx} onClick={()=>setSelectedToggle(i)}>{i}</Toggle>
+                                {postCategory.map((i:any, idx:number)=>(
+                                    <Toggle key={idx} onClick={()=>setSelectedCategory(i)}>{i}</Toggle>
                                 ))
                                 }
                             </ToggleList>
@@ -31,13 +120,15 @@ const MyPostsPage = () => {
                     </PostsToggle>
                 </Wrapper>
                 <TotalSortWrapper>
-                            <Total>{`총 ${data?.length}개 ${selectedToggle}`}</Total>
-                            <Sort>
-                                {sortArr.map((i:any,idx:number)=>(
-                                    <span key={idx}>{i}</span>
-                                ))}
-                            </Sort>
+                    <Total>{`총 ${myObjectData?.length}개 ${selectedCategory}`}</Total>
                 </TotalSortWrapper>
+                <ObjectList selectedCategory={selectedCategory}>
+                    {Array.isArray(myObjectData)&&myObjectData?.map((i:any,idx:number)=>(
+                        myObjectForm ? React.createElement(myObjectForm, {
+                            key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
+                        }) : null
+                    ))}
+                </ObjectList>
             </Layout>
         </BackLayout>
     )
@@ -130,4 +221,16 @@ const Total = styled.div`
 const Sort = styled.div`
     display: flex;
     gap: 10px;
+`;
+
+const ObjectList = styled.div<{selectedCategory:string}>`
+    display: flex;
+    flex-direction: ${({selectedCategory})=>(selectedCategory==='프로젝트'?'unset':'column')};
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+
+    ${media.tablet || media.mobile}{
+        justify-content: ${({selectedCategory})=>(selectedCategory==='프로젝트'?'center':'unset')};
+    }
 `;

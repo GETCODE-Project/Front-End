@@ -45,14 +45,16 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [objectForm, setObjectForm] = useState(null);
 
     /** 게시물 전체 목록 불러오기 GET 파라미터 데이터 리스트 */
-    const [year, setYear] = useState<string>('');
-    const [keyword, setKeyword] = useState<string>('');
-    const [size, setSize] = useState<number>(10);
-    const [page, setPage] = useState<number>(1);
-    const [sort, setSort] = useState<string>('latestOrder');
-    const [subject, setSubject] = useState<string>('');
-    const [techStack, setTechStack] = useState<string[]>([]);
-    const [memberId, setMemberId] = useState<number>();
+    const [year, setYear] = useState<string>('');//연도
+    const [keyword, setKeyword] = useState<string>('');//검색키워드
+    const [size, setSize] = useState<number>(10);//페이지객체수
+    const [page, setPage] = useState<number>(1);//페이지
+    const [sort, setSort] = useState<string>('latestOrder');//정렬
+    const [subject, setSubject] = useState<string>('');//주제
+    const [techStack, setTechStack] = useState<string[]>([]);//기술스택
+    const [part, setPart] = useState<string[]>([]);//모집파트
+    const [recruitment, setRecruitment] = useState<string>('');//모집여부
+    const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<any>();
@@ -79,6 +81,19 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         }
     } 
 
+    /** 페이지 별 데이터 불러오기 함수 */
+    const getData = async() => {
+            try{
+                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
+                await getModule.getObjectData({
+                    params,setObjectData
+                });
+            }
+            catch (error){
+                console.error(error);
+            }
+        };
+
     /** 상세 검색 적용 */
 
     /** 페이지 별 객체 폼 불러오기 */
@@ -86,7 +101,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         import(`@/components/${pageName}/ObjectForm`)
         .then(module => {pageName=='project'?
             setObjectForm(()=>module.ObjectForm)
-        : setObjectForm(()=>module.default)})
+        : setObjectForm(()=>module.default)
+        })
         .catch(error => console.error(error))
     },[pageName, setObjectData]);
 
@@ -114,26 +130,26 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 return;
         }
         setModuleName(moduleName);
-    },[pageName, sort, year, keyword, size, page, subject, techStack, memberId]);
+    },[pageName, sort, year, keyword, size, page, subject, techStack, part, recruitment, memberId]);
 
     /** 페이지 별 데이터 불러오기 */
     useEffect(()=>{
         if(!moduleName) return;
-
-        const getData = async() => {
-            try{
-                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
-                await getModule.getObjectData({
-                    params,setObjectData
-                });
-            }
-            catch (error){
-                console.error(error);
-            }
-        };
         getData();
-        
-    },[params, moduleName])
+    },[sort,moduleName])
+
+    useEffect(()=>{
+        if (detailSearchSelectedData && detailSearchSelectedData.length > 0) {
+            const data = detailSearchSelectedData[0];
+            
+            setYear(data?.year === '전체' ? '' : data?.year || '');
+            setSubject(data?.topic === '전체' ? '' : data?.topic || '');
+            setTechStack(data?.stack === '전체' ? [] : data?.stack || []);
+            setPart(data?.part === '전체' ? [] : data?.part || []);
+            setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment || '');
+
+        }
+    },[detailSearchSelectedData]);
 
     return(
         <BackLayout>
@@ -145,12 +161,12 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                     :   <></>
                     }
                 </Title>
-                <SearchInput>
+                <SearchInput setKeyword={setKeyword} searchButtonFC={getData}>
                     <Search>
                         <div>
                             {children}
                         </div>
-                        <SearchButton>검색하기</SearchButton>
+                        <SearchButton onClick={getData}>검색하기</SearchButton>
                     </Search>
                 </SearchInput>
                 
@@ -176,7 +192,14 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 </Contents>
                 <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
-            {isLoginAlertOn?<Alert setIsLoginAlertOn={setIsLoginAlertOn}/>:null}
+            {isLoginAlertOn?
+                <Alert 
+                    setIsAlertOn={setIsLoginAlertOn}
+                    notice={<>{'로그인이 필요한 서비스입니다.'}<br/>{'로그인 하시겠습니까?'}</>}
+                    yesButtonFC={()=>router.push('/auth/login')}
+                    noButtonFC={()=>setIsLoginAlertOn(false)}
+                />
+            :null}
         </BackLayout>
     )
 }

@@ -50,6 +50,11 @@ const LoginPage = () => {
         setUserPassword(target);
     }
 
+    useEffect(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    },[]);
+
     return(
         <AuthForm
             title="로그인"

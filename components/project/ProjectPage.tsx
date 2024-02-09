@@ -25,12 +25,15 @@ const ProjectPage = () => {
     const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
 
     /** 검색하기에 반영될 선택된 토글 항목들 */
-    const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any>();
+    const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any[]>([]);
 
     useEffect(() =>{
-      // console.log(selectedStackAll,'기술스택');
-      // console.log(currentSelectedTopic,'주제');
-      // console.log(currentSelectedYear,'년도');
+      let tumpArray:any[] = [{
+        stack:selectedStackAll,
+        topic:currentSelectedTopic,
+        year:currentSelectedYear
+      }];
+      setDetailSearchSelectedData(tumpArray);
     },[currentSelectedStack,currentSelectedTopic,currentSelectedYear]);
 
     return(
