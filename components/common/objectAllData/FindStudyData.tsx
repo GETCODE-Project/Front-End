@@ -12,13 +12,15 @@ import { GET } from "@/pages/api/axios";
 interface FindStudyProps{
     params: {
         pageNumber: number; //필수값
+        size: number; //필수값
         keyword: string;
-        region: string;
-        recruitment: boolean;
-        online: boolean;
-        year: number;
-        subjects: string[];
-        criteria: string;
+        sort: string;
+        siDo: string;
+        guGun: string;
+        recruitment: boolean|'';
+        online: boolean|'';
+        year: number|string;
+        field: string[]; //스터디 분야(프론트에서 넣어서 보냄 like 기술스택,주제)
     }
     setObjectData?: any;
 }
@@ -29,16 +31,17 @@ interface FindStudyProps{
 export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 
     const subjectQueryString = () => {
-        let subject = '';
-        if(params.subjects.length > 0){
-            subject = params.subjects?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
+        let field = '';
+        if(params.field.length > 0){
+            field = params.field?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
         }
-        return subject;
+        return field;
     }
 
-    return await GET(`/api/search/studies?page=${params.pageNumber}&keyword=${params.keyword}&region=${params.region}&recruitment=${params.recruitment}&online=${params.online}&year=${params.year}&subject=${subjectQueryString}&criteria=${params.criteria}`,{})
+    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${params.recruitment}&online=${params.online}&year=${params.year}&field=${subjectQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
+        // console.log(res);
     })
     .catch((err)=>{console.error(err)});
 }

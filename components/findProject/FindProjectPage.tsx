@@ -47,6 +47,7 @@ const FindProjectPage = () => {
     useEffect(() =>{
 
         // console.log(currentSelectedRecruitment, '모집여부');
+        //[TODO: online처럼 바꾸기-코드간결화]
         let currentRecruitment:boolean|string = '';
         if(currentSelectedRecruitment==='모집 중'){
             currentRecruitment = true;

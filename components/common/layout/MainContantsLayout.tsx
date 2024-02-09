@@ -61,6 +61,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [sort, setSort] = useState<string>('latestOrder');//정렬
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
     const [subject, setSubject] = useState<string>('');//주제
+    const [field, setField] = useState<string>('');//스터디 분야
     const [online, setOnline] = useState<boolean|string>('');//온라인여부
     const [recruitment, setRecruitment] = useState<boolean|string>('');//모집여부
     const [siDo, setSiDo] = useState<string>('');//시도
@@ -71,7 +72,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [params, setParams] = useState<Params>();
     const projectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
     const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack, online, siDo, guGun, recruitment};
-    const findStudyParams = {};
+    const findStudyParams = {year, keyword, size, pageNumber, sort, siDo, guGun, recruitment, online, field};
     const communityParams = {};
 
     /** 상세 검색 항목 SET */
@@ -143,7 +144,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         setModuleName(moduleName);
         setParams((prevParams: any) => ({ ...prevParams, sort}));
 
-    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, online, recruitment, siDo, guGun]);
+    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, online, recruitment, siDo, guGun, field]);
 
     /** 페이지 별 데이터 불러오기, 정렬 상태 반영 */
     useEffect(()=>{
@@ -158,6 +159,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             setYear(data?.year === '전체' ? '' : data?.year || '');
             setSubject(data?.subject === '전체' ? '' : data?.subject || '');
             setTechStack(data?.stack === '전체' ? [] : data?.stack || []);
+            setField(data?.field === '전체' ? [] : data?.field || []);
             setOnline(data?.online === '전체' ? '' : data?.online===true?true:data?.online===false?false:'');
             setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment===true?true: data?.recruitment===false?false: '');
             setSiDo(data?.siDo === '시/도 선택' ? '' : data?.siDo || '');
@@ -168,6 +170,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
     useEffect(() => {
         // console.log(detailSearchSelectedData,'SearchSelected');
+        // console.log(objectData,'objectData');
     },[]);
 
     return(
