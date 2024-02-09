@@ -6,10 +6,16 @@ import styled from "styled-components";
 interface Props{
     title?: string; //선택 제목(ex-기술스택or주제or연도)
     data?: string[]; //토글전체리스트=상세검색항목리스트(ex-'전체','spring','django',..)
-    currentSelected: any; //마지막으로 선택된 토글
-    setCurrentSelected: any; //마지막으로 선택된 토글()
+    currentSelected?: any; //마지막으로 선택된 토글
+    setCurrentSelected?: any; //마지막으로 선택된 토글()
     selectedAll?: any; //선택된 토글 전체 - 다중선택토글폼
     setSelectedAll?: any; //선택된 토글 전체() - 다중선택토글폼
+
+    sidoGugunData?: any;
+    currentSelectedSido?: any; //마지막으로 선택된 시도 토글
+    setCurrentSelectedSido?: any; //마지막으로 선택된 시도 토글()
+    currentSelectedGugun?: any; //마지막으로 선택된 구군 토글
+    setCurrentSelectedGugun?: any; //마지막으로 선택된 구군 토글
 }
 /** ------------------------------------------------------------- */
 // 다중 선택 토글 폼
@@ -18,7 +24,7 @@ interface Props{
 export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSelected, selectedAll, setSelectedAll}:Props) => {
 
     // 토글전체리스트:상세 검색 항목 리스트 (ex-'전체','spring','django','express')
-    const [toggleList, setToggleList] = useState<string[]>(data??[]);
+    const [toggleList, setToggleList] = useState<any>(data??[]);
     // 토글리스트On/Off
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
 
@@ -38,7 +44,7 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
 
         //토글전체리스트에서 현재선택된토글ST를 제외함
         if(toggleList.includes(ST)){
-            let array:any[] = toggleList.filter((item)=>item!=ST);
+            let array:any[] = toggleList.filter((item:any)=>item!=ST);
             setToggleList(array);
         }
     };
@@ -73,7 +79,7 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
                         </ExitIconWrapper>
                         {isToggleOn ?
                             <ToggleListWrapper>
-                                {toggleList.map((i:any, idx:number)=>(
+                                {toggleList?.map((i:any, idx:number)=>(
                                     <ToggleList key={idx} onClick={()=>handleSelectedToggle(i)}>{i}</ToggleList>
                                 ))}
                             </ToggleListWrapper>
@@ -129,12 +135,69 @@ export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSele
             </Layout></BackLayout>
     )
 }
+
+/** ------------------------------------------------------------- */
+// 단일 선택 시도/구군 토글 폼
+/** ------------------------------------------------------------- */
+export const SingleSelectSidoGugunToggle = ({title, sidoGugunData, currentSelectedSido, setCurrentSelectedSido, currentSelectedGugun, setCurrentSelectedGugun}:Props) => {
+
+    const dataArray:any[] = sidoGugunData??[];
+
+    const [isSidoToggleOn, setIsSidoToggleOn]=useState<boolean>(false);
+    const [isGugunToggleOn, setIsGugunToggleOn]=useState<boolean>(false);
+
+    return(
+        <BackLayout>
+            <Layout className="SidoGugun">
+                <Title>{title}</Title>
+                <SidoContents>
+                    <Toggle id="Sido" onClick={()=>setIsSidoToggleOn(!isSidoToggleOn)}>
+                            <span>{currentSelectedSido}</span>
+                            <ToggleIcon/>
+                            {isSidoToggleOn ?
+                                <ToggleListWrapper>
+                                    {dataArray.map((i:any, idx:number)=>(
+                                        <ToggleList key={idx} onClick={()=>setCurrentSelectedSido(i.siDo)}>{i.siDo}</ToggleList>
+                                    ))}
+                                </ToggleListWrapper>
+                            : <></>
+                            }
+                    </Toggle>
+                </SidoContents>
+                <GugunContents>
+                    <Toggle id="Gugun" onClick={()=>setIsGugunToggleOn(!isGugunToggleOn)}>
+                            <span>{currentSelectedGugun}</span>
+                            <ToggleIcon/>
+                            <ExitIconWrapper>
+                                <ExitIcon/>
+                            </ExitIconWrapper>
+                            {isGugunToggleOn ?
+                                <ToggleListWrapper>
+                                    {dataArray.find((item:any)=>item.siDo === currentSelectedSido)?.guGun.map((i:any, idx:number)=>(
+                                        <ToggleList key={idx} onClick={()=>setCurrentSelectedGugun(i)}>{i}</ToggleList>
+                                    ))}
+                                </ToggleListWrapper>
+                            : <></>
+                            }
+                    </Toggle>
+                </GugunContents>
+            </Layout>
+        </BackLayout>
+    )
+}
+
 const BackLayout = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    & > .SidoGugun{
+        display: flex;
+        width: 100%;
+        gap: 10px;
+    }
 `;
 const Layout = styled.div`
     display: grid;
@@ -223,8 +286,8 @@ const ToggleList = styled.div`
     height: 25px;
     align-items: center;
     padding: 3px 10px;
-    
     border-bottom: 1px solid #c7c7c7;
+    color: #000;
 `;
 
 const SelectedToggleWrapper = styled.div`
@@ -252,4 +315,18 @@ const SelectedToggle = styled.div`
         padding-top: 3px;
         cursor: pointer;
     }
+`;
+
+const SidoContents = styled.div`
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+const GugunContents = styled.div`
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    gap: 10px;
 `;

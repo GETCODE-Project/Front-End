@@ -54,23 +54,23 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [objectData, setObjectData] = useState<any[]>([]);
     const [objectForm, setObjectForm] = useState(null);
 
-    /** 게시물 전체 목록 불러오기 GET 파라미터 데이터 리스트 */
-    const [year, setYear] = useState<string>('');//연도
+    /** 게시물 전체 목록 불러오기 GET API 파라미터 데이터 리스트 */
     const [keyword, setKeyword] = useState<string>('');//검색키워드
-    const [size, setSize] = useState<number>(10);//페이지객체수
     const [pageNumber, setPageNumber] = useState<number>(1);//페이지
+    const [size, setSize] = useState<number>(10);//페이지객체수
     const [sort, setSort] = useState<string>('latestOrder');//정렬
-    const [subject, setSubject] = useState<string>('');//주제
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
-    const [part, setPart] = useState<string[]>([]);//모집파트
-    const [recruitment, setRecruitment] = useState<string>('');//모집여부
-    const [region, setRegion] = useState<string>('');//지역
-    const [memberId, setMemberId] = useState<number>();//사용자id(좋아요,찜 여부 체크용)
+    const [subject, setSubject] = useState<string>('');//주제
+    const [online, setOnline] = useState<boolean|string>('');//온라인여부
+    const [recruitment, setRecruitment] = useState<boolean|string>('');//모집여부
+    const [siDo, setSiDo] = useState<string>('');//시도
+    const [guGun, setGuGun] = useState<string>('');//구군
+    const [year, setYear] = useState<string>('');//연도
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<Params>();
     const projectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
-    const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
+    const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack, online, siDo, guGun, recruitment};
     const findStudyParams = {};
     const communityParams = {};
 
@@ -143,7 +143,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         setModuleName(moduleName);
         setParams((prevParams: any) => ({ ...prevParams, sort}));
 
-    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, part, recruitment, memberId]);
+    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, online, recruitment, siDo, guGun]);
 
     /** 페이지 별 데이터 불러오기, 정렬 상태 반영 */
     useEffect(()=>{
@@ -158,14 +158,16 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             setYear(data?.year === '전체' ? '' : data?.year || '');
             setSubject(data?.subject === '전체' ? '' : data?.subject || '');
             setTechStack(data?.stack === '전체' ? [] : data?.stack || []);
-            setPart(data?.part === '전체' ? [] : data?.part || []);
-            setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment || '');
+            setOnline(data?.online === '전체' ? '' : data?.online===true?true:data?.online===false?false:'');
+            setRecruitment(data?.recruitment === '전체' ? '' : data?.recruitment===true?true: data?.recruitment===false?false: '');
+            setSiDo(data?.siDo === '시/도 선택' ? '' : data?.siDo || '');
+            setGuGun(data?.guGun === '구/군 선택' ? '' : data?.guGun || '');
 
         }
     },[detailSearchSelectedData]);
 
     useEffect(() => {
-        console.log(detailSearchSelectedData,'SearchSelected');
+        // console.log(detailSearchSelectedData,'SearchSelected');
     },[]);
 
     return(

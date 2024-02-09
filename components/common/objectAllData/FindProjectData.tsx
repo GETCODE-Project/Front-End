@@ -10,27 +10,25 @@ import { useEffect } from "react";
  */
 
 /** GET 파라미터값(검색에사용), 데이터를 저장할 status */
-//[TODO] year제거 & 모집파트,모집여부추가해야함
 interface FindProjectProps {
     params: {
         sort: string;
-        page: number;
+        pageNumber: number;
         size: number;
         keyword: string;
         subject: string;
-        techStack: [];
-        year?: number;
-        recruitment?: string;
-        part?: string;
-        memberId?: number;
+        techStack: string[];
+        year?: number|string;
+        online: boolean|string;
+        recruitment: boolean|string;
+        siDo: string;
+        guGun: string;
     }
     setObjectData?: any;
 }
 
 /** 프로젝트모집 전체 게시물 데이터 */
 export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
-
-    // console.log(params.subject);
 
     const techStackQueryString = () => {
         let techStack = '';
@@ -40,7 +38,7 @@ export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
         return techStack;
     }
 
-    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.page}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}&${params.memberId}`,{})
+    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.pageNumber}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}&siDo=${params.siDo}&guGun=${params.guGun}&online=${params.online}&recruitment=${params.recruitment}`,{})
     .then((res)=>{
         setObjectData(res.data);
     })

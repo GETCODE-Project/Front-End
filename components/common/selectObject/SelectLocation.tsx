@@ -31,7 +31,7 @@ const SelectLocation = ({ setSiDo, setGuGun, text }: Props) => {
 
   /** 시도/구군 데이터 불러오기 */
   useEffect(()=>{
-    setOptionSubject(SidoGugunData);
+    SidoGugunData({setData:setOptionSubject})
   },[SidoGugunData]);
 
   return (

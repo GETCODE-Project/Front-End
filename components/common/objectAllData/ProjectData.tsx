@@ -38,7 +38,7 @@ export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
         }
         return techStack;
     }
-    console.log(params,'params');
+    // console.log(params,'params');
     
     return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&pageNumber=${params.pageNumber}&size=${params.size}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}`,{})
     .then((res)=>{

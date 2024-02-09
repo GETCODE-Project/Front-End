@@ -1,7 +1,7 @@
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
 import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
-import { GET } from "@/pages/api/axios";
 import { useEffect, useState } from "react";
+import { SubjectData, TechStackData } from "@/components/common/objectAllData/SearchToggleData";
 
 /** ------------------------------------------------------------- */
 /** 프로젝트 목록 페이지 컴포넌트 */ //검색단(메인컴포넌트의children)
@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 const ProjectPage = () => {
 
     /** 상세 검색 항목 리스트 */
-    const [stackDataArray, setStackDataArray] = useState<string[]>([]);
-    const [subjectDataArray, setSubjectDataArray] = useState<string[]>([]);
+    const [stackDataArray, setStackDataArray] = useState<any[]>([]);
+    const [subjectDataArray, setSubjectDataArray] = useState<any>();
     const yearDataArray: string[] = ['전체', '2020', '2021', '2022', '2023', '2024'];
 
     /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
@@ -35,23 +35,11 @@ const ProjectPage = () => {
       setDetailSearchSelectedData(tumpArray);
     },[currentSelectedStack,currentSelectedSubject,currentSelectedYear]);
 
-    /** 상세 검색 기술스택, 주제 항목 리스트 불러오기 */
-    useEffect(() => {
-      const getSearchListData = async() => {
-        // 기술스택 토글 리스트
-        await GET(`/api/techStacks`)
-        .then((res)=>{
-          setStackDataArray(res.data);
-        })
-        .catch((err) => {console.error(err)});
-        // 주제 토글 리스트
-        await GET(`/api/subjects`)
-        .then((res)=>setSubjectDataArray(res.data))
-        .catch((err)=>console.error(err));
-      };
-
-      getSearchListData();
-    },[]);
+    /** 상세 검색 토글 리스트 데이터 불러오기 */
+    useEffect(()=>{
+      TechStackData({setData:setStackDataArray});
+      SubjectData({setData:setSubjectDataArray});
+    },[TechStackData,SubjectData]);
 
     return(
       <MainContantsLayout
