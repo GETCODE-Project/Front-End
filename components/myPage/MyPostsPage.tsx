@@ -21,15 +21,15 @@ const MyPostsPage = () => {
     const [pageName, setPageName] = useState<string>('project');
 
     /** 카테고리 별 게시물 폼, 데이터 */
-    const [myObjectData, setMyObjectData] = useState<any[]>([]);
-    const [myObjectForm, setMyObjectForm] = useState(null);
+    const [objectData, setObjectData] = useState<any[]>([]);
+    const [objectForm, setobjectForm] = useState(null);
 
     /** 게시물 불러오기 파라미터 (쿼리스트링) */
-    const [page, setPage] = useState<string>('');
-    const [size, setSize] = useState<string>('');
+    const [page, setPage] = useState<number>(1);
+    const [size, setSize] = useState<number>(10);
     /** 카테고리 별 게시물 전체 목록 불러오기 파라미터 SET */
     const [params, setParams] = useState<any>();
-    const projectParams = {};
+    const projectParams = {page, size};
     const findProjectParams = {page, size};
     const findStudyParams = {};
     const communityParams = {};
@@ -40,22 +40,22 @@ const MyPostsPage = () => {
             let moduleName = '';
             switch (selectedCategory){
                 case '프로젝트':
-                    moduleName = 'myProjectData';
+                    moduleName = 'ProjectData';
                     setParams(projectParams);
                     setPageName('project');
                     break;
                 case '프로젝트 모집':
-                    moduleName = 'myFindProjectData';
+                    moduleName = 'FindProjectData';
                     setParams(findProjectParams);
                     setPageName('findProject');
                     break;
                 case '스터디 모집':
-                    moduleName = 'myFindStudyData';
+                    moduleName = 'FindStudyData';
                     setParams(findStudyParams);
                     setPageName('findStudy');
                     break;
                 case '커뮤니티':
-                    moduleName = 'myCommunityData';
+                    moduleName = 'CommunityData';
                     setParams(communityParams);
                     setPageName('community');
                     break;
@@ -72,20 +72,20 @@ const MyPostsPage = () => {
         const getObjectForm = () => {
             import(`@/components/${pageName}/ObjectForm`)
             .then(module => {
-                pageName=='project'?setMyObjectForm(()=>module.ObjectForm):setMyObjectForm(()=>module.default)
+                pageName=='project'?setobjectForm(()=>module.ObjectForm):setobjectForm(()=>module.default)
             })
             .catch(error=>console.error(error));
         }
         getObjectForm();
-    },[pageName, setMyObjectData]);
+    },[pageName, setObjectData]);
 
     /** 카테고리 별 데이터 불러오기 */
     useEffect(()=>{
         const getData = async() => {
             try{
-                const getModule = await import(`@/components/myPage/myObjectAllData/${moduleName}`);
+                const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
                 await getModule.getMyWriteObjectData({
-                    params, setMyObjectData
+                    params, setObjectData
                 })
             }
             catch (error){
@@ -120,11 +120,11 @@ const MyPostsPage = () => {
                     </PostsToggle>
                 </Wrapper>
                 <TotalSortWrapper>
-                    <Total>{`총 ${myObjectData?.length}개 ${selectedCategory}`}</Total>
+                    <Total>{`총 ${objectData?.length}개 ${selectedCategory}`}</Total>
                 </TotalSortWrapper>
                 <ObjectList selectedCategory={selectedCategory}>
-                    {Array.isArray(myObjectData)&&myObjectData?.map((i:any,idx:number)=>(
-                        myObjectForm ? React.createElement(myObjectForm, {
+                    {Array.isArray(objectData)&&objectData?.map((i:any,idx:number)=>(
+                        objectForm ? React.createElement(objectForm, {
                             key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
                         }) : null
                     ))}
