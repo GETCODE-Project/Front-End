@@ -57,7 +57,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     /** 게시물 전체 목록 불러오기 GET API 파라미터 데이터 리스트 */
     const [keyword, setKeyword] = useState<string>('');//검색키워드
     const [pageNumber, setPageNumber] = useState<number>(1);//페이지
-    const [size, setSize] = useState<number>(10);//페이지객체수
+    const [size, setSize] = useState<number>(999);//페이지객체수
     const [sort, setSort] = useState<string>('latestOrder');//정렬
     const [techStack, setTechStack] = useState<string[]>([]);//기술스택
     const [subject, setSubject] = useState<string>('');//주제
@@ -170,7 +170,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
     useEffect(() => {
         // console.log(detailSearchSelectedData,'SearchSelected');
-        // console.log(objectData,'objectData');
+        console.log(objectData,'objectData');
     },[]);
 
     return(
