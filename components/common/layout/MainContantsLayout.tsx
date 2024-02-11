@@ -67,13 +67,14 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [siDo, setSiDo] = useState<string>('');//시도
     const [guGun, setGuGun] = useState<string>('');//구군
     const [year, setYear] = useState<string>('');//연도
+    const [category, setCategory] = useState<string>('');//연도
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<Params>();
     const projectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
     const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack, online, siDo, guGun, recruitment};
     const findStudyParams = {year, keyword, size, pageNumber, sort, siDo, guGun, recruitment, online, field};
-    const communityParams = {};
+    const communityParams = {year,keyword,size, pageNumber, sort, category};
 
     /** 상세 검색 항목 SET */
     

@@ -38,37 +38,37 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
         return field;
     }
 
-    // return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${params.recruitment}&online=${params.online}&year=${params.year}&field=${subjectQueryString()}`,{})
-    // .then((res)=>{
-    //     setObjectData(res.data);
-    //     // console.log(res);
-    // })
-    // .catch((err)=>{console.error(err)});
-
-    const createQueryString = () => {
-        const query:string[] = [];
-        Object.keys(params).forEach(key => {
-            const value = params[key as keyof typeof params];
-            if (value || value === 0) {
-                if (key === 'field') {
-                    const filedQuery = subjectQueryString();
-                    if (filedQuery) {
-                        query.push(filedQuery);
-                    }
-                } else {
-                    query.push(`${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`);
-                }
-            }
-        });
-        return query.join('&');
-    }
-    
-    return await GET(`/api/search/studies?page=${params.pageNumber}&${createQueryString()}`)
+    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${true}&online=${params.online}&year=${params.year}&field=${subjectQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
         // console.log(res);
     })
     .catch((err)=>{console.error(err)});
+
+    // const createQueryString = () => {
+    //     const query:string[] = [];
+    //     Object.keys(params).forEach(key => {
+    //         const value = params[key as keyof typeof params];
+    //         if (value || value === 0) {
+    //             if (key === 'field') {
+    //                 const filedQuery = subjectQueryString();
+    //                 if (filedQuery) {
+    //                     query.push(filedQuery);
+    //                 }
+    //             } else {
+    //                 query.push(`${encodeURIComponent(key)}=${encodeURIComponent(value as string)}`);
+    //             }
+    //         }
+    //     });
+    //     return query.join('&');
+    // }
+    
+    // return await GET(`/api/search/studies?page=${params.pageNumber}&${createQueryString()}`)
+    // .then((res)=>{
+    //     setObjectData(res.data);
+    //     // console.log(res);
+    // })
+    // .catch((err)=>{console.error(err)});
 }
 
 /** ------------------------------------------------------------- */
