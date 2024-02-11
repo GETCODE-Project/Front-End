@@ -34,7 +34,7 @@ interface FindStudyObjectData{
 /** 불러온 Respons 데이터 형식 참고: 내가 작성한 스터디모집 게시글 */
 interface MyWriteFindStudyObjectData{
     comments: [];
-    contact: [string];
+    contact: string[];
     content: string;
     count: number;
     date: string;
@@ -143,7 +143,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
             </Reaction>
                 </Info>
                 <Stack>
-                    {data?.studyFields.map((i:any,idx:number)=>(
+                    {data.studyFields && data?.studyFields?.map((i:any,idx:number)=>(
                         <StackName key={idx}>{i}</StackName>
                     ))}
                 </Stack>

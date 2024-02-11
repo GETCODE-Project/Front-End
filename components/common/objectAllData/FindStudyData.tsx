@@ -62,10 +62,11 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
         });
         return query.join('&');
     }
-
-    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&${createQueryString()}`)
+    
+    return await GET(`/api/search/studies?page=${params.pageNumber}&${createQueryString()}`)
     .then((res)=>{
         setObjectData(res.data);
+        // console.log(res);
     })
     .catch((err)=>{console.error(err)});
 }
@@ -78,7 +79,7 @@ export const getMyWriteObjectData = async ({params,setObjectData}:FindStudyProps
     return await GET(`/api/mypage/studies`)
     .then((res)=>{
         setObjectData(res.data);
-        // console.log(res.data,'스터디모집게시물my');
+        console.log(res.data,'스터디모집게시물my');
     })
     .catch((err)=>{console.error(err)});
 }

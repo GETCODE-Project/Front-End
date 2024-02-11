@@ -22,6 +22,7 @@ interface ProjectProps {
         subject: string;
         techStack: [string];
         year: number|string;
+        page: number;
     }
     setObjectData?: any;
 }
@@ -52,8 +53,7 @@ export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
 /** 내가 작성한 프로젝트 게시물 전체 데이터 */
 /** ------------------------------------------------------------- */
 export const getMyWriteObjectData = async ({params,setObjectData}:ProjectProps) => {
-    
-    return await GET(`/api/mypageNumber/my/project?pageNumber=${params.pageNumber}&size=${params.size}`)
+    return await GET(`/api/mypage/my/project?page=${params.page}&size=${params.size}`)
     .then((res)=>{
         setObjectData(res.data);
     })
@@ -64,6 +64,8 @@ export const getMyWriteObjectData = async ({params,setObjectData}:ProjectProps) 
 /** 내가 찜한 프로젝트 게시물 전체 데이터 */
 /** ------------------------------------------------------------- */
 export const getMyWishObjectData = async ({params,setObjectData}:ProjectProps) => {
+
+    
     
     return await GET(`/api/mypageNumber/my/project/wish?pageNumber=${params.pageNumber}&size=${params.size}`)
     .then((res)=>{

@@ -17,7 +17,7 @@ const MyPostsPage = () => {
     // const sortArr:any [] = ["최신순","과거순","좋아요순"]; //정렬은 개발 제외하기로 함
 
     /** 게시물 데이터를 불러 올 모듈 이름, 객체 폼을 불러 올 페이지 이름 */
-    const [moduleName, setModuleName] = useState<string>('myProjectData');
+    const [moduleName, setModuleName] = useState<string>('ProjectData');
     const [pageName, setPageName] = useState<string>('project');
 
     /** 카테고리 별 게시물 폼, 데이터 */
@@ -25,13 +25,14 @@ const MyPostsPage = () => {
     const [objectForm, setobjectForm] = useState(null);
 
     /** 게시물 불러오기 파라미터 (쿼리스트링) */
-    const [page, setPage] = useState<number>(1);
-    const [size, setSize] = useState<number>(10);
+    const page = 1;
+    const size = 999;
+
     /** 카테고리 별 게시물 전체 목록 불러오기 파라미터 SET */
-    const [params, setParams] = useState<any>();
+    const [params, setParams] = useState<any>({page:page, size:size});
     const projectParams = {page, size};
     const findProjectParams = {page, size};
-    const findStudyParams = {};
+    const findStudyParams = {page, size};
     const communityParams = {};
 
     /** 카테고리 별 ModuleName, ParamsSet 설정 */
@@ -96,8 +97,12 @@ const MyPostsPage = () => {
     },[setSelectedCategory,moduleName])
 
     useEffect(()=>{
-        console.log(moduleName,'moduleName');
+        // console.log(moduleName,'moduleName');
     },[selectedCategory]);
+
+    useEffect(()=>{
+        console.log(objectData,'objectDataMy');
+    },[]);
 
 
     return(
@@ -141,7 +146,7 @@ const BackLayout = styled.div`
     display: flex;
     justify-content: center;
     padding: 50px 0;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
 
     ${media.mobile || media.tablet}{
@@ -154,6 +159,7 @@ const Layout = styled.div`
     align-items: center;
     max-width: 1000px;
     width: 100%;
+    height: 100%;
 `;
 const Wrapper = styled.div`
     display: flex;
@@ -176,6 +182,7 @@ const PostsToggle = styled.div`
     position: relative;
     justify-content: space-between;
     align-items: center;
+    z-index: 100;
     width: 290px;
     height: 30px;
     padding: 2px 10px 0;
