@@ -1,0 +1,20 @@
+ // const [array, setArray] = useState<Item[]>([
+  //   { url: '/project', id: 1, num: '1000' },
+  //   { url: 'a', id: 2, num: '500' },
+  // ]);
+  // const handle=(num:number)=>{array.map((item)=>(
+  // item.id === num ? return 500 : return 1000))
+  // }
+
+    // const a = array.map((item) => {(item.id === num)? 500: 1000});
+
+      // const array = ([
+  //   { url: '/project', id: 1, num: '1000' },
+  //   { url: 'a', id: 2, num: '500' },
+  // ]);
+
+    // text-align: center;
+    // align-items: center;
+    // vertical-align:bottom;
+    //  place-items: center;
+    //    justify-content: center;

@@ -1,45 +1,162 @@
-import { HartOnSVG, HartOffSVG, BookMarkOnSVG, BookMarkOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
-import { useState } from 'react';
+import { POST } from '@/pages/api/axios';
+import { HartOnSVG, HartOffSVG, WishOnSVG, WishOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
+import { media } from '@/styles/mediaQuery';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const ObjectForm = () => {
+/** ------------------------------------------------------------- */
+/** 프로젝트 게시물, 인기 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+
+interface ObjectFormProps{
+    style?:any;
+    data?: any;
+    setIsLoginAlertOn?: any;
+}
+
+/** 불러온 Respons 데이터 형식 참고 : 프로젝트 데이터 */
+/**[TODO: 썸네일(이미지) 데이터 누락됨 - 요청중] */
+interface ProjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    createDate: string;
+    modifiedDate: string;
+    techStacks: [{
+        id: number;
+        techStack: string;
+    }];
+    subject: string;
+    memberNickName: string;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+}
+/** 불러온 Respons 데이터 형식 참고 : 내가 작성한 프로젝트 데이터 */
+//[TODO: My프로젝트데이터와 프로젝트데이터 변수 통일되었는지 비교용 작성 ]
+interface MyProjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+    dateTime: string;
+    imageUrl: null; //정확한 형식 무엇인지?
+    memberNickName: string;
+    projectSubjects: [{
+        id: number;
+        subject: string;
+    }];
+    techStackList: [{
+        id: number;
+        techStack: string;
+    }];
+}
+
+/** ------------------------------------------------------------- */
+/** 프로젝트 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => {
+
+    /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
-    const arr:string [] = ['React', 'Node.js', 'TypeScript','Spring Boot','Java'];//더미데이터(임시)
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+
+    const subject:any [] = data?.subjects;
+
+    /** 좋아요 버튼 클릭 이벤트 */
+    const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
+        await POST(`/api/project/${data.projectId}/like`)
+        .then((res)=>{
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
+            }
+        });
+    }
+    /** 찜하기 버튼 클릭 이벤트 */
+    const handleWishClick = async() => {
+        setIsWishOn(!isWishOn);
+        await POST(`/api/project/${data.projectId}/wish`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            // if(res.data==='프로젝트 좋아요 성공'){
+            //     setIsWishOn(true);
+            // }if(res.data==='프로젝트 좋아요 삭제 성공'){
+            //     setIsWishOn(false);
+            // }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
+            }
+        });
+    }
+
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(true);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(true);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
+    },[]);
+
+    useEffect(()=>{
+        // console.log(data,'projectData');
+    },[]);
 
     return(
-        <Layout>
+        <Layout style={style}>
             <Thumbnail>
-                <Img></Img>
+                <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
-                    <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                    <Wrapper onClick={()=>handleHeartClick()}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>1,234</span>
+                        <span>{data.likeCnt}</span>
                     </Wrapper>
                     <Wrapper>
                         <ViewCountSVG/>
-                        <span>890</span>
+                        <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='bookMark' onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                        {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
+                    <Wrapper id='Wish' onClick={handleWishClick}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
                 </ReactionCount>
             </Thumbnail>
             <Content>
                 <Title>
-                    <span>GETCODE프로젝트제목</span>
+                    <span>{data.title}</span>
                 </Title>
                 <Info>
-                <Intro>
-                    GETCODE인기프로젝트내용한줄프로젝트소개
-                </Intro>
-                <Topic>주제 : 웹 포트폴리오</Topic>
-                <Stack>
-                    {arr.map((i:any,idx:number)=>(
-                        <StackName key={idx}>{i}</StackName>
-                    ))}
-                </Stack>
-                <Create><div>작성자 닉네임</div><div>2023.10.11.TUE</div></Create>
+                    <Intro>
+                        {data.introduction}
+                    </Intro>
+                    <Topic>{`주제 : ${data?.subject}`}</Topic>
+                    <Stack>
+                        {data.techStacks?.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i.techStack}</StackName>
+                        ))}
+                    </Stack>
+                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.createDate}`}</div></Create>
                 </Info>
             </Content>
               
@@ -47,26 +164,92 @@ const ObjectForm = () => {
     )
 }
 
-export default ObjectForm;
+/** ------------------------------------------------------------- */
+/** 인기 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
+    const [isHartOn, setIsHartOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+    const arr:string [] = data?.technologyStack;
+
+    useEffect(()=>{
+        setIsWishOn(data.Wishs);
+    },[]);
+
+    return(
+        <Layout style={style}>
+            <Thumbnail>
+                <Img></Img>
+            </Thumbnail>
+            <ReactionCount>
+                    <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                        {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
+                        <span>{data.likes}</span>
+                    </Wrapper>
+                    <Wrapper>
+                        <ViewCountSVG/>
+                        <span>{data.views}</span>
+                    </Wrapper>
+                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
+                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
+                    </Wrapper>
+            </ReactionCount>
+            <Content>
+                <Title>
+                    <span>{data.title}</span>
+                </Title>
+                <Info>
+                    <Intro>
+                        {data.introduction}
+                    </Intro>
+                    <Topic>{`주제 : ${data.subject}`}</Topic>
+                    <Stack>
+                        {data.techStackList?.map((i:any,idx:number)=>(
+                            <StackName key={idx}>{i}</StackName>
+                        ))}
+                    </Stack>
+                    <Create>
+                        <div>{`작성자 : ${data.writer}`}</div>
+                        <div>{`작성일 : ${data.createDate}`}</div>
+                    </Create>
+                </Info>
+            </Content>
+        </Layout>
+    )
+}
 
 const Layout = styled.div`
     display: flex;
     flex-direction: column;
-    width: 315px;
-    height: 340px;
+    width: 250px;
+    height: 320px;
+    padding: 0 10px;
     padding-bottom: 30px;
 
+    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25));
+
+    ${media.mobile || media.tablet}{
+        /* width: 160px; */
+        width: 50%;
+        height: 250px;
     filter: drop-shadow(0px 4px 40px rgba(0, 0, 0, 0.25));
+
+    }
 `;
 
 const Thumbnail = styled.div`
+    display: flex;
     position: relative;
     width: 100%;
-    height: 170px;
+    flex: 1;
+    overflow: hidden;
 
     background-color: #777777;
 `;
-const Img = styled.div`
+const Img = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 const ReactionCount = styled.div`
     display: flex;
@@ -79,9 +262,10 @@ const ReactionCount = styled.div`
     width: 100%;
     height: 35px;
 
-    background: rgba(0, 0, 0, 0.34);
+    /* background: rgba(0, 0, 0, 0.34); */
+    background: #FF993A;
 
-    #bookMark{
+    #Wish{
         position: absolute;
         right: 15px;
     }
@@ -103,9 +287,8 @@ const Content = styled.div`
     flex-direction: column;
     padding: 0 15px;
     box-sizing: border-box;
-    gap: 16px;
     width: 100%;
-    height: 170px;
+    flex:0.85;
 
     border-bottom: 1px solid #e0e0e0;
     background-color: #fff;
@@ -114,8 +297,7 @@ const Title = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
-    height: 35px;
-
+    padding: 5px 0;
     border-bottom: 1px solid #e0e0e0;
 
     & > span{
@@ -130,20 +312,25 @@ const Info = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
     width: 100%;
-    `;
+    height: 100%;
+    padding: 10px 0;
+`;
 const Intro = styled.div`
     font-size: 0.75rem;
     font-weight: 700;
 `;
 const Topic = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+
     font-size: 0.625rem;    
 `;
 const Stack = styled.div`
     display: flex;
     gap: 4px;
     width: 100%;
+    flex-wrap: wrap;
 
     font-size: 0.625rem;
 `;

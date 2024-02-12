@@ -1,45 +1,157 @@
-import { BookMarkOnSVG, BookMarkOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
-import { useState } from "react";
+import { POST } from "@/pages/api/axios";
+import { WishOnSVG, WishOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = () => {
-    const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isBookMarkOn, setIsBookMarkOn] = useState<boolean>(false);
+/** ------------------------------------------------------------- */
+/** 스터디모집 게시물 객체 폼 */
+/** ------------------------------------------------------------- */
+
+interface ObjectFormProps{
+    style?:any;
+    data?: any;
+    setIsLoginAlertOn?: any;
+}
+/** 불러온 Respons 데이터 형식 참고: 스터디모집 게시글 */
+interface FindStudyObjectData{
+    id: number;
+    title: string, //제목
+    content: string, //내용
+    siDo: string, //시도
+    guGun: string, //구군
+    recruitment: boolean|'', //모집여부
+    online: boolean|'', //온오프라인여부
+    views: number, //조회수
+    likeCnt: number, //좋아요수
+    contact: string[], //연락처
+    createDate: string, //작성일
+    modifiedDate: string, //수정일
+    memberNickName: string; //작성자
+    studyFields: string[]; //스터디분야
+    checkLike: boolean; //좋아요클릭여부
+    checkWish: boolean; //찜클릭여부
+}
+/** 불러온 Respons 데이터 형식 참고: 내가 작성한 스터디모집 게시글 */
+interface MyWriteFindStudyObjectData{
+    comments: [];
+    contact: string[];
+    content: string;
+    count: number;
+    date: string;
+    member: {
+        email: string;
+        nickname: string;
+        profileImg: null|string; //이 형식이 맞나?
+    };
+    online: boolean;
+    recruitment: boolean;
     
-    const arr:any []=['스터디','면접준비','백엔드','웹개발'];
+}
+
+
+const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
+
+    /** 좋아요,찜하기 버튼 클릭 상태 */
+    const [isHartOn, setIsHartOn] = useState<boolean>(false);
+    const [isWishOn, setIsWishOn] = useState<boolean>(false);
+
+    const subject:any[] = [data.subjects];
+
+    /** 좋아요 버튼 클릭 이벤트 */
+    const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
+        await POST(`/api/study-like/${data.id}`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            if(res.data==='프로젝트 좋아요 성공'){
+                setIsHartOn(true);
+            }if(res.data==='프로젝트 좋아요 삭제 성공'){
+                setIsHartOn(false);
+            }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
+
+            }
+        });
+    }
+    /** 찜하기 버튼 클릭 이벤트 */
+    //[TODO: 스터디모집글 더미데이터 작성된 후 테스트 가능]
+    const handleWishClick = async() => {
+        setIsWishOn(!isWishOn);
+        await POST(`/api/project/${data.projectId}/wish`)
+        .then((res)=>{
+            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
+            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
+            if(res.data==='프로젝트 좋아요 성공'){
+                setIsWishOn(true);
+            }if(res.data==='프로젝트 좋아요 삭제 성공'){
+                setIsWishOn(false);
+            }
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
+            }
+        });
+    }
+
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(true);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(true);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
+    },[]);
 
     return(
         <Layout>
-            <BookMark onClick={()=>setIsBookMarkOn(!isBookMarkOn)}>
-                {isBookMarkOn?<BookMarkOnSVG/>:<BookMarkOffSVG/>}
-            </BookMark>
+            <Wish onClick={handleWishClick}>
+                {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
+            </Wish>
             <Content>
                 <Info>
-                    <div id='title'>스터디 모집 글 제목</div>
-                    <div id='intro'>스터디 모집 글 한 줄</div>
+                    <div id='title'>{data?.title}</div>
+                    <div id='intro'>{data?.content}</div>
                     <Reaction>
                 <Wrapper>
                     <ViewCountSVG/>
-                    <span>1,345</span>
+                    <span>{data?.views}</span>
                 </Wrapper>
-                <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                <Wrapper onClick={handleHeartClick}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                    <span>123</span>
+                    <span>{data?.likeCnt}</span>
                 </Wrapper>
-                <RecruitmentStatus>모집 중</RecruitmentStatus>
+                <RecruitmentStatus recruitment={data?.recruitStatus}>
+                    {data?.recruitStatus===true ? '모집 중':'모집 완료'}
+                </RecruitmentStatus>
             </Reaction>
                 </Info>
                 <Stack>
-                    {arr.map((i:any,idx:number)=>(
+                    {data.studyFields && data?.studyFields?.map((i:any,idx:number)=>(
                         <StackName key={idx}>{i}</StackName>
                     ))}
                 </Stack>
                 <Create>
-                    <span>작성자</span>
-                    <span>2023.12.11.MON</span>
+                    <span>{`작성자 : ${data.memberNickName}`}</span>
+                    <span>{`작성일 : ${data.createDate}`}</span>
                 </Create>
             </Content>
-            
         </Layout>
     )
 }
@@ -55,7 +167,7 @@ const Layout = styled.div`
     filter: drop-shadow(-4px 4px 40px rgba(0, 0, 0, 0.25));
 `;
 
-const BookMark = styled.div`
+const Wish = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,7 +201,6 @@ const Info = styled.div`
         font-size: 0.75rem;
     }
 `;
-
 const Stack = styled.div`
     display: flex;
     gap: 6px;
@@ -112,6 +223,7 @@ const StackName = styled.div`
 `;
 const Create = styled.div`
     display: flex;
+    gap: 10px;
 
     font-size: 0.625rem;
 `;
@@ -135,7 +247,7 @@ const Wrapper = styled.div`
         font-size: 0.625rem;
     }
 `;
-const RecruitmentStatus = styled.div`
+const RecruitmentStatus = styled.div<{recruitment:boolean}>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,6 +258,7 @@ const RecruitmentStatus = styled.div`
 
     border-radius: 50px;
     background-color: #00ff1a;
+    background-color: ${({recruitment})=>(recruitment?'#00ff1a':'#a2a2a2')};
 
     font-size: 0.75rem
 `;

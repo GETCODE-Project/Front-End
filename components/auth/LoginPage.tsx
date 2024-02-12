@@ -1,140 +1,98 @@
 import styled from "styled-components";
-import GoogleLoginButton from "@/components/auth/GoogleLoginButton";
-import { EmailDeleteSVG } from "@/public/SVG/auth";
-import { useRouter } from 'next/router';
-import { POST } from '@/pages/api/axios';
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import { POST } from "@/pages/api/axios";
+import { useEffect, useState } from "react";
+import InputForm from "@/components/auth/authForm/InputForm";
+import AuthForm from "@/components/auth/authForm/AuthForm";
+// import { useAuth } from "@/components/auth/authContexts/AuthContexts";
+
+/** ------------------------------------------------------------- */
+/** 로그인 페이지 컴포넌트 */
+/** ------------------------------------------------------------- */
+/**[TODO]
+ * [1] Input 폰트 사이즈 확대
+ * [2] 로그인 실패 알림창 설정
+ * [3] 구글 소셜 로그인 구현
+ */
 
 const LoginPage = () => {
-    const router = useRouter();
+  const router = useRouter();
+  const { data: session } = useSession();
 
+    const [userEmail, setUserEmail] = useState<string>('');
+    const [userPassword, setUserPassword] = useState<string>('');
+
+    /** 로그인하기 POST */
     const handleLogin = async() => {
-        await POST('http://52.78.81.149:8080',{
-            email: 'kyun91532@naver.com',
-            nickname: 'hodu',
-            password: '12344'
+        await POST('/api/auth/login',{
+            email: userEmail,
+            password: userPassword,
         }).then((res)=>{
-            console.log(res);
-            alert(res.data);
+
+            localStorage.setItem('accessToken',res.data.accessToken);
+            localStorage.setItem('refreshToken',res.data.refreshToken);
+
+            router.push('/');
         }).catch((err)=>{
             console.log(err);
             alert(err);
         })
     }
 
+    /** email 입력 (state 변경) */
+    const handleUserEmail = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.value;
+        setUserEmail(target);
+    }
+    /** password 입력 (state 변경) */
+    const handleUserPassword = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        const target = e.target.value;
+        setUserPassword(target);
+    }
+
+    useEffect(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    },[]);
+
     return(
-        <Layout>
-            <Title>로그인</Title>
-            <Content>
-                <InputWrapper>
-                    <p>Email</p>
-                    <input type="email" placeholder="email@email.com"/>
-                    <div id='icon'>
-                        <EmailDeleteSVG/>
-                    </div>
-                </InputWrapper>
-                <InputWrapper>
-                    <p>Password</p>
-                    <input type="password" placeholder="••••••••••"/>
-                    <div id='icon'>
-                        <EmailDeleteSVG/>
-                    </div>
-                </InputWrapper>
-            </Content>
-            <LoginButton>
-                <Login onClick={()=>handleLogin}>로그인</Login>
-                <GoogleLoginButton/>
-            </LoginButton>
-            <SignUpButton onClick={()=>router.push('/auth/signup')}>
-                <span>로그인 계정이 없으신가요?</span>
-                <span>회원가입하기</span>
-            </SignUpButton>
-        </Layout>
+        <AuthForm
+            title="로그인"
+            buttonName="로그인"
+            session={session}
+            loginFC={handleLogin} 
+        >
+            <InputForm
+                name="Email"
+                type="email"
+                placeholder="email@email.com"
+                value={userEmail}
+                onChange={handleUserEmail}
+                validation={true}
+            />
+            <InputForm
+                name="Password"
+                type="password"
+                placeholder="••••••••••"
+                value={userPassword}
+                onChange={handleUserPassword}
+                validation={true}
+            />
+            <ForgetPassWord onClick={()=>router.push('/auth/login/find')}>비밀번호를 잊으셨나요?</ForgetPassWord>
+        </AuthForm>
     )
 }
 
 export default LoginPage;
 
-const Layout = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    width: 360px;
-`;
+const ForgetPassWord = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 100%;
 
-const Title = styled.div`
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    margin-bottom: 30px;
+  color: #ff4b13;
+  font-size: 0.75rem;
 
-    color: #3C3C3C;
-    font-size: 2.5rem;
-`;
-
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-`;
-const InputWrapper = styled.div`
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    gap: 8px;
-
-    &>input{
-        width: 100%;
-        height: 45px;
-        padding: 10px;
-        box-sizing: border-box;
-
-        border-radius: 8px;
-        border: 1px solid #B7B7B7;
-        
-        color: #3c3c3c;
-    }
-    #icon{
-        position: absolute;
-        right: 10px;
-        top: 37px;
-
-        cursor: pointer;
-    }
-`;
-
-const LoginButton = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 16px;
-`;
-const Login = styled.div`
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 45px;
-
-    background-color: #FF4B13;
-    border-radius: 8px;
-
-    color: #FFF1E4;
-
-    cursor: pointer;
-`;
-
-const SignUpButton = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    font-size: 0.875rem;
-    color: #3c3c3c;
-    
-    cursor: pointer;
-    
-    &>span:nth-child(2){
-        color: #ff4b13;
-    }
+  cursor: pointer;
 `;

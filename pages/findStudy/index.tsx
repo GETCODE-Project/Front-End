@@ -1,16 +1,12 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
-import FindProjectPage from "@/components/findStudy/FindStudyPage";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
+import FindStudyPage from "@/components/findStudy/FindStudyPage";
 
-
-export default function FindProject() {
+export default function FindStudy() {
   return (
     <div>
-      <Header />
-      <MenuBar />
-      <FindProjectPage/>
-      <Footer />
+      <FixedLayout menuClicked={3}>
+        <FindStudyPage />
+      </FixedLayout>
     </div>
   );
 }

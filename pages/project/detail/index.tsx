@@ -1,8 +1,12 @@
-//이름이 [프로젝트 이름]으로 추후 수정
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
+import DetailLayout from "@/components/common/layout/DetailLayout";
 
-export default function detail(){
+const ProjectDetail = () => {
   return (
-    <div>
-    </div>
-  )
-}
+    <FixedLayout>
+      <DetailLayout pageName="project" pageApi="project/detail" />
+    </FixedLayout>
+  );
+};
+
+export default ProjectDetail;

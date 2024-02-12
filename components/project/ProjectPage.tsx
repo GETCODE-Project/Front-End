@@ -1,76 +1,67 @@
-import { SearchButton, Logo } from "@/public/SVG/search";
-import { useState } from "react";
-import styled from "styled-components";
-import ObjectForm from "@/components/project/ObjectForm";
-import SearchInput from "../common/search/SearchInput";
+import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
+import { MultipleSelectToggle, SingleSelectToggle } from "@/components/common/search/DetailSearchForm";
+import { useEffect, useState } from "react";
+import { SubjectData, TechStackData } from "@/components/common/objectAllData/SearchToggleData";
+
+/** ------------------------------------------------------------- */
+/** 프로젝트 목록 페이지 컴포넌트 */ //검색단(메인컴포넌트의children)
+/** ------------------------------------------------------------- */
+// 기술스택(다중선택), 주제(단일선택), 년도(단일선택)
 
 const ProjectPage = () => {
-    const arr:any [] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];//더미데이터,프로젝트수
 
-    return (
-        <Layout>
-            <Title>GETCODE 프로젝트</Title>
-            <SearchInput/>
-            <Content>
-                <Wrapper>
-                    <Total>총 1,234개 프로젝트</Total>
-                    <Sort>
-                        <span>최신순</span>
-                        <span>과거순</span>
-                        <span>인기순</span>
-                    </Sort>
-                </Wrapper>
-                <ObjectList>
-                    {arr.map((i:any,idx:number)=>(
-                        <ObjectForm key={idx}/>
-                    ))}
-                </ObjectList>
-            </Content>
-            
-        </Layout>
+    /** 상세 검색 항목 리스트 */
+    const [stackDataArray, setStackDataArray] = useState<any[]>([]);
+    const [subjectDataArray, setSubjectDataArray] = useState<any>();
+    const yearDataArray: string[] = ['전체', '2020', '2021', '2022', '2023', '2024'];
+
+    /** 현재 선택된 상세 검색 항목(마지막으로 선택된 항목) */
+    const [currentSelectedStack, setCurrentSelectedStack]=useState<string>('전체');
+    const [currentSelectedSubject, setCurrentSelectedSubject]=useState<string>('전체');
+    const [currentSelectedYear, setCurrentSelectedYear]=useState<string>('전체');
+    /** 현재 선택된 상세 검색 항목(총 선택된 항목) - 다중선택토글폼에만 해당 */
+    const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
+
+    /** 검색하기에 반영될 선택된 토글 항목들 */
+    const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any[]>([]);
+
+    /** 최종 선택 된 검색 토글 항목들 */
+    useEffect(() =>{
+      let tumpArray:any[] = [{
+        stack:selectedStackAll,
+        subject:currentSelectedSubject,
+        year:currentSelectedYear
+      }];
+      setDetailSearchSelectedData(tumpArray);
+    },[currentSelectedStack,currentSelectedSubject,currentSelectedYear]);
+
+    /** 상세 검색 토글 리스트 데이터 불러오기 */
+    useEffect(()=>{
+      TechStackData({setData:setStackDataArray});
+      SubjectData({setData:setSubjectDataArray});
+    },[TechStackData,SubjectData]);
+
+    return(
+      <MainContantsLayout
+            pageName="project"
+            title="프로젝트"
+            detailSearchSelectedData={detailSearchSelectedData}
+      >
+        <MultipleSelectToggle title="기술 스택" data={stackDataArray}
+            currentSelected={currentSelectedStack}
+            setCurrentSelected={setCurrentSelectedStack}
+            selectedAll={selectedStackAll}
+            setSelectedAll={setSelectedStackAll}
+        />
+        <SingleSelectToggle title="주제" data={subjectDataArray}
+            currentSelected={currentSelectedSubject}
+            setCurrentSelected={setCurrentSelectedSubject}
+        />
+        <SingleSelectToggle title="연도" data={yearDataArray}
+            currentSelected={currentSelectedYear}
+            setCurrentSelected={setCurrentSelectedYear}
+        />
+      </MainContantsLayout>
     )
 }
-
 export default ProjectPage;
-
-const Layout = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
-    padding: 55px 70px;
-    width: 100%;
-`;
-
-const Title = styled.div``;
-
-
-
-
-
-const Content = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    gap: 30px;
-    width: 1000px;
-`;
-const Wrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-`;
-const Total = styled.div`
-`;
-const Sort = styled.div`
-    display: flex;
-    gap: 10px;
-`;
-
-const ObjectList = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`;

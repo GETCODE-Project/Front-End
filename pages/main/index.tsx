@@ -1,22 +1,13 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
-import styled from "styled-components";
-import ObjectForm from "@/components/project/ObjectForm";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
+import MainPage from "@/components/main/MainPage";
 
 const Main = ()=> {
+
   return (
-    <div>
-      <Header />
-      <MenuBar />
-      <Box />
-      <Footer />
-    </div>
+    <FixedLayout>
+      <MainPage />
+    </FixedLayout>
   );
 }
 
 export default Main;
-
-const Box = styled.div`
-  height: 1000px;
-`;

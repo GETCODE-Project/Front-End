@@ -6,6 +6,14 @@ import { reset } from "styled-reset";
 export const GlobalStyle = createGlobalStyle`
   ${reset}
 
+  * {
+    box-sizing: border-box;
+  }
+
+  ul, ol {
+    list-style: none;
+  }
+
 /*여기서부터는 팀룰에 따라 자유롭게 커스텀 
 
   * {

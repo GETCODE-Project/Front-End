@@ -1,18 +1,14 @@
-import Header from "@/components/common/Header";
-import MenuBar from "@/components/common/MenuBar";
-import Footer from "@/components/common/Footer";
-import styled from "styled-components";
-import FindProject from "@/components/findProject/FindProject";
+import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
+import FindProjectPage from "@/components/findProject/FindProjectPage";
 
-const FindProjectPage = ()=> {
+const FindProject = () => {
   return (
     <div>
-      <Header />
-      <MenuBar />
-      <FindProject/>
-      <Footer />
+      <FixedLayout menuClicked={2}>
+        <FindProjectPage />
+      </FixedLayout>
     </div>
   );
 };
 
-export default FindProjectPage;
+export default FindProject;
