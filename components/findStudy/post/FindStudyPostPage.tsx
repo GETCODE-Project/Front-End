@@ -62,6 +62,7 @@ const FindStudyPostPage = () => {
 
   return (
     <Layout>
+      <PageTitle>스터디 모집 게시글 작성</PageTitle>
       <Title
         name="Title"
         type="text"
@@ -101,7 +102,7 @@ const Layout = styled.div`
 
 const Title = styled.input`
   font-size: 1.8rem;
-  margin: 60px 20px 20px;
+  margin: 30px 20px 20px;
   text-align: left;
   border: none;
   ${media.mobile} {
@@ -130,4 +131,15 @@ const Content = styled.div`
     display: flex;
     place-content: center;
   }
+`;
+
+const PageTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+
+  font-size: 1.25rem;
+  color: #ff4b13;
+  
 `;
