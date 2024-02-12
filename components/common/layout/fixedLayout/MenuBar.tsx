@@ -41,7 +41,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ menuClicked, id }) => {
         </li>
         <li>
           <a
-            href={`/community/${id}`}
+            href={`/community`}
             style={{ textDecoration: "none", color: "#fff", ...handle(4) }}
           >
             커뮤니티

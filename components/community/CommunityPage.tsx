@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import NavBarForm from "@/components/community/NavBarForm";
 import ContentsForm from "@/components/community/ContentsForm";
+import { useState } from "react";
 
-const CommunityPage = ({id}:any) => {
+const CommunityPage = () => {
+
+    const [selectedPage, setSelectedPage] = useState<string>('FreeBoard');
+
     return (
         <Layout>
-            <NavBarForm/>
-            <ContentsForm id={id}/>
+            <NavBarForm setSelectedPage={setSelectedPage}/>
+            <ContentsForm pageName={selectedPage}/>
         </Layout>
     )
 }

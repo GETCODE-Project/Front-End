@@ -2,18 +2,36 @@ import { media } from "@/styles/mediaQuery";
 import styled from "styled-components";
 import SearchInput from "@/components/common/search/SearchInput";
 import MainContantsLayout from "@/components/common/layout/MainContantsLayout";
+import { useEffect, useState } from "react";
 
-const ContentsForm = ({id}:any) => {
+const ContentsForm = ({pageName}:any) => {
+    const [subTitle, setSubTitle] = useState<string>('');
+
+    useEffect(()=>{
+        switch(pageName){
+            case 'FreeBoard':
+                setSubTitle('자유게시판');
+                break;
+            case 'QnA':
+                setSubTitle('QnA');
+                break;
+            case 'Consult':
+                setSubTitle('고민상담');
+                break;
+            default:
+                console.error('알 수 없는 페이지입니다.');
+                break;
+        }
+    },[]);
+    
     return(
         <BackLayout>
             <Layout>
                 <MainContantsLayout
-                    // pageName={`community/${id}`}
-                    pageName={`community`}
+                    pageName={pageName}
                     title="커뮤니티"
-                    subTitle="자유게시판"
+                    subTitle={subTitle}
                     sumTitle="게시글"
-                    id={id} 
                     detailSearchSelectedData={undefined}                
                 />
             </Layout>
@@ -42,6 +60,7 @@ const Layout = styled.div`
     width: 80%;
     height: 100%;
     padding: 50px 0;
+
 
     background-color: #fff;
 

@@ -111,8 +111,9 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
-        import(`@/components/${pageName}/ObjectForm`)
-        .then(module => {pageName=='project'?
+        const adjustedPageName = (pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName;
+        import(`@/components/${adjustedPageName}/ObjectForm`)
+        .then(module => {adjustedPageName=='project'?
             setObjectForm(()=>module.ObjectForm)
         : setObjectForm(()=>module.default)
         })
@@ -135,9 +136,20 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                 moduleName = 'FindStudyData'
                 setParams(findStudyParams);
                 break;
-            case 'community':
+            case 'FreeBoard':
                 moduleName = 'CommunityData'
                 setParams(communityParams);
+                setCategory('FREEBOARD');
+                break;
+            case 'QnA':
+                moduleName = 'CommunityData'
+                setParams(communityParams);
+                setCategory('QNA');
+                break;
+            case 'Consult':
+                moduleName = 'CommunityData'
+                setParams(communityParams);
+                setCategory('COUNSEL');
                 break;
             default:
                 return;
@@ -172,7 +184,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     useEffect(() => {
         // console.log(detailSearchSelectedData,'SearchSelected');
         console.log(objectData,'objectData');
-    },[]);
+    },[pageName]);
 
     return(
         <BackLayout>
@@ -213,7 +225,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                         ))}
                     </ObjectList>
                 </Contents>
-                <WritingButton onClick={()=>router.push(`/${pageName}/post`)}>글쓰기</WritingButton>
+                <WritingButton onClick={()=>router.push(`/${(pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName}/post`)}>글쓰기</WritingButton>
             </Layout>
             {isLoginAlertOn?
                 <Alert 
