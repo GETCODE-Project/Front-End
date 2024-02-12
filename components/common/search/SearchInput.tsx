@@ -6,11 +6,22 @@ import styled from "styled-components";
 import {MultipleSelectToggle, SingleSelectToggle} from "@/components/common/search/DetailSearchForm";
 import { useRouter } from "next/router";
 
-const SearchInput = ({children}:any) => {
+interface SearchInputProps{
+    children: any;
+    setKeyword?:any;
+    searchButtonFC?:() => void;
+}
+
+const SearchInput = ({children, setKeyword, searchButtonFC}:SearchInputProps) => {
     const router = useRouter();
     const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
-    const isCommunityPage = router.pathname === '/community/[id]';
+    const isCommunityPage = router.pathname === '/community';
+
+    const handleKeyword = (e:React.ChangeEvent<HTMLInputElement>) => {
+        const target = e.target.value;
+        setKeyword(target);
+    }
 
     return(
         <Layout>
@@ -18,9 +29,9 @@ const SearchInput = ({children}:any) => {
             <div id="logo">
             <Logo width='147' height='30'/>
             </div>
-            <SearchInputBar/>
-            <SearchButtonWrapper>
-                <SearchButton/>
+            <SearchInputBar onChange={handleKeyword}/>
+            <SearchButtonWrapper onClick={searchButtonFC}>
+                <SearchButton />
             </SearchButtonWrapper>
         </Search>
         {isCommunityPage?
@@ -95,6 +106,8 @@ const SearchButtonWrapper = styled.div`
     border-radius: 6px;
     border: 3px solid #ff4b13;
     background-color: #ff4b13;
+
+    cursor: pointer;
 `;
 
 const DetailButton = styled.div`

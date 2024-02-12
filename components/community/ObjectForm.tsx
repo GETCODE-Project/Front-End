@@ -1,35 +1,103 @@
+import { POST } from "@/pages/api/axios";
 import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ObjectForm = () => {
+interface ObjectFormProps{
+    data?: any;
+    setIsLoginAlertOn?: any;
+}
+/** 불러온 Respons 데이터 형식 참고: 스터디모집 게시글 */
+interface ResponseData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    likeCnt: number;
+    views: number;
+    checkLike: boolean;
+    checkWish: boolean;
+    createDate: string;
+    modifiedDate: string;
+    memberNickName: string;
+    subject: string;
+    techStacks: [{id: string, techStack: string}]; //불필요데이터
+}
+
+const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
+
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
-    const arr:any []=['스터디','면접준비','백엔드','웹개발'];
+
+    /** 좋아요 버튼 클릭 이벤트 */
+    const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
+        await POST(`/api/projectrecruitment/${data.projectId}/like`)
+        .then((res)=>{
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
+            }
+        });
+    }
+
+    /** 찜하기 버튼 클릭 이벤트 */
+    const handleWishClick = async() => {
+        setIsWishOn(!isWishOn);
+        await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/wish`)
+        .then((res)=>{
+        })
+        .catch((err)=>{
+            //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
+            if(err.response.data.message.includes('사용자')){
+                setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
+            }
+        });
+    }
+
+    /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
+    useEffect(()=>{
+        if(data.checkLike===true){
+            setIsHartOn(true);
+        }
+        if(data.checkLike===false||null){
+            setIsHartOn(false);
+        }
+        if(data.checkWish===true){
+            setIsWishOn(true);
+        }
+        if(data.checkWish===false||null){
+            setIsWishOn(false);
+        }
+    },[]);
     
     return (
         <Layout>
-            <Wish onClick={()=>setIsWishOn(!isWishOn)}>
+            <Wish onClick={handleWishClick}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
                 <Info>
-                    <div id='title'>게시글 제목</div>
-                    <div id='intro'>게시글 내용</div>
+                    <div id='title'>{data.title}</div>
+                    <div id='intro'>{data.introduction}</div>
                     <Reaction>
                         <Wrapper>
                             <ViewCountSVG/>
-                            <span>1,345</span>
+                            <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
+                        <Wrapper id="hartClick" onClick={handleHeartClick}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
-                            <span>123</span>
+                            <span>{data.likeCnt}</span>
                         </Wrapper>
                     </Reaction>
                 </Info>
                 <Create>
-                    <span>작성자</span>
-                    <span>2023.12.11.MON</span>
+                    <span>{data.memberNickName}</span>
+                    <span>{data.createDate}</span>
                 </Create>
             </Content>
         </Layout>
@@ -95,6 +163,9 @@ const Reaction = styled.div`
     align-items: start;
     gap: 15px;
     padding: 15px;
+    #hartClick {
+        cursor: pointer;
+    }
 `;
 const Wrapper = styled.div`
     display: flex;

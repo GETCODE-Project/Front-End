@@ -21,8 +21,10 @@ const FindStudyPostPage = () => {
   const [status, setStatus] = useState<boolean>(true);
   const [part, setPart] = useState<string[]>([]);
   const [onoff, setOnoff] = useState<boolean>(true);
-  const [location, setLocation] = useState<string>("");
+  const [siDo, setSiDo] = useState<string>("");
+  const [guGun, setGuGun] = useState<string>("");
   const [allLink, setAllLink] = useState<LinkProps[]>([]);
+  const [content, setContent] = useState<string>();
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
@@ -30,13 +32,29 @@ const FindStudyPostPage = () => {
   };
 
   const Post = () => {
-    if (title && part && location !== "시/도 선택/" && allLink) {
-      console.log(status);
-      console.log(title);
-      console.log(part);
-      console.log(onoff);
-      console.log(location);
-      console.log(allLink);
+    if (title && part && siDo !== "시/도 선택/" && allLink) {
+      const handleLogin = async () => {
+        await POST("api/study", {
+          title: title,
+          content: content,
+          siDo: siDo,
+          guGun: guGun,
+          recruitment: status,
+          online: onoff,
+          contact: ["010-1234-5678", "ojs258@naver.com"],
+          fields: part,
+        })
+          .then((res) => {
+            console.log(res);
+            alert(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+      };
+      handleLogin();
+      console.log(content);
     } else {
       alert("추가입력");
     }
@@ -44,6 +62,7 @@ const FindStudyPostPage = () => {
 
   return (
     <Layout>
+      <PageTitle>스터디 모집 게시글 작성</PageTitle>
       <Title
         name="Title"
         type="text"
@@ -51,16 +70,19 @@ const FindStudyPostPage = () => {
         value={title}
         onChange={handleTitle}
       />
-      <UserName>작성자 닉네임</UserName>
       <hr style={{ width: "100%" }} />
       <Content>
-        <SelectStatus status={status} setStatus={setStatus} />
         <SelectPart part={part} setPart={setPart} />
+        <SelectStatus status={status} setStatus={setStatus} />
         <SelectOnOff onoff={onoff} setOnoff={setOnoff} />
-        <SelectLocation setLocation={setLocation} text="스터디 지역" />
+        <SelectLocation
+          setSiDo={setSiDo}
+          setGuGun={setGuGun}
+          text="스터디 지역"
+        />
         <AddLink allLink={allLink} setAllLink={setAllLink} />
       </Content>
-      <TextArea post={() => Post()} />
+      <TextArea post={() => Post()} setContent={setContent} />
     </Layout>
   );
 };
@@ -80,7 +102,7 @@ const Layout = styled.div`
 
 const Title = styled.input`
   font-size: 1.8rem;
-  margin: 60px 20px 20px;
+  margin: 30px 20px 20px;
   text-align: left;
   border: none;
   ${media.mobile} {
@@ -109,4 +131,15 @@ const Content = styled.div`
     display: flex;
     place-content: center;
   }
+`;
+
+const PageTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+
+  font-size: 1.25rem;
+  color: #ff4b13;
+  
 `;

@@ -13,30 +13,49 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
-/** 불러온 Respons 데이터 형식 참고 */
-interface ProjectObjectData{
+
+/** 불러온 Respons 데이터 형식 참고 : 프로젝트 데이터 */
+/**[TODO: 썸네일(이미지) 데이터 누락됨 - 요청중] */
+interface ProjectData{
     projectId: number;
     title: string;
     introduction: string;
     views: number;
     likeCnt: number;
-    dateTime: string;
-    projectSubjects:[{
-        id: number;
-        subject: string;
-    }]
-    techStackList: [{
+    createDate: string;
+    modifiedDate: string;
+    techStacks: [{
         id: number;
         techStack: string;
     }];
-    imageUrl: {
-        id: number;
-        imageUrl: string;
-    };
+    subject: string;
     memberNickName: string;
     checkLike: boolean|null;
     checkWish: boolean|null;
 }
+/** 불러온 Respons 데이터 형식 참고 : 내가 작성한 프로젝트 데이터 */
+//[TODO: My프로젝트데이터와 프로젝트데이터 변수 통일되었는지 비교용 작성 ]
+interface MyProjectData{
+    projectId: number;
+    title: string;
+    introduction: string;
+    views: number;
+    likeCnt: number;
+    checkLike: boolean|null;
+    checkWish: boolean|null;
+    dateTime: string;
+    imageUrl: null; //정확한 형식 무엇인지?
+    memberNickName: string;
+    projectSubjects: [{
+        id: number;
+        subject: string;
+    }];
+    techStackList: [{
+        id: number;
+        techStack: string;
+    }];
+}
+
 /** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
 /** ------------------------------------------------------------- */
@@ -46,43 +65,41 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
 
-    const subject:any [] = data?.projectSubjects;
+    const subject:any [] = data?.subjects;
 
     /** 좋아요 버튼 클릭 이벤트 */
     const handleHeartClick = async() => {
+        setIsHartOn(!isHartOn);
         await POST(`/api/project/${data.projectId}/like`)
         .then((res)=>{
-            //[TODO: res.data 값 확인, boolean값으로 조건 설정]
-            //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
-            if(res.data==='프로젝트 좋아요 성공'){
-                setIsHartOn(true);
-            }if(res.data==='프로젝트 좋아요 삭제 성공'){
-                setIsHartOn(false);
-            }
         })
         .catch((err)=>{
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsHartOn(!isHartOn);
             }
         });
     }
     /** 찜하기 버튼 클릭 이벤트 */
     const handleWishClick = async() => {
+        setIsWishOn(!isWishOn);
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
             //[TODO: res.data 값 확인, boolean값으로 조건 설정]
             //[TODO: catch err 부분에서 사용자가 존재하지 않습니다 메세지의 경우 res로 전환 가능성]
-            if(res.data==='프로젝트 좋아요 성공'){
-                setIsWishOn(true);
-            }if(res.data==='프로젝트 좋아요 삭제 성공'){
-                setIsWishOn(false);
-            }
+            // if(res.data==='프로젝트 좋아요 성공'){
+            //     setIsWishOn(true);
+            // }if(res.data==='프로젝트 좋아요 삭제 성공'){
+            //     setIsWishOn(false);
+            // }
         })
         .catch((err)=>{
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
             if(err.response.data.message.includes('사용자')){
                 setIsLoginAlertOn(true);
+                setIsWishOn(!isWishOn);
+
             }
         });
     }
@@ -90,13 +107,13 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     /** 처음 불러올 때 좋아요,찜하기 선택 상태 */
     useEffect(()=>{
         if(data.checkLike===true){
-            setIsHartOn(data.Wishs);
+            setIsHartOn(true);
         }
         if(data.checkLike===false||null){
             setIsHartOn(false);
         }
         if(data.checkWish===true){
-            setIsWishOn(data.Wishs);
+            setIsWishOn(true);
         }
         if(data.checkWish===false||null){
             setIsWishOn(false);
@@ -104,7 +121,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     },[]);
 
     useEffect(()=>{
-        // console.log(data.projectId);
+        // console.log(data,'projectData');
     },[]);
 
     return(
@@ -112,7 +129,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
             <Thumbnail>
                 <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
-                    <Wrapper onClick={handleHeartClick}>
+                    <Wrapper onClick={()=>handleHeartClick()}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
                         <span>{data.likeCnt}</span>
                     </Wrapper>
@@ -133,13 +150,13 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
                     <Intro>
                         {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${subject[0].subject}`}</Topic>
+                    <Topic>{`주제 : ${data?.subject}`}</Topic>
                     <Stack>
-                        {data.techStackList?.map((i:any,idx:number)=>(
+                        {data.techStacks?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i.techStack}</StackName>
                         ))}
                     </Stack>
-                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.dateTime}`}</div></Create>
+                    <Create><div>{`작성자 : ${data.memberNickName}`}</div><div>{`작성일 : ${data.createDate}`}</div></Create>
                 </Info>
             </Content>
               
@@ -183,9 +200,9 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                 </Title>
                 <Info>
                     <Intro>
-                        {data.subTitle}
+                        {data.introduction}
                     </Intro>
-                    <Topic>{`주제 : ${data.topic}`}</Topic>
+                    <Topic>{`주제 : ${data.subject}`}</Topic>
                     <Stack>
                         {data.techStackList?.map((i:any,idx:number)=>(
                             <StackName key={idx}>{i}</StackName>
@@ -193,7 +210,7 @@ export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
                     </Stack>
                     <Create>
                         <div>{`작성자 : ${data.writer}`}</div>
-                        <div>{`작성일 : ${data.createdDate}`}</div>
+                        <div>{`작성일 : ${data.createDate}`}</div>
                     </Create>
                 </Info>
             </Content>

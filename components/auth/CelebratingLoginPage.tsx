@@ -3,7 +3,7 @@ import AuthLayoutForm from "@/components/auth/authForm/AuthLayoutForm";
 import InputForm from "@/components/auth/authForm/InputForm";
 import { POST } from "@/pages/api/axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CelebratingLoginPage = () => {
 
@@ -41,6 +41,10 @@ const CelebratingLoginPage = () => {
             alert(err);
         })
     }
+    useEffect(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    },[]);
 
     return(
         <AuthLayoutForm>

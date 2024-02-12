@@ -23,14 +23,15 @@ const LoginPage = () => {
     const [userEmail, setUserEmail] = useState<string>('');
     const [userPassword, setUserPassword] = useState<string>('');
 
+    /** 로그인하기 POST */
     const handleLogin = async() => {
         await POST('/api/auth/login',{
             email: userEmail,
             password: userPassword,
         }).then((res)=>{
+
             localStorage.setItem('accessToken',res.data.accessToken);
             localStorage.setItem('refreshToken',res.data.refreshToken);
-            // console.log(res.data.accessToken);
 
             router.push('/');
         }).catch((err)=>{
@@ -49,6 +50,11 @@ const LoginPage = () => {
         const target = e.target.value;
         setUserPassword(target);
     }
+
+    useEffect(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+    },[]);
 
     return(
         <AuthForm

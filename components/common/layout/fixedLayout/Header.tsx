@@ -9,6 +9,15 @@ import { useRouter } from 'next/router';
 import { GET, PATCH } from '@/pages/api/axios';
 import { media } from '@/styles/mediaQuery';
 
+/** ------------------------------------------------------------- */
+/** 헤더 (로고, 내찜바로가기, 프로필토글, 프로필토글메뉴리스트) */
+/** ------------------------------------------------------------- */
+
+interface UserInfo{
+  email: string;
+  nickname: string;
+  profileImg: string;
+}
 
 const Header = () => {
   const router = useRouter();
@@ -16,22 +25,12 @@ const Header = () => {
   // const { data: session, status} = useSession();
   const [isToggle, setIsToggle] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [userInfo, setUserinfo] = useState<any>();
-
-  const isLoginStatus = () => {
-      if(localStorage.getItem('accessToken')!==null){
-          setIsLogin(true);
-          getUserInfo();
-      }
-      else{
-          setIsLogin(false);
-      }
-  }
+  const [userInfo, setUserinfo] = useState<UserInfo>();
 
   const handleLogout = async() => {
     await PATCH(`/api/logout`)
     .then((res)=>{
-      console.log(res);
+      // console.log(res);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       router.reload();
@@ -43,7 +42,6 @@ const Header = () => {
       localStorage.getItem('accessToken')!==null&&await GET(`/api/userInfo`)
       .then((res)=>{
           setUserinfo(res.data);
-          console.log(res.data,'userInfo');  
       })
       .catch((err)=>console.error(err.response.data.message));
   }

@@ -118,13 +118,14 @@ const SignUpPage = () => {
         await POST(`/api/sign-up`,{
             email: userEmail,
             nickname: userNickname,
-            password: userPassword,      
+            password: userPassword,
+            emailVerified: isVarificationSuccess 
         }).then((res)=>{
             console.log(res.data);
             router.push('/auth/login/celebration');
 
         }).catch((err)=>{
-            console.log(err);
+            console.log(err.response.data);
         })
     }
 

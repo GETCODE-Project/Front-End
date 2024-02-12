@@ -2,25 +2,27 @@ import { GET } from "@/pages/api/axios";
 import { useEffect } from "react";
 
 /** ------------------------------------------------------------- */
-/** 게시물 목록 페이지 레이아웃 재사용 폼 */ //
+/** 프로젝트 모집 전체 게시물 불러오기 GET 컴포넌트 */ //
 /** ------------------------------------------------------------- */
-// 페이지타이틀,소타이틀,검색단,총NN개,정렬(최신순/과거순/인기순),게시물목록,글쓰기버튼
+// 사용되는 검색 항목 : 정렬(sort), 페이지수(page), 한페이지에 담기는 개수(size), 검색어(keyword), *검색 조건(subject), 기술 스택(techStack), 년도(year), 사용자ID(memberId)
 /**[TODO]
  * [1] 
  */
 
 /** GET 파라미터값(검색에사용), 데이터를 저장할 status */
-//[TODO] year제거 & 모집파트,모집여부추가해야함
 interface FindProjectProps {
     params: {
         sort: string;
-        page: number;
+        pageNumber: number;
         size: number;
         keyword: string;
         subject: string;
-        techStack: [];
-        year?: number;
-        memberId?: number;
+        techStack: string[];
+        year?: number|string;
+        online: boolean|string;
+        recruitment: boolean|string;
+        siDo: string;
+        guGun: string;
     }
     setObjectData?: any;
 }
@@ -36,7 +38,7 @@ export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
         return techStack;
     }
 
-    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.page}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString}&${params.memberId}`,{})
+    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.pageNumber}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}&siDo=${params.siDo}&guGun=${params.guGun}&online=${params.online}&recruitment=${params.recruitment}`,{})
     .then((res)=>{
         setObjectData(res.data);
     })

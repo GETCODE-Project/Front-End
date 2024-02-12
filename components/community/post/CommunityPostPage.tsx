@@ -11,6 +11,7 @@ import {
 const CommunityPostPage = () => {
   const [title, setTitle] = useState<string>("");
   const [subject, setSubject] = useState<string>("");
+  const [content, setContent] = useState<string>();
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const target = e.target.value;
@@ -19,6 +20,22 @@ const CommunityPostPage = () => {
 
   const Post = () => {
     if (title && subject !== "주제를 입력하세요") {
+      const handleLogin = async () => {
+        await POST("api/community", {
+          title: title,
+          content: content,
+          category: subject,
+        })
+          .then((res) => {
+            console.log(res);
+            alert(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+      };
+      handleLogin();
       console.log(title);
       console.log(subject);
     } else {
@@ -28,6 +45,8 @@ const CommunityPostPage = () => {
 
   return (
     <Layout>
+      <PageTitle>커뮤니티 게시글 작성</PageTitle>
+
       <Title
         name="Title"
         type="text"
@@ -40,7 +59,7 @@ const CommunityPostPage = () => {
       <Content>
         <SelectSubject setSubject={setSubject} />
       </Content>
-      <TextArea post={() => Post()} />
+      <TextArea post={() => Post()} setContent={setContent} />
     </Layout>
   );
 };
@@ -60,7 +79,7 @@ const Layout = styled.div`
 
 const Title = styled.input`
   font-size: 1.8rem;
-  margin: 60px 20px 20px;
+  margin: 30px 20px 20px;
   text-align: left;
   border: none;
   ${media.mobile} {
@@ -89,4 +108,15 @@ const Content = styled.div`
     display: flex;
     place-content: center;
   }
+`;
+
+const PageTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+
+  font-size: 1.25rem;
+  color: #ff4b13;
+  
 `;

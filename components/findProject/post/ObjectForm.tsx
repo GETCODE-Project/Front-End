@@ -50,23 +50,29 @@ interface SelectSubjectProps {
   setSubject: (newValue: string) => void;
 }
 
+/** 주제 토글 데이터 */
 export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
-  const optionSubject = [
-    "주제를 입력하세요",
-    "여행",
-    "이커머스",
-    "소셜 네트워크",
-    "공유 서비스",
-    "의료",
-    "금융",
-    "교육",
-    "모임",
-    "스포츠",
-    "게임",
-    "부동산",
-    "뷰티",
-    "패션",
-  ];
+
+  const [optionSubject, setOptionSubject] = useState<string[]>([]);
+
+  useEffect(()=>{
+
+    const getSubjects = async() => {
+      await GET(`/api/subjects`)
+      .then((res)=>{
+        let tumpArray: string[] = [];
+        tumpArray = [...res.data];
+        tumpArray.unshift('주제를 선택해주세요.');
+        setOptionSubject(tumpArray);
+      })
+      .catch((err)=>console.error(err));
+    }
+
+    getSubjects();
+
+  },[]);
+  
+
   return (
     <MobileLayaout>
       <SelectRoundBox text="주제" />
@@ -76,6 +82,7 @@ export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
           setSubject(value);
         }}
       />
+      
     </MobileLayaout>
   );
 };
@@ -84,47 +91,49 @@ interface SelectTechProps {
   tech: string[];
   setTech: React.Dispatch<React.SetStateAction<string[]>>;
 }
+interface SelectOnOffProps {
+  onoff: boolean;
+  setOnoff: (newValue: boolean) => void;
+}
 
+export const SelectOnOff = ({ onoff, setOnoff }: SelectOnOffProps) => {
+  const backgroundColor = ["white", "#00FF1A"];
+  return (
+    <MobileLayaout>
+      <Query>
+        <SelectRoundBox text="온/오프라인" />
+      </Query>
+      <SelectRoundBox
+        text="온라인"
+        backgroundcolor={backgroundColor[Number(onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(true);
+        }}
+      />
+      <SelectRoundBox
+        text="오프라인"
+        backgroundcolor={backgroundColor[Number(!onoff)]}
+        border="black"
+        color="black"
+        fontWeight={500}
+        cursor={"pointer"}
+        onClick={() => {
+          setOnoff(false);
+        }}
+      />
+    </MobileLayaout>
+  );
+};
+
+/** 기술 스택 토글 데이터 */
 export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
-  const optionSubject = [
-    "기술 스택을 선택하세요",
-    "Java",
-    "C#",
-    "Python",
-    "php",
-    "Node.js",
-    "Go",
-    "Ruby",
-    "Kotlin",
-    "Swift",
-    "Peal",
-    "Spring",
-    "Django",
-    "Express.js",
-    "Flask",
-    "Rails",
-    "vue.js",
-    "Springboot",
-    "Next.js",
-    "Nest.js",
-    "MySQL",
-    "Oracle",
-    "PostgreSQL",
-    "MariaDB",
-    "Redis",
-    "MongoDB",
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "ReactNative",
-    "Html",
-    "Css",
-    "Flutter",
-    "Dart",
-    "Git",
-    "Github",
-    "AWS",
-  ];
+
+  const [optionSubject, setOptionSubject] = useState<string[]>([]);
+
   const handleInput = (value: string) => {
     if (value !== "기술 스택을 선택하세요" && !tech.includes(value)) {
       setTech((prev) => [...prev, value]);
@@ -135,6 +144,17 @@ export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
     const newTopic = tech.filter((tech) => tech !== value);
     setTech(newTopic);
   };
+
+  useEffect(() => {
+    const getTechStacks = async() => {
+      await GET(`api/techStacks`)
+      .then((res)=>{
+        setOptionSubject(res.data);
+      })
+      .catch((err)=>console.error(err));
+    }
+    getTechStacks();
+  },[]);
 
   return (
     <MobileLayaout>
@@ -166,51 +186,6 @@ interface WishPartProps {
   wishPart: string[];
   setWishPart: React.Dispatch<React.SetStateAction<string[]>>;
 }
-
-export const WishPart = ({ wishPart, setWishPart }: WishPartProps) => {
-  const InputSubject = [
-    "모집 분야를 선택하세요",
-    "분야1",
-    "분야2",
-    "분야3",
-    "분야4",
-    "분야5",
-  ];
-  const handleInput = (value: string) => {
-    if (value !== "모집 분야를 선택하세요" && !wishPart.includes(value)) {
-      setWishPart((prev) => [...prev, value]);
-    }
-  };
-  const deleteTopic = (value: string) => {
-    const newTopic = wishPart.filter((wishPart) => wishPart !== value);
-    setWishPart(newTopic);
-  };
-
-  return (
-    <MobileLayaout>
-      <SelectRoundBox text="모집 분야" />
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        <SelectToggle
-          onCreate={(value) => {
-            handleInput(value);
-          }}
-          options={InputSubject}
-        />
-        <div style={{ display: "flex", width: "100%", flexWrap: "wrap" }}>
-          {wishPart.map((value) => (
-            <ToggleRoundBox
-              key={value}
-              text={value}
-              deleteTopic={() => {
-                deleteTopic(value);
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </MobileLayaout>
-  );
-};
 
 interface LinkProps {
   linkType: string;
@@ -258,12 +233,16 @@ export const AddLink = ({ allLink, setAllLink }: AddLinkProps) => {
 };
 
 interface PostProps {
-  post: any;
+  post: () => void;
+  setContent: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
-export const TextArea = ({ post }: PostProps) => {
+export const TextArea = ({ post, setContent }: PostProps) => {
+  const handleTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+  };
   return (
     <div>
-      <TextAreaDiv />
+      <TextAreaDiv onChange={handleTextArea} />
       <Hr />
       <div
         style={{ display: "flex", flexDirection: "row-reverse", gap: "20px" }}
