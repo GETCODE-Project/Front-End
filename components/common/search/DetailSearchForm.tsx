@@ -150,6 +150,7 @@ export const SingleSelectSidoGugunToggle = ({title, sidoGugunData, currentSelect
         <BackLayout>
             <Layout className="SidoGugun">
                 <Title>{title}</Title>
+                <Wrapper>
                 <SidoContents>
                     <Toggle id="Sido" onClick={()=>setIsSidoToggleOn(!isSidoToggleOn)}>
                             <span>{currentSelectedSido}</span>
@@ -181,6 +182,7 @@ export const SingleSelectSidoGugunToggle = ({title, sidoGugunData, currentSelect
                             }
                     </Toggle>
                 </GugunContents>
+                </Wrapper>
             </Layout>
         </BackLayout>
     )
@@ -194,9 +196,16 @@ const BackLayout = styled.div`
     width: 100%;
 
     & > .SidoGugun{
-        display: flex;
+        /* display: flex; */
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        flex-wrap: nowrap;
         width: 100%;
         gap: 10px;
+        ${media.mobile || media.tablet}{
+        grid-template-columns: 32% auto;
+        width: 250px;
+    }
     }
 `;
 const Layout = styled.div`
@@ -209,6 +218,7 @@ const Layout = styled.div`
 
     ${media.mobile || media.tablet}{
         grid-template-columns: 32% auto;
+        width: 250px;
     }
 `;
 
@@ -322,6 +332,11 @@ const SidoContents = styled.div`
     flex:1;
     flex-direction: column;
     gap: 10px;
+
+    white-space: nowrap;
+    &>#Sido{
+        width: 100%;
+    }
 `;
 
 const GugunContents = styled.div`
@@ -329,4 +344,22 @@ const GugunContents = styled.div`
     flex:1;
     flex-direction: column;
     gap: 10px;
+    white-space: nowrap;
+
+    &>#Gugun{
+        width: 100%;
+    }
+
+`;
+
+const Wrapper = styled.div`
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
+
+    ${media.mobile}{
+        display: flex;
+        flex-direction: column;
+    }
 `;
