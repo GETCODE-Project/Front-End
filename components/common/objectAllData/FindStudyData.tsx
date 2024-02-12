@@ -17,8 +17,8 @@ interface FindStudyProps{
         sort: string;
         siDo: string;
         guGun: string;
-        recruitment: boolean|'';
-        online: boolean|'';
+        recruitment: 'O'|'X'|'N'|''|boolean; // O:모집중 X:모집완료 N:전체
+        online: 'O'|'X'|'N'|''|boolean; // O:온라인 X:오프라인 N:전체
         year: number|string;
         field: string[]; //스터디 분야(프론트에서 넣어서 보냄 like 기술스택,주제)
     }
@@ -30,6 +30,9 @@ interface FindStudyProps{
 /** ------------------------------------------------------------- */
 export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 
+    let handleOnline = 'N';
+    let handleRecruitment = 'N';
+
     const subjectQueryString = () => {
         let field = '';
         if(params.field.length > 0){
@@ -37,8 +40,32 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
         }
         return field;
     }
+    switch (params.online){
+        case '':
+            handleOnline = 'N';
+            break;
+        case true:
+            handleOnline = 'O';
+            break;
+        case false:
+            handleOnline = 'X';
+            break;
+        default: break;
+    }
+    switch (params.recruitment){
+        case '':
+            handleRecruitment = 'N';
+            break;
+        case true:
+            handleRecruitment = 'O';
+            break;
+        case false:
+            handleRecruitment = 'X';
+            break;
+        default: break;
+    }
 
-    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${true}&online=${params.online}&year=${params.year}&field=${subjectQueryString()}`,{})
+    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&recruitment=${handleRecruitment}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${true}&online=${handleOnline}&year=${params.year}&field=${subjectQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
         // console.log(res);
