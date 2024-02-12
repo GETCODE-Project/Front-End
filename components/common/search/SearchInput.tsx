@@ -16,7 +16,7 @@ const SearchInput = ({children, setKeyword, searchButtonFC}:SearchInputProps) =>
     const router = useRouter();
     const [isDetailOpen, setIsDetailOpen] = useState<boolean>(false);
 
-    const isCommunityPage = router.pathname === '/community/[id]';
+    const isCommunityPage = router.pathname === '/community';
 
     const handleKeyword = (e:React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target.value;

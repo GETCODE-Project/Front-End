@@ -37,6 +37,7 @@ const BackLayout = styled.div`
     height: 100vh;
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 1004;
 
     background-color: #00000070;

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import React from "react";
 import { useRouter } from "next/router";
 import Alert from '@/components/common/notification/Alert';
+import { GET } from "@/pages/api/axios";
 
 /** ------------------------------------------------------------- */
 /** 게시물 목록 페이지 레이아웃 재사용 폼 */ //
@@ -80,6 +81,15 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     
 
     /** 토탈(총 N..N개 프로젝트) 함수 작성 예정*/
+
+    /** 사용자 로그인 확인 */
+    const isLoginCheck = async() => {
+        await GET(`/api/userInfo`)
+        .then((res)=>{
+            router.push(`/${(pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName}/post`);
+        })
+        .catch((err)=>setIsLoginAlertOn(true));
+    }
 
     /** 정렬(최신순, 과거순, 좋아요순) */
     const handleSort = (sortName:string) => {
@@ -186,6 +196,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         console.log(objectData,'objectData');
     },[pageName]);
 
+    
+
     return(
         <BackLayout>
             <Layout>
@@ -225,7 +237,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                         ))}
                     </ObjectList>
                 </Contents>
-                <WritingButton onClick={()=>router.push(`/${(pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName}/post`)}>글쓰기</WritingButton>
+                <WritingButton onClick={isLoginCheck}>글쓰기</WritingButton>
             </Layout>
             {isLoginAlertOn?
                 <Alert 
