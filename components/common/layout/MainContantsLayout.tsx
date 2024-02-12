@@ -86,7 +86,8 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const isLoginCheck = async() => {
         await GET(`/api/userInfo`)
         .then((res)=>{
-            router.push(`/${(pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName}/post`);
+            const currentPageName = (pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName
+            router.push(`/${currentPageName}/post`);
         })
         .catch((err)=>setIsLoginAlertOn(true));
     }
@@ -237,7 +238,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
                         ))}
                     </ObjectList>
                 </Contents>
-                <WritingButton onClick={isLoginCheck}>글쓰기</WritingButton>
+                <WritingButton onClick={()=>isLoginCheck()}>글쓰기</WritingButton>
             </Layout>
             {isLoginAlertOn?
                 <Alert 
