@@ -9,14 +9,15 @@ interface OptionProps {
 }
 
 const SelectToggle: React.FC<OptionProps> = ({ options, onCreate }) => {
+
   return (
     <Select
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
         onCreate?.(e.target.value);
       }}
     >
-      {options.map((option) => (
-        <Option key={option}>{option}</Option>
+      {options.map((option, index) => (
+        <Option key={option} disabled={ index === 0}>{option}</Option>
       ))}
     </Select>
   );

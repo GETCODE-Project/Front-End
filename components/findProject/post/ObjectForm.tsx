@@ -50,23 +50,29 @@ interface SelectSubjectProps {
   setSubject: (newValue: string) => void;
 }
 
+/** 주제 토글 데이터 */
 export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
-  const optionSubject = [
-    "주제를 입력하세요",
-    "여행",
-    "이커머스",
-    "소셜 네트워크",
-    "공유 서비스",
-    "의료",
-    "금융",
-    "교육",
-    "모임",
-    "스포츠",
-    "게임",
-    "부동산",
-    "뷰티",
-    "패션",
-  ];
+
+  const [optionSubject, setOptionSubject] = useState<string[]>([]);
+
+  useEffect(()=>{
+
+    const getSubjects = async() => {
+      await GET(`/api/subjects`)
+      .then((res)=>{
+        let tumpArray: string[] = [];
+        tumpArray = [...res.data];
+        tumpArray.unshift('주제를 선택해주세요.');
+        setOptionSubject(tumpArray);
+      })
+      .catch((err)=>console.error(err));
+    }
+
+    getSubjects();
+
+  },[]);
+  
+
   return (
     <MobileLayaout>
       <SelectRoundBox text="주제" />
@@ -76,6 +82,7 @@ export const SelectSubject = ({ setSubject }: SelectSubjectProps) => {
           setSubject(value);
         }}
       />
+      
     </MobileLayaout>
   );
 };
@@ -121,46 +128,12 @@ export const SelectOnOff = ({ onoff, setOnoff }: SelectOnOffProps) => {
     </MobileLayaout>
   );
 };
+
+/** 기술 스택 토글 데이터 */
 export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
-  const optionSubject = [
-    "기술 스택을 선택하세요",
-    "Java",
-    "C#",
-    "Python",
-    "php",
-    "Node.js",
-    "Go",
-    "Ruby",
-    "Kotlin",
-    "Swift",
-    "Peal",
-    "Spring",
-    "Django",
-    "Express.js",
-    "Flask",
-    "Rails",
-    "vue.js",
-    "Springboot",
-    "Next.js",
-    "Nest.js",
-    "MySQL",
-    "Oracle",
-    "PostgreSQL",
-    "MariaDB",
-    "Redis",
-    "MongoDB",
-    "JavaScript",
-    "TypeScript",
-    "React",
-    "ReactNative",
-    "Html",
-    "Css",
-    "Flutter",
-    "Dart",
-    "Git",
-    "Github",
-    "AWS",
-  ];
+
+  const [optionSubject, setOptionSubject] = useState<string[]>([]);
+
   const handleInput = (value: string) => {
     if (value !== "기술 스택을 선택하세요" && !tech.includes(value)) {
       setTech((prev) => [...prev, value]);
@@ -171,6 +144,17 @@ export const SelectTech = ({ tech, setTech }: SelectTechProps) => {
     const newTopic = tech.filter((tech) => tech !== value);
     setTech(newTopic);
   };
+
+  useEffect(() => {
+    const getTechStacks = async() => {
+      await GET(`api/techStacks`)
+      .then((res)=>{
+        setOptionSubject(res.data);
+      })
+      .catch((err)=>console.error(err));
+    }
+    getTechStacks();
+  },[]);
 
   return (
     <MobileLayaout>
