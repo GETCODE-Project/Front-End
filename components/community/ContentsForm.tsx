@@ -22,7 +22,7 @@ const ContentsForm = ({pageName}:any) => {
                 console.error('알 수 없는 페이지입니다.');
                 break;
         }
-    },[]);
+    },[pageName]);
     
     return(
         <BackLayout>

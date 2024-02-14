@@ -11,7 +11,8 @@ import { GET } from "@/pages/api/axios";
 //[TODO]memberId 필요하지않나?
 interface FindStudyProps{
     params: {
-        pageNumber: number; //필수값
+        pageNumber?: number; //필수값
+        page?: number; //필수값
         size: number; //필수값
         keyword: string;
         sort: string;
@@ -65,7 +66,7 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
         default: break;
     }
 
-    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&recruitment=${handleRecruitment}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&recruitment=${true}&online=${handleOnline}&year=${params.year}&field=${subjectQueryString()}`,{})
+    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${5}&keyword=${params.keyword}&recruitment=${handleRecruitment}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&online=${handleOnline}&year=${params.year}&fields=${subjectQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
         // console.log(res);
@@ -103,7 +104,7 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 /** ------------------------------------------------------------- */
 export const getMyWriteObjectData = async ({params,setObjectData}:FindStudyProps) => {
     
-    return await GET(`/api/mypage/studies`)
+    return await GET(`/api/mypage/study?page=${params.page}&size=${params.size}`)
     .then((res)=>{
         setObjectData(res.data);
         console.log(res.data,'스터디모집게시물my');
@@ -116,10 +117,7 @@ export const getMyWriteObjectData = async ({params,setObjectData}:FindStudyProps
 /** ------------------------------------------------------------- */
 export const getMyWishObjectData = async ({params,setObjectData}:FindStudyProps) => {
     
-    return await GET(`/`,{
-        page:1,
-        siae:999
-    })
+    return await GET(`/api/mypage/study/wish?page=${params.page}&size=${params.size}`)
     .then((res)=>{
         setObjectData(res.data);
     })

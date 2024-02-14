@@ -12,17 +12,18 @@ import { useEffect } from "react";
 /** GET 파라미터값(검색에사용), 데이터를 저장할 status */
 interface FindProjectProps {
     params: {
-        sort: string;
-        pageNumber: number;
-        size: number;
-        keyword: string;
-        subject: string;
-        techStack: string[];
+        sort?: string;
+        pageNumber?: number;
+        page?: number;
+        size?: number;
+        keyword?: string;
+        subject?: string;
+        techStack?: string[];
         year?: number|string;
-        online: boolean|string;
-        recruitment: boolean|string;
-        siDo: string;
-        guGun: string;
+        online?: boolean|string;
+        recruitment?: boolean|string;
+        siDo?: string;
+        guGun?: string;
     }
     setObjectData?: any;
 }
@@ -32,7 +33,7 @@ export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
 
     const techStackQueryString = () => {
         let techStack = '';
-        if(params.techStack.length > 0){
+        if(params.techStack && params.techStack.length > 0){
             techStack = params.techStack?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
         }
         return techStack;
@@ -44,4 +45,31 @@ export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
     })
     .catch((err)=>{console.error(err)});
     
+}
+
+/** ------------------------------------------------------------- */
+/** 내가 작성한 프로젝트 모집 게시물 전체 데이터 */
+/** ------------------------------------------------------------- */
+export const getMyWriteObjectData = async ({params,setObjectData}:FindProjectProps) => {
+    
+    return await GET(`/api/mypage/recruit?page=${params.page}&size=${params.size}`)
+    .then((res)=>{
+        setObjectData(res.data);
+        console.log(res.data,'프로젝트모집게시물my');
+    })
+    .catch((err)=>{console.error(err)});
+}
+
+/** ------------------------------------------------------------- */
+/** 내가 찜한 프로젝트 모집 게시물 전체 데이터 */
+/** ------------------------------------------------------------- */
+export const getMyWishObjectData = async ({params,setObjectData}:FindProjectProps) => {
+    
+    return await GET(`/api/mypage/recruit/wish?page=${params.page}&size=${params.size}`)
+    .then((res)=>{
+        setObjectData(res.data);
+        console.log(res.data,'프로젝트모집게시물myWish');
+
+    })
+    .catch((err)=>{console.error(err)});
 }

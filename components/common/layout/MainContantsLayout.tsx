@@ -309,6 +309,10 @@ const Contents = styled.div`
     justify-content: center;
     gap: 20px;
     width: 100%;
+
+    ${media.mobile}{
+        margin-top: 15px;
+    }
 `;
 
 const TotalSortWrapper = styled.div`
@@ -323,6 +327,7 @@ const TotalSortWrapper = styled.div`
 const Total = styled.div`
     display: flex;
 `;
+
 const Sort = styled.div`
     display: flex;
     gap: 10px;

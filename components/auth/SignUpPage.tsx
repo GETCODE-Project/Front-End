@@ -105,7 +105,8 @@ const SignUpPage = () => {
     const getVerification = async() => {
         await GET(`/api/emails/verifications?email=${userEmail}&code=${varificationNumber}`)
         .then((res)=>{
-            setIsVarificationSuccess(res.data.result);
+            setIsVarificationSuccess(res.data.verificationResult);
+            // console.log(res.data.verificationResult);
         })
         .catch((err)=>{
             console.error(err);
