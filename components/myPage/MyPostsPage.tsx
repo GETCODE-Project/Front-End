@@ -17,7 +17,7 @@ const MyPostsPage = () => {
     // const sortArr:any [] = ["최신순","과거순","좋아요순"]; //정렬은 개발 제외하기로 함
 
     /** 게시물 데이터를 불러 올 모듈 이름, 객체 폼을 불러 올 페이지 이름 */
-    const [moduleName, setModuleName] = useState<string>('ProjectData');
+    const [moduleName, setModuleName] = useState<string>('');
     const [pageName, setPageName] = useState<string>('project');
 
     /** 카테고리 별 게시물 폼, 데이터 */
@@ -33,10 +33,12 @@ const MyPostsPage = () => {
     const projectParams = {page, size};
     const findProjectParams = {page, size};
     const findStudyParams = {page, size};
-    const communityParams = {};
+    const communityParams = {page, size};
 
     /** 카테고리 별 ModuleName, ParamsSet 설정 */
     useEffect(() => {
+            setObjectData([]);
+
         const categorySettings = () => {
             let moduleName = '';
             switch (selectedCategory){
@@ -82,6 +84,7 @@ const MyPostsPage = () => {
 
     /** 카테고리 별 데이터 불러오기 */
     useEffect(()=>{
+        
         const getData = async() => {
             try{
                 const getModule = await import(`@/components/common/objectAllData/${moduleName}`);
@@ -94,15 +97,16 @@ const MyPostsPage = () => {
             }
         }
         getData();
-    },[setSelectedCategory,moduleName])
+    },[moduleName])
 
     useEffect(()=>{
         // console.log(moduleName,'moduleName');
-    },[selectedCategory]);
+
+    },[selectedCategory,pageName]);
 
     useEffect(()=>{
         console.log(objectData,'objectDataMy');
-    },[]);
+    },[moduleName]);
 
 
     return(

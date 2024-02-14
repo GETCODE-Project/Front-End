@@ -53,7 +53,7 @@ export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
 /** 내가 작성한 프로젝트 게시물 전체 데이터 */
 /** ------------------------------------------------------------- */
 export const getMyWriteObjectData = async ({params,setObjectData}:ProjectProps) => {
-    return await GET(`/api/mypage/my/project?page=${params.page}&size=${params.size}`)
+    return await GET(`/api/mypage/project?page=${params.page}&size=${params.size}`)
     .then((res)=>{
         setObjectData(res.data);
     })
@@ -65,9 +65,7 @@ export const getMyWriteObjectData = async ({params,setObjectData}:ProjectProps) 
 /** ------------------------------------------------------------- */
 export const getMyWishObjectData = async ({params,setObjectData}:ProjectProps) => {
 
-    
-    
-    return await GET(`/api/mypageNumber/my/project/wish?pageNumber=${params.pageNumber}&size=${params.size}`)
+    return await GET(`/api/mypage/project/wish?page=${params.page}&size=${params.size}`)
     .then((res)=>{
         setObjectData(res.data);
     })

@@ -59,7 +59,7 @@ interface MyProjectData{
 /** ------------------------------------------------------------- */
 /** 프로젝트 게시물 객체 폼 */
 /** ------------------------------------------------------------- */
-export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => {
+export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
 
     /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
@@ -125,7 +125,7 @@ export const ObjectForm = ({style, data, setIsLoginAlertOn}:ObjectFormProps) => 
     },[]);
 
     return(
-        <Layout style={style}>
+        <Layout>
             <Thumbnail>
                 <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
