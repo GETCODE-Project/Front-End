@@ -34,7 +34,7 @@ const CelebratingLoginPage = () => {
             localStorage.setItem('refreshToken',res.data.refreshToken);
             console.log(res.data);
 
-            // router.push('/');
+            router.push('/');
 
         }).catch((err)=>{
             console.log(err);
