@@ -174,7 +174,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     useEffect(()=>{
         if(!moduleName) return;
         getData();
-    },[moduleName,params?.sort]);
+    },[pageName,moduleName,params?.sort]);
 
     useEffect(()=>{
         if (detailSearchSelectedData && detailSearchSelectedData.length > 0) {
@@ -194,7 +194,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
     useEffect(() => {
         // console.log(detailSearchSelectedData,'SearchSelected');
-        console.log(objectData,'objectData');
+        // console.log(objectData,'objectData');
     },[pageName]);
 
     

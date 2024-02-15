@@ -1,6 +1,7 @@
 import { POST } from '@/pages/api/axios';
 import { HartOnSVG, HartOffSVG, WishOnSVG, WishOffSVG, ViewCountSVG } from '@/public/SVG/reactionCount';
 import { media } from '@/styles/mediaQuery';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -61,6 +62,8 @@ interface MyProjectData{
 /** ------------------------------------------------------------- */
 export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
 
+    const router = useRouter();
+
     /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
@@ -68,7 +71,8 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
     const subject:any [] = data?.subjects;
 
     /** 좋아요 버튼 클릭 이벤트 */
-    const handleHeartClick = async() => {
+    const handleHeartClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsHartOn(!isHartOn);
         await POST(`/api/project/${data.projectId}/like`)
         .then((res)=>{
@@ -82,7 +86,8 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
         });
     }
     /** 찜하기 버튼 클릭 이벤트 */
-    const handleWishClick = async() => {
+    const handleWishClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsWishOn(!isWishOn);
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
@@ -125,11 +130,11 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
     },[]);
 
     return(
-        <Layout>
+        <Layout onClick={()=>router.push(`/project/detail/${data.projectId}`)}>
             <Thumbnail>
                 <Img src={data.imageUrl?.imageUrl}></Img>
                 <ReactionCount>
-                    <Wrapper onClick={()=>handleHeartClick()}>
+                    <Wrapper onClick={(event)=>handleHeartClick(event)}>
                         {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
                         <span>{data.likeCnt}</span>
                     </Wrapper>
@@ -137,7 +142,7 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
                         <ViewCountSVG/>
                         <span>{data.views}</span>
                     </Wrapper>
-                    <Wrapper id='Wish' onClick={handleWishClick}>
+                    <Wrapper id='Wish' onClick={(event)=>handleWishClick(event)}>
                         {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
                     </Wrapper>
                 </ReactionCount>
@@ -160,60 +165,6 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
                 </Info>
             </Content>
               
-        </Layout>
-    )
-}
-
-/** ------------------------------------------------------------- */
-/** 인기 게시물 객체 폼 */
-/** ------------------------------------------------------------- */
-export const PopularityObjectForm = ({style, data}:ObjectFormProps) => {
-    const [isHartOn, setIsHartOn] = useState<boolean>(false);
-    const [isWishOn, setIsWishOn] = useState<boolean>(false);
-    const arr:string [] = data?.technologyStack;
-
-    useEffect(()=>{
-        setIsWishOn(data.Wishs);
-    },[]);
-
-    return(
-        <Layout style={style}>
-            <Thumbnail>
-                <Img></Img>
-            </Thumbnail>
-            <ReactionCount>
-                    <Wrapper onClick={()=>setIsHartOn(!isHartOn)}>
-                        {isHartOn?<HartOnSVG size="30"/>:<HartOffSVG size="30"/>}
-                        <span>{data.likes}</span>
-                    </Wrapper>
-                    <Wrapper>
-                        <ViewCountSVG/>
-                        <span>{data.views}</span>
-                    </Wrapper>
-                    <Wrapper id='Wish' onClick={()=>setIsWishOn(!isWishOn)}>
-                        {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
-                    </Wrapper>
-            </ReactionCount>
-            <Content>
-                <Title>
-                    <span>{data.title}</span>
-                </Title>
-                <Info>
-                    <Intro>
-                        {data.introduction}
-                    </Intro>
-                    <Topic>{`주제 : ${data.subject}`}</Topic>
-                    <Stack>
-                        {data.techStackList?.map((i:any,idx:number)=>(
-                            <StackName key={idx}>{i}</StackName>
-                        ))}
-                    </Stack>
-                    <Create>
-                        <div>{`작성자 : ${data.writer}`}</div>
-                        <div>{`작성일 : ${data.createDate}`}</div>
-                    </Create>
-                </Info>
-            </Content>
         </Layout>
     )
 }

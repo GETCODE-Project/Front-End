@@ -16,7 +16,11 @@ interface ProjectProps {
 /** ------------------------------------------------------------- */
 /** 커뮤니티 전체 게시물 데이터 */
 /** ------------------------------------------------------------- */
+// QnA, 자유게시판, 고민상담
+
 export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
+
+    // console.log(params.category);
     
     return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&pageNumber=${params.pageNumber}&size=${params.size}&sort=${params.sort}&category=${params.category}`,{})
     .then((res)=>{

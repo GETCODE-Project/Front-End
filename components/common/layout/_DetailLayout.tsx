@@ -7,9 +7,11 @@ import SelectRoundBox from "@/components/common/selectObject/SelectRoundBox";
 import DetailMarks from "@/components/common/selectObject/DetailMarks";
 import { GET, PUT } from "@/pages/api/axios";
 import { useRouter } from "next/router";
+
 interface DetailLayoutProps {
   pageName: string;
   pageApi: string;
+  id: any;
 }
 interface commnetProps {
   content: string;
@@ -35,11 +37,12 @@ interface dataProps {
   subjects: string[];
 }
 
-const DetailLayout = ({ pageName, pageApi }: DetailLayoutProps) => {
+const DetailLayout = ({ pageName, pageApi, id }: DetailLayoutProps) => {
   const [ObjectForm, setObjectForm] = useState(null);
   const [getData, setData] = useState<dataProps>();
   const router = useRouter();
   const studyId = 15;
+
   useEffect(() => {
     import(`@/components/${pageName}/detail/ObjectForm`)
       .then((module) => setObjectForm(() => module.default))
@@ -53,38 +56,15 @@ const DetailLayout = ({ pageName, pageApi }: DetailLayoutProps) => {
     };
     getFindStudyBulletinData();
   }, [pageName]);
-  // console.log(getData);
-  // console.log(getData?.content);
 
-  const Update = () => {
-    // router.push({ pathname: `/project/post`, query: getData });
-    // const handleLogin = async () => {
-    //   await PUT(`api/project/${studyId}/update`, {
-    //     title: "string",
-    //     content: "strinZXCXZcXZcXZCg",
-    //     introduction: "string",
-    //     githubUrl: "string",
-    //     techStackList: ["Css"],
-    //     subject: "여행",
-    //   })
-    //     .then((res) => {
-    //       console.log(res);
-    //       alert(res.data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       alert(err);
-    //     });
-    //   handleLogin();
-    // };
-  };
   return (
-    getData && (
+    // getData && (
       <Layout>
+        <PageTitle>프로젝트</PageTitle>
         <Title>
           <div style={{ display: "flex", width: "100%" }}>
-            <p style={{ marginRight: "20px" }}>{getData.title}</p>
-            {getData.recruitment && (
+            <p style={{ marginRight: "20px" }}>{'getData.title'}</p>
+            <RecruitState></RecruitState>
               <SelectRoundBox
                 text="모집 중"
                 backgroundcolor="#00FF1A"
@@ -92,24 +72,24 @@ const DetailLayout = ({ pageName, pageApi }: DetailLayoutProps) => {
                 border="none"
                 fontWeight={500}
               />
-            )}
           </div>
-          <DetailMarks />
+          <DetailMarks/>
         </Title>
-        <UserName>{getData.member.nickname}</UserName>
+        <UserName>{'adsfafd'}</UserName>
         <hr style={{ width: "100%" }} />
         <Content>
           {ObjectForm && React.createElement(ObjectForm, getData)}
         </Content>
         <DetailTextArea
-          content={getData.content}
+          // content={getData.content}
+          content={'adfasdf'}
           isWriter={true}
-          Update={Update}
+          Update={'ㄴㅇㄹ'}
         />
         {/* <DetailCommentForm comments={getData.comments} /> */}
       </Layout>
     )
-  );
+  // );
 };
 
 export default DetailLayout;
@@ -120,10 +100,9 @@ const Layout = styled.div`
   width: 800px;
   margin: auto;
   padding: 20px;
-  @media screen and (max-width: 800px) {
+
+  ${media.mobile || media.tablet} {
     width: 100%;
-  }
-  ${media.mobile} {
   }
 `;
 
@@ -144,8 +123,26 @@ const Content = styled.div`
   flex-direction: column;
   gap: 30px;
   margin-top: 20px;
-  padding: 20px 60px;
+  padding: 20px 24px;
+
+  border-bottom: 1.5px solid #BDBDBD;
+
   @media screen and (max-width: 800px) {
     padding: 20px calc(60px + (100% - 760px) / 3);
   }
+`;
+
+const PageTitle = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+  width: 100%;
+
+  font-size: 1.25rem;
+  color: #ff4b13;
+  
+`;
+
+const RecruitState = styled.div`
+  
 `;

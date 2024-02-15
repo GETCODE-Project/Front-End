@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import NavBarForm from "@/components/community/NavBarForm";
 import ContentsForm from "@/components/community/ContentsForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CommunityPage = () => {
 
     const [selectedPage, setSelectedPage] = useState<string>('FreeBoard');
-
+    
+    useEffect(() =>{
+        // console.log(selectedPage,'선택된카테고리');
+    },[selectedPage]);
+    
     return (
         <Layout>
             <NavBarForm setSelectedPage={setSelectedPage}/>

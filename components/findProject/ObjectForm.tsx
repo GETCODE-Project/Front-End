@@ -1,5 +1,6 @@
 import { POST } from "@/pages/api/axios";
 import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -63,6 +64,8 @@ interface MyWriteFindProjectObjectData{
 
 const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
 
+    const router = useRouter();
+
     /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
@@ -74,7 +77,8 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
     const [recruitMentBoolean, setRecruitMentBoolean] = useState<boolean>(false);
 
     /** 좋아요 버튼 클릭 이벤트 */
-    const handleHeartClick = async() => {
+    const handleHeartClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsHartOn(!isHartOn);
         await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/like`)
         .then((res)=>{
@@ -96,7 +100,8 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
         });
     }
     /** 찜하기 버튼 클릭 이벤트 */
-    const handleWishClick = async() => {
+    const handleWishClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsWishOn(!isWishOn);
         await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/wish`)
         .then((res)=>{
@@ -151,8 +156,8 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
     },[]);
     
     return (
-        <Layout>
-            <Wish onClick={handleWishClick}>
+        <Layout onClick={()=>router.push(`/findProject/detail/${data.projectRecruitmentId}`)}>
+            <Wish onClick={(event)=>handleWishClick(event)}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
@@ -164,7 +169,7 @@ const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
                             <ViewCountSVG/>
                             <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper id="hartClick" onClick={handleHeartClick}>
+                        <Wrapper id="hartClick" onClick={(event)=>handleHeartClick(event)}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                             <span>{data.likeCnt}</span>
                         </Wrapper>

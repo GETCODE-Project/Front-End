@@ -42,8 +42,12 @@ const ProjectPostPage = () => {
     setTitle(target);
   };
 
+
+  /** 게시글 작성 등록하기 POST */
   const Post = () => {
+
     if (title && subject !== "주제를 입력하세요" && tech && allLink) {
+
       const handleLogin = async () => {
         await POST("api/project/add", {
           title: title,

@@ -12,7 +12,7 @@ interface ObjectFormProps{
     data?: any;
     setIsLoginAlertOn?: any;
 }
-/** 불러온 Respons 데이터 형식 참고: 스터디모집 게시글 */
+/** 불러온 Respons 데이터 형식 참고:   스터디모집 게시글 */
 interface FindStudyObjectData{
     id: number;
     title: string, //제목
@@ -58,7 +58,8 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     const subject:any[] = [data.subjects];
 
     /** 좋아요 버튼 클릭 이벤트 */
-    const handleHeartClick = async() => {
+    const handleHeartClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsHartOn(!isHartOn);
         await POST(`/api/study-like/${data.id}`)
         .then((res)=>{
@@ -81,7 +82,8 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     }
     /** 찜하기 버튼 클릭 이벤트 */
     //[TODO: 스터디모집글 더미데이터 작성된 후 테스트 가능]
-    const handleWishClick = async() => {
+    const handleWishClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsWishOn(!isWishOn);
         await POST(`/api/project/${data.projectId}/wish`)
         .then((res)=>{
@@ -121,7 +123,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
 
     return(
         <Layout>
-            <Wish onClick={handleWishClick}>
+            <Wish onClick={(event)=>handleWishClick(event)}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
@@ -133,7 +135,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
                     <ViewCountSVG/>
                     <span>{data?.views}</span>
                 </Wrapper>
-                <Wrapper onClick={handleHeartClick}>
+                <Wrapper onClick={(event)=>handleHeartClick(event)}>
                     {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                     <span>{data?.likeCnt}</span>
                 </Wrapper>

@@ -29,7 +29,8 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
 
     /** 좋아요 버튼 클릭 이벤트 */
-    const handleHeartClick = async() => {
+    const handleHeartClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsHartOn(!isHartOn);
         await POST(`/api/projectrecruitment/${data.projectId}/like`)
         .then((res)=>{
@@ -44,7 +45,8 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     }
 
     /** 찜하기 버튼 클릭 이벤트 */
-    const handleWishClick = async() => {
+    const handleWishClick = async(event:React.MouseEvent) => {
+        event.stopPropagation();
         setIsWishOn(!isWishOn);
         await POST(`/api/projectrecruitment/${data.projectRecruitmentId}/wish`)
         .then((res)=>{
@@ -77,7 +79,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     
     return (
         <Layout>
-            <Wish onClick={handleWishClick}>
+            <Wish onClick={(event)=>handleWishClick(event)}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>
             <Content>
@@ -89,7 +91,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
                             <ViewCountSVG/>
                             <span>{data.views}</span>
                         </Wrapper>
-                        <Wrapper id="hartClick" onClick={handleHeartClick}>
+                        <Wrapper id="hartClick" onClick={(event)=>handleHeartClick(event)}>
                             {isHartOn?<HartOnSVG size="24"/>:<HartOffSVG size="24"/>}
                             <span>{data.likeCnt}</span>
                         </Wrapper>

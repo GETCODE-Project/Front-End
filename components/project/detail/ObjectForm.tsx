@@ -57,7 +57,7 @@ export const SelectTech = ({ tech }: SelectTech) => {
           gap: "10px 0",
         }}
       >
-        {tech.map((value: any) => (
+        {/* {tech.map((value: any) => (
           <SelectRoundBox
             text={value.techStack}
             backgroundcolor="#D9D9D9"
@@ -66,7 +66,7 @@ export const SelectTech = ({ tech }: SelectTech) => {
             fontWeight={500}
             key={value.id}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );
