@@ -1,5 +1,5 @@
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
-import DetailLayout from "@/components/common/layout/_DetailLayout";
+import Layout from "@/components/common/layout/Detail,Post/Layout";
 import { useRouter } from "next/router";
 
 const ProjectDetail = ({id}:any) => {
@@ -8,7 +8,7 @@ const ProjectDetail = ({id}:any) => {
 
   return (
     <FixedLayout>
-      <DetailLayout pageName="project" pageApi="project/detail" id={id}/>
+      <Layout id={id}/>
     </FixedLayout>
   );
 };

@@ -2,9 +2,13 @@ import { Profile2SVG, ProfileSVG } from "@/public/SVG/profile";
 import { HartOffSVG, WishOnSVG } from "@/public/SVG/reactionCount";
 import { media } from "@/styles/mediaQuery";
 import styled from "styled-components";
-import DetailIntroList from "@/components/common/layout/Detail/DetailIntroList";
+import DetailIntroList from "@/components/common/layout/Detail,Post/IntroList";
+import { useRouter } from "next/router";
 
-const DetailLayout = () => {
+const DetailLayout = ({id}:any) => {
+
+    const router = useRouter();
+    const detailPage = router.pathname.includes('/detail/');
 
     return(
         <Layout>
@@ -35,65 +39,69 @@ const DetailLayout = () => {
                 <div id="delete">삭제</div>
                 <div id="modify">수정</div>
             </ModifyWrapper>
-            <CommentWrapper>
-                <div>댓글 N개</div>
-                <div className="writeComment">
-                    <div id="profile"><Profile2SVG size="40"/></div>
-                    <input id="input"/>
-                    <div id="button">등록</div>
-                </div>
-                <div className="viewComment">
-                    <div id="oneComment">
-                        <div><ProfileSVG size="40"/></div>
-                        <div id="commentLog">
-                            <div>닉네임</div>
-                            <div>2023.12.28.19:00</div>
-                        </div>
-                        <div></div>
-                        {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                        <div id="commentText">
-                            <div>댓글내용 텍스트</div>
-                            <div id="hart">
-                                <div><HartOffSVG size="20"/></div>
-                                <div>1,246</div>
+            {detailPage?
+                <CommentWrapper>
+                    <div>댓글 N개</div>
+                    <div className="writeComment">
+                        <div id="profile"><Profile2SVG size="40"/></div>
+                        <input id="input"/>
+                        <div id="button">등록</div>
+                    </div>
+                    <div className="viewComment">
+                        <div id="oneComment">
+                            <div><ProfileSVG size="40"/></div>
+                            <div id="commentLog">
+                                <div>닉네임</div>
+                                <div>2023.12.28.19:00</div>
+                            </div>
+                            <div></div>
+                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
+                            <div id="commentText">
+                                <div>댓글내용 텍스트</div>
+                                <div id="hart">
+                                    <div><HartOffSVG size="20"/></div>
+                                    <div>1,246</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="oneComment">
-                        <div><ProfileSVG size="40"/></div>
-                        <div id="commentLog">
-                            <div>닉네임</div>
-                            <div>2023.12.28.19:00</div>
-                        </div>
-                        <div></div>
-                        {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                        <div id="commentText">
-                            <div>댓글내용 텍스트</div>
-                            <div id="hart">
-                                <div><HartOffSVG size="20"/></div>
-                                <div>1,246</div>
+                        <div id="oneComment">
+                            <div><ProfileSVG size="40"/></div>
+                            <div id="commentLog">
+                                <div>닉네임</div>
+                                <div>2023.12.28.19:00</div>
+                            </div>
+                            <div></div>
+                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
+                            <div id="commentText">
+                                <div>댓글내용 텍스트</div>
+                                <div id="hart">
+                                    <div><HartOffSVG size="20"/></div>
+                                    <div>1,246</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="oneComment">
-                        <div><ProfileSVG size="40"/></div>
-                        <div id="commentLog">
-                            <div>닉네임</div>
-                            <div>2023.12.28.19:00</div>
-                        </div>
-                        <div></div>
-                        {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                        <div id="commentText">
-                            <div>댓글내용 텍스트</div>
-                            <div id="hart">
-                                <div><HartOffSVG size="20"/></div>
-                                <div>1,246</div>
+                        <div id="oneComment">
+                            <div><ProfileSVG size="40"/></div>
+                            <div id="commentLog">
+                                <div>닉네임</div>
+                                <div>2023.12.28.19:00</div>
+                            </div>
+                            <div></div>
+                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
+                            <div id="commentText">
+                                <div>댓글내용 텍스트</div>
+                                <div id="hart">
+                                    <div><HartOffSVG size="20"/></div>
+                                    <div>1,246</div>
+                                </div>
                             </div>
                         </div>
+                        <div id="moreView">더보기</div>
                     </div>
-                    <div id="moreView">더보기</div>
-                </div>
-            </CommentWrapper>
+                </CommentWrapper>
+                :null
+            }
+            
         </Layout>
     )
 }

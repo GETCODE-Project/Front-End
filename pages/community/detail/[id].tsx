@@ -1,10 +1,10 @@
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
-import DetailLayout from "@/components/common/layout/_DetailLayout";
+import Layout from "@/components/common/layout/Detail,Post/Layout";
 
-const CommunityDetail = () => {
+const CommunityDetail = ({id}:any) => {
   return (
     <FixedLayout>
-      <DetailLayout pageName="community" pageApi="community" />
+      <Layout id={id}/>
     </FixedLayout>
   );
 };

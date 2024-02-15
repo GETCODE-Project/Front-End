@@ -1,5 +1,6 @@
 import { POST } from "@/pages/api/axios";
 import { WishOnSVG, WishOffSVG, HartOnSVG, HartOffSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -50,6 +51,8 @@ interface MyWriteFindStudyObjectData{
 
 
 const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
+
+    const router = useRouter();
 
     /** 좋아요,찜하기 버튼 클릭 상태 */
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
@@ -122,7 +125,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     },[]);
 
     return(
-        <Layout>
+        <Layout onClick={()=>router.push(`/findStudy/detail/${data.id}`)}>
             <Wish onClick={(event)=>handleWishClick(event)}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>

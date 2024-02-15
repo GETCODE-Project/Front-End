@@ -1,5 +1,6 @@
 import { POST } from "@/pages/api/axios";
 import { WishOffSVG, WishOnSVG, HartOffSVG, HartOnSVG, ViewCountSVG } from "@/public/SVG/reactionCount";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -24,6 +25,10 @@ interface ResponseData{
 }
 
 const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
+
+    console.log(data);
+
+    const router = useRouter();
 
     const [isHartOn, setIsHartOn] = useState<boolean>(false);
     const [isWishOn, setIsWishOn] = useState<boolean>(false);
@@ -78,7 +83,7 @@ const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
     },[]);
     
     return (
-        <Layout>
+        <Layout onClick={()=>router.push(`/community/detail/${data.projectId}`)}>
             <Wish onClick={(event)=>handleWishClick(event)}>
                 {isWishOn?<WishOnSVG/>:<WishOffSVG/>}
             </Wish>

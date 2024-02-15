@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSubjectsList} from "@/components/common/data/ToggleListData";
-import { MultiToggle, SingleToggle } from "@/components/common/layout/Detail/ToggleLayout";
+import { MultiToggle, SingleToggle } from "@/components/common/layout/Detail,Post/ToggleLayout";
 
 interface SidoGugun{
     key: number;
@@ -14,10 +14,10 @@ interface SidoGugun{
 const DetailIntroList = () => {
 
     const router = useRouter();
-    const projectDetailPage = router.pathname === '/project/detail/';
-    const findProjectDetailPage = router.pathname === 'findProject/detail/';
-    const findStudyDetailPage = router.pathname === 'findStudy/detail/';
-    const communityDetailPage = router.pathname === 'community/detail/';
+    const projectPage = router.pathname.includes('/project/');
+    const findProjectPage = router.pathname.includes('/findProject/');
+    const findStudyPage = router.pathname.includes('/findStudy/');
+    const detailPage = router.pathname.includes('/detail');
 
     const {data: subjects, isLoading: isSubjectsLoading, isError: isSubjectsError} = useSubjectsList();
 
@@ -66,48 +66,81 @@ const DetailIntroList = () => {
     return (
         <IntroWrapper>
 
-            <IntroMenu>한 줄 소개</IntroMenu>
-            {/* <div>2</div> */}
-            <Input type="text"/>
-
-            <IntroMenu>주제</IntroMenu>
-            {/* <div>4</div> */}
-            <SingleToggle data={subjects[0]}
-                currentSelected={currentSelectedSubject}
-                setCurrentSelected={setCurrentSelectedSubject}
-            />
+            {projectPage?
+                <>
+                    <IntroMenu>한 줄 소개</IntroMenu>
+                    {detailPage?
+                        <div>2</div>:<Input type="text"/>
+                    }
+                    
+                    <IntroMenu>소스 링크</IntroMenu>
+                    {detailPage?<div>8</div>:<Input type="text"/>}
+                    
+                </>
+                :null
+            }
             
-            <IntroMenu>기술 스택</IntroMenu>
-            <MultiToggle data={subjects}
-                currentSelected={currentSelectedField}
-                setCurrentSelected={setCurrentSelectedField}
-                selectedAll={selectedStackAllField}
-                setSelectedAll={setSelectedStackAllField}
-            />
+            {projectPage||findProjectPage?
+                <>
+                    <IntroMenu>주제</IntroMenu>
+                    {detailPage?<div>4</div>:
+                    <SingleToggle data={subjects}
+                        currentSelected={currentSelectedSubject}
+                        setCurrentSelected={setCurrentSelectedSubject}
+                    />}
+                </>
+                :null
+            }
+            
+            {projectPage||findProjectPage?
+                <>
+                    <IntroMenu>기술 스택</IntroMenu>
+                    {detailPage?<div>1</div>:
+                        <MultiToggle data={subjects}
+                        currentSelected={currentSelectedField}
+                        setCurrentSelected={setCurrentSelectedField}
+                        selectedAll={selectedStackAllField}
+                        setSelectedAll={setSelectedStackAllField}
+                    />  
+                    }
+                    
+                </>
+                :null
+            }
+            
+            {findStudyPage?
+                <>
+                    <IntroMenu>스터디 분야</IntroMenu>
+                    {detailPage?<div>1</div>:<MultiToggle data={subjects}
+                        currentSelected={currentSelectedField}
+                        setCurrentSelected={setCurrentSelectedField}
+                        selectedAll={selectedStackAllField}
+                        setSelectedAll={setSelectedStackAllField}
+                    />}
+                    
+                </>
+                :null
+            }
+            
+            {findProjectPage||findStudyPage?
+                <>
+                    <IntroMenu>온/오프라인</IntroMenu>
+                    {detailPage?<div>1</div>:<SingleToggle data={onlineStatusDataArray}
+                        currentSelected={currentSelectedOnline}
+                        setCurrentSelected={setCurrentSelectedOnline}
+                    />}
+                    
 
-            <IntroMenu>소스 링크</IntroMenu>
-            <div>8</div>
+                    <IntroMenu>지역</IntroMenu>
+                    {detailPage?<div>8</div>:<></>}
+                    
 
-            <IntroMenu>온/오프라인</IntroMenu>
-            <SingleToggle data={onlineStatusDataArray}
-                currentSelected={currentSelectedOnline}
-                setCurrentSelected={setCurrentSelectedOnline}
-            />
-
-            <IntroMenu>지역</IntroMenu>
-            <div>8</div>
-
-            <IntroMenu>신청 방법</IntroMenu>
-            <div>8</div>
-
-            <IntroMenu>스터디 분야</IntroMenu>
-            {/* <div>8</div> */}
-            <MultiToggle data={subjects[0]}
-                currentSelected={currentSelectedField}
-                setCurrentSelected={setCurrentSelectedField}
-                selectedAll={selectedStackAllField}
-                setSelectedAll={setSelectedStackAllField}
-            />
+                    <IntroMenu>신청 방법</IntroMenu>
+                    {detailPage?<div>8</div>:<></>}
+  
+                </>
+                :null
+            }
 
         </IntroWrapper>
     )

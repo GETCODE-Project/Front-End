@@ -12,7 +12,7 @@ export const getSubjectsList = async()=>{
     .catch((err)=>{
         console.error(err);
     })
-    return data ?? [];
+    return data[0] ?? [];
 }
 
 export const useSubjectsList = () => {
