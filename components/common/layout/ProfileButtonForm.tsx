@@ -59,7 +59,7 @@ const Layout = styled.div`
   }
 
   cursor: pointer;
-  ${media.mobile_550} {
+  ${media.mobile} {
     width: 100px;
     height: 30px;
     font-size: 0.8rem;
