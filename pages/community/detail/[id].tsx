@@ -1,12 +1,17 @@
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
 import Layout from "@/components/common/layout/Detail,Post/Layout";
+import { useRouter } from "next/router";
 
-const CommunityDetail = ({id}:any) => {
+const ProjectDetail = () => {
+  
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <FixedLayout>
-      <Layout id={id}/>
+      <Layout/>
     </FixedLayout>
   );
 };
 
-export default CommunityDetail;
+export default ProjectDetail;
