@@ -1,4 +1,4 @@
-import Layout from "@/components/common/layout/detail,editPage/Layout";
+import Layout from "@/components/common/layout/writePage/Layout";
 import FixedLayout from "@/components/common/layout/fixedLayout/FixedLayout";
 
 

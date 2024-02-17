@@ -13,6 +13,12 @@ interface Props{
     setCurrentSelected?: any;
     selectedAll?: any;
     setSelectedAll?: any;
+
+    sidoGugunData? :any;
+    currentSelectedSido?: any;
+    setCurrentSelectedSido?: any;
+    currentSelectedGugun?: any;
+    setCurrentSelectedGugun?: any;
 }
 
 /** ------------------------------------------------------------- */
@@ -136,6 +142,60 @@ export const SingleToggle = ({data, currentSelected, setCurrentSelected}:Props) 
     )
 }
 
+/** ------------------------------------------------------------- */
+// 단일 선택 토글 폼 - 지역(시도,구군)
+/** ------------------------------------------------------------- */
+
+export const SingleSelectSidoGugunToggle = ({sidoGugunData, currentSelectedSido, setCurrentSelectedSido, currentSelectedGugun, setCurrentSelectedGugun}:Props) => {
+    const dataArray:any[] = sidoGugunData??[];
+
+    const [isSidoToggleOn, setIsSidoToggleOn]=useState<boolean>(false);
+    const [isGugunToggleOn, setIsGugunToggleOn]=useState<boolean>(false);
+
+    /** 이벤트 버블링 방지 & X버튼 클릭 시 해당 토글 선택 '전체'로 초기화 */
+    const handleResetSelection = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        setCurrentSelectedSido('시/도 선택');
+        setCurrentSelectedGugun('구/군 선택');
+    }
+
+    return(
+        <Wrapper>
+        <SidoContents>
+            <Toggle id="Sido" onClick={()=>setIsSidoToggleOn(!isSidoToggleOn)}>
+                    <span>{currentSelectedSido}</span>
+                    <ToggleIcon/>
+                    {isSidoToggleOn ?
+                        <ToggleListWrapper>
+                            {dataArray.map((i:any, idx:number)=>(
+                                <ToggleList key={idx} onClick={()=>setCurrentSelectedSido(i.siDo)}>{i.siDo}</ToggleList>
+                            ))}
+                        </ToggleListWrapper>
+                    : <></>
+                    }
+            </Toggle>
+        </SidoContents>
+        <GugunContents>
+            <Toggle id="Gugun" onClick={()=>setIsGugunToggleOn(!isGugunToggleOn)}>
+                    <span>{currentSelectedGugun}</span>
+                    <ToggleIcon/>
+                    <ExitIconWrapper onClick={(event)=>handleResetSelection(event)}>
+                        <ExitIcon/>
+                    </ExitIconWrapper>
+                    {isGugunToggleOn ?
+                        <ToggleListWrapper>
+                            {dataArray.find((item:any)=>item.siDo === currentSelectedSido)?.guGun.map((i:any, idx:number)=>(
+                                <ToggleList key={idx} onClick={()=>setCurrentSelectedGugun(i)}>{i}</ToggleList>
+                            ))}
+                        </ToggleListWrapper>
+                    : <></>
+                    }
+            </Toggle>
+        </GugunContents>
+        </Wrapper>
+    )
+}
+
 const Contents = styled.div`
     display: flex;
     width: 100%;
@@ -148,7 +208,8 @@ const Toggle = styled.div`
     position: relative;
     align-items: center;
     justify-content: space-between;
-    width: 430px;
+    /* width: 430px; */
+    width: 100%;
     height: 25px;
     padding: 3px 10px;
 
@@ -221,5 +282,43 @@ const SelectedToggle = styled.div`
     & #exitToggle{
         padding-top: 3px;
         cursor: pointer;
+    }
+`;
+
+
+const SidoContents = styled.div`
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    gap: 10px;
+
+    white-space: nowrap;
+    &>#Sido{
+        width: 100%;
+    }
+`;
+
+const GugunContents = styled.div`
+    display: flex;
+    flex:1;
+    flex-direction: column;
+    gap: 10px;
+    white-space: nowrap;
+
+    &>#Gugun{
+        width: 100%;
+    }
+
+`;
+
+const Wrapper = styled.div`
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    
+
+    ${media.mobile}{
+        display: flex;
+        flex-direction: column;
     }
 `;

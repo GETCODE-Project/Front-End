@@ -62,3 +62,20 @@ export const useTechStacksList = () => {
 //         return data;
 //     })
 // }
+const getStudyFieldList = async() => {
+    let data:any[] = [];
+    await GET(`/api/studyFiled`)
+    .then((res)=>{
+        data = [res.data];
+     })
+    .catch((err)=>console.error(err));
+
+    return data[0] ?? [];
+}
+export const useStudyFieldList = () => {
+    const data = useQuery<any>('studyFields',
+        getStudyFieldList,
+        // {staleTime: 360000}
+    )
+    return data;
+}
