@@ -87,7 +87,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         await GET(`/api/userInfo`)
         .then((res)=>{
             const currentPageName = (pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName
-            router.push(`/${currentPageName}/post`);
+            router.push(`/${currentPageName}/write`);
         })
         .catch((err)=>setIsLoginAlertOn(true));
     }

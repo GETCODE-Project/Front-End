@@ -4,9 +4,10 @@ import { media } from "@/styles/mediaQuery";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { GET, POST, PUT } from "@/pages/api/axios";
+import { DELETE, GET, POST, PUT } from "@/pages/api/axios";
 import { useSubjectsList, useTechStacksList} from "@/components/common/data/ToggleListData";
-import { MultiToggle, SingleToggle } from "@/components/common/layout/Detail,Post/ToggleLayout";
+import { MultiToggle, SingleToggle } from "@/components/common/layout/detail,editPage/ToggleLayout";
+import Alert from "../../notification/Alert";
 
 interface SidoGugun{
     key: number;
@@ -18,6 +19,8 @@ const DetailLayout = () => {
 
     const router = useRouter();
     const {id} = router.query;
+
+    const [isDeleteAlert, setIsDeleteAlert] = useState<boolean>(false);
 
     /** 페이지 */
     const projectPage = router.pathname.includes('/project/');
@@ -61,16 +64,22 @@ const DetailLayout = () => {
 
     /** 현재 선택된 상세 검색 항목(총 선택된 항목) - 다중선택토글폼에만 해당 */
     const [selectedStackAll,setSelectedStackAll]=useState<string[]>([]);
-    const [selectedStackAllField,setSelectedStackAllField]=useState<string[]>([]);
+    const [selectedStackAllField,setSelectedStackAllField]=useState<string[]>(data?.studyFileds??[]);
 
     /** 검색하기에 반영될 선택된 토글 항목들 */
     const [detailSearchSelectedData, setDetailSearchSelectedData]=useState<any[]>([]);
 
     /** 수정하기 페이지 이동 */
     const handleGoWritePage = () => {
-        const editPath = router.pathname.replace('detail','edit');
-        const editUrl = router.asPath.replace('detail','edit');
-        return router.push(editPath, editUrl);
+        const path = router.pathname.replace('detail','edit');
+        const url = router.asPath.replace('detail','edit');
+        return router.push(path, url);
+    }
+    /** 상세 페이지로 이동 */
+    const handleGoDetailPage = () => {
+        const path = router.pathname.replace('edit','detail');
+        const url = router.asPath.replace('edit','detail');
+        return router.push(path, url);
     }
 
     /** Status 변경 */
@@ -78,6 +87,10 @@ const DetailLayout = () => {
     const handleInputTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
         let target = e.target.value;
         setTitle(target);
+    }
+    const handleInputIntroText = (e:React.ChangeEvent<HTMLInputElement>) => {
+        let target = e.target.value;
+        setIntroduction(target);
     }
     // 본문 내용 입력 Status 변경
     const handleInputContent = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -92,19 +105,45 @@ const DetailLayout = () => {
 
     /** 수정 사항 반영 POST */
     const postEdit = async() => {
+        // 수정 여부 확인
+        const isModified = title !== data?.title || 
+            content !== data?.content ||
+            introduction !== data?.introduction ||
+            githubUrl !== data?.githubUrl ||
+            // 다른 필드에 대해서도 동일한 비교를 진행
+            JSON.stringify(selectedStackAll) !== JSON.stringify(data?.techStacks) ||
+            currentSelectedSubject !== data?.subject;
+
+        if (!isModified) {
+            alert("수정된 사항이 없습니다.");
+            return;
+        }
+
         if(projectPage){
             await PUT(`/api/project/${id}/update`,{
-                title: title,
-                content: content,
-                introduction: introduction,
-                githubUrl: githubUrl,
+                title: title || data?.title,
+                content: content || data?.content,
+                introduction: introduction || data?.introduction,
+                githubUrl: githubUrl ||data?.githubUrl,
                 techStackList: selectedStackAll,
                 subject: currentSelectedSubject
             })
-            .then((res)=>{console.log(res.data);})
+            .then((res)=>{
+                console.log(res.data);
+                handleGoDetailPage();
+            })
             .catch((err)=>console.error(err));
         }else if(findProjectPage){
-            await PUT(`/api/projectrecruitment/${id}`)
+            await PUT(`/api/projectrecruitment/${id}/update`,{
+                title: title || data?.title,
+                content: content || data?.content,
+                siDo: currentSelectedSido || data?.siDo,
+                guGun: currentSelectedGugun || data?.guGun,
+                online: currentSelectedOnline || data?.online,
+                recruitment: currentSelectedRecruitment===true?'O':false?'X':'N' || data?.recruitment===true?'O':false?'X':'N',
+                techStackList: selectedStackAll,
+                subject: currentSelectedSubject
+            })
             .then((res)=>{console.log(res.data);})
             .catch((err)=>console.error(err));
         }else if(findStudyPage){
@@ -114,6 +153,38 @@ const DetailLayout = () => {
         }else if(communityPage){
             await PUT(`/api/community/${id}`)
             .then((res)=>{console.log(res.data);})
+            .catch((err)=>console.error(err));
+        }
+    }
+    /** 게시글 삭제 Delete */
+    const handleDelete = async() => {
+        if(projectPage){
+            await DELETE(`/api/project/${id}/delete`)
+            .then((res)=>{
+                console.log(res.data);
+                return router.push('/project');
+            })
+            .catch((err)=>console.error(err));
+        }else if(findProjectPage){
+            await DELETE(`/api/projectrecruitment/${id}/delete`)
+            .then((res)=>{
+                console.log(res.data);
+                return router.push('/findProject');
+            })
+            .catch((err)=>console.error(err));
+        }else if(findStudyPage){
+            await DELETE(`/api/study/${id}`)
+            .then((res)=>{
+                console.log(res.data);
+                return router.push('/findStudy');
+            })
+            .catch((err)=>console.error(err));
+        }else if(communityPage){
+            await DELETE(`/api/community/${id}`)
+            .then((res)=>{
+                console.log(res.data);
+                return router.push('/community');
+            })
             .catch((err)=>console.error(err));
         }
     }
@@ -167,11 +238,16 @@ const DetailLayout = () => {
         const statusData = () => {
             setCurrentSelectedSubject(data?.subject);
             let tumpTechStacks:any[] = [];
-            tumpTechStacks = data?.techStacks.map((i:any)=>i.techStack);
+            tumpTechStacks = data?.techStacks&&data?.techStacks?.map((i:any)=>i.techStack||i.teckStack);
             setSelectedStackAll(tumpTechStacks);
             setCurrentSelectedStack(tumpTechStacks?.length>0&&tumpTechStacks[tumpTechStacks.length - 1]);
+            setCurrentSelectedSido(data?.siDo);
+            setCurrentSelectedGugun(data?.guGun);
+            setCurrentSelectedRecruitment(data?.recruitment);
         }
         data?statusData():null;
+
+        console.log(data??data);
         
     },[data])
 
@@ -216,7 +292,7 @@ const DetailLayout = () => {
                         <>
                             <IntroMenu>한 줄 소개</IntroMenu>
                             {detailPage&&!editPage?
-                                <IntroText>{data?.introduction&&data?.introduction}</IntroText>:<Input type="text" defaultValue={data?.introduction} placeholder="프로젝트 한 줄 소개를 입력해주세요."/>
+                                <IntroText>{data?.introduction&&data?.introduction}</IntroText>:<Input type="text" defaultValue={data?.introduction} placeholder="프로젝트 한 줄 소개를 입력해주세요." onChange={handleInputIntroText}/>
                             }
                             
                             {/* [TODO:현재는 깃헙만 반영, 추후 링크 추가 기능 작성 예정] */}
@@ -251,7 +327,7 @@ const DetailLayout = () => {
                             {detailPage&&!editPage?
                                 <TechStacks>
                                     {data?.techStacks?.map((i:any,idx:number)=>(
-                                        <div id="stack" key={idx}>{i.techStack}</div>
+                                            <div id="stack" key={idx}>{i.techStack||i.teckStack}</div>
                                     ))}
                                 </TechStacks>
                             
@@ -269,7 +345,12 @@ const DetailLayout = () => {
                     {findStudyPage?
                         <>
                             <IntroMenu>스터디 분야</IntroMenu>
-                            {detailPage&&!editPage?<div>1</div>:<MultiToggle data={subjects}
+                            {detailPage&&!editPage?
+                                <IntroText>
+                                    {data?.studyFields.map((i:any, idx:number)=>(
+                                        <StudyField key={idx}>{i}</StudyField>
+                                    ))}
+                                </IntroText>:<MultiToggle data={subjects}
                                 currentSelected={currentSelectedField}
                                 setCurrentSelected={setCurrentSelectedField}
                                 selectedAll={selectedStackAllField}
@@ -283,18 +364,18 @@ const DetailLayout = () => {
                     {findProjectPage||findStudyPage?
                         <>
                             <IntroMenu>온/오프라인</IntroMenu>
-                            {detailPage&&!editPage?<IntroText>1</IntroText>:<SingleToggle data={onlineStatusDataArray}
+                            {detailPage&&!editPage?<IntroText>{data?.online==='O'?'온라인':'X'?'오프라인':''}</IntroText>:<SingleToggle data={onlineStatusDataArray}
                                 currentSelected={currentSelectedOnline}
                                 setCurrentSelected={setCurrentSelectedOnline}
                             />}
                             
 
                             <IntroMenu>지역</IntroMenu>
-                            {detailPage&&!editPage?<IntroText>8</IntroText>:<></>}
+                            {detailPage&&!editPage?<IntroText>{data?.siDo}</IntroText>:<IntroText></IntroText>}
                             
 
                             <IntroMenu>신청 방법</IntroMenu>
-                            {detailPage&&!editPage?<IntroText>8</IntroText>:<></>}
+                            {detailPage&&!editPage?<IntroText>{data?.contact[0]}</IntroText>:<IntroText></IntroText>}
         
                         </>
                         :null
@@ -315,12 +396,12 @@ const DetailLayout = () => {
                 <ModifyWrapper>
                     {detailPage?
                         <>
-                            <div id="del">삭제</div>
+                            <div id="del" onClick={()=>setIsDeleteAlert(true)}>삭제</div>
                             <div id="post" onClick={()=>handleGoWritePage()}>수정</div>
                         </>
                     :editPage?
                         <>
-                            <div id="del">취소</div>
+                            <div id="del" onChange={()=>router.back()}>취소</div>
                             <div id="post" onClick={()=>postEdit()}>수정 완료</div>
                         </>
                     :writePage?
@@ -398,6 +479,15 @@ const DetailLayout = () => {
                 </CommentWrapper>
                 :null
             }
+
+            {isDeleteAlert?
+                <Alert 
+                notice={`게시물을 삭제하면 되돌릴 수 없습니다. 정말 삭제하시겠습니까?`}
+                yesButtonFC={handleDelete}
+                noButtonFC={()=>setIsDeleteAlert(false)}
+            />
+            :null}
+            
         </Layout>
     )
 }
@@ -612,10 +702,12 @@ const Input = styled.input`
 const IntroText = styled.div`
     display: flex;
     align-items: center;
+    gap: 8px;
 `;
 
 const TechStacks = styled.div`
     display: flex;
+    gap: 8px;
     
     & #stack{
         display: flex;
@@ -626,6 +718,17 @@ const TechStacks = styled.div`
         border-radius: 30px;
         background-color: #D9D9D9;
     }
+`;
+
+const StudyField = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    height: 100%;
+
+    border-radius: 30px;
+    background-color: #D9D9D9;
 `;
 
 const SourceLinks = styled.div`
