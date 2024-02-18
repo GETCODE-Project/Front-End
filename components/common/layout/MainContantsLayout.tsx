@@ -68,7 +68,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [siDo, setSiDo] = useState<string>('');//시도
     const [guGun, setGuGun] = useState<string>('');//구군
     const [year, setYear] = useState<string>('');//연도
-    const [category, setCategory] = useState<string>('');//커뮤니티카테고리
+    const [category, setCategory] = useState<string>('자유게시판');//커뮤니티카테고리
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<Params>();

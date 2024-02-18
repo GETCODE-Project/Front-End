@@ -273,7 +273,7 @@ const DetailLayout = () => {
             await GET(`${tumpApi}`)
             .then((res)=>{
                 setCommentData(res.data);
-                console.log(res.data);
+                console.log(res.data,'댓글정보');
             })
             .catch((err)=>console.error(err));
         }
