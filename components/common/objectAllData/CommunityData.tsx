@@ -19,12 +19,11 @@ interface ProjectProps {
 // QnA, 자유게시판, 고민상담
 
 export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
-
-    // console.log(params.category);
     
-    return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&pageNumber=${params.pageNumber}&size=${params.size}&sort=${params.sort}&category=${params.category}`,{})
+    return await GET(`/api/search/communities?&keyword=${params.keyword||''}&page=${params.pageNumber}&size=${params.size}&sort=${params.sort}&category=${params.category}`,{})
     .then((res)=>{
         setObjectData(res.data);
+        console.log(res.data,'카테고리데이터');
     })
     .catch((err)=>{console.error(err)});
 }

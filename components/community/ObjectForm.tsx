@@ -26,7 +26,7 @@ interface ResponseData{
 
 const ObjectForm = ({data,setIsLoginAlertOn}:ObjectFormProps) => {
 
-    console.log(data);
+    // console.log(data,'커뮤니티데이터');
 
     const router = useRouter();
 
