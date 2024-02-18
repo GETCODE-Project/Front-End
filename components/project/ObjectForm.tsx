@@ -79,7 +79,7 @@ export const ObjectForm = ({data, setIsLoginAlertOn}:ObjectFormProps) => {
         })
         .catch((err)=>{
             //사용자가존재하지않습니다 메세지일 경우 로그인할 것인지 묻는 alert창 띄우기
-            if(err.response.data.message.includes('사용자')){
+            if(err.response?.data?.message.includes('사용자')){
                 setIsLoginAlertOn(true);
                 setIsHartOn(!isHartOn);
             }

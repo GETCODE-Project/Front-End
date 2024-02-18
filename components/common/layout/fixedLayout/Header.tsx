@@ -43,7 +43,7 @@ const Header = () => {
       .then((res)=>{
           setUserinfo(res.data);
       })
-      .catch((err)=>console.error(err.response.data.message));
+      .catch((err)=>console.error(err));
   }
 
   useEffect(()=>{

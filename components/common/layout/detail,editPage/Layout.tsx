@@ -20,7 +20,10 @@ const DetailLayout = () => {
     const router = useRouter();
     const {id} = router.query;
 
+    /** Alert OnOff */
     const [isDeleteAlert, setIsDeleteAlert] = useState<boolean>(false);
+
+    const [isPostComment, setIsPostComment] = useState<boolean>(false);
 
     /** 페이지 */
     const projectPage = router.pathname.includes('/project/');
@@ -33,6 +36,7 @@ const DetailLayout = () => {
     
     /** 해당 게시글 데이터 */
     const [data, setData] = useState<any>();
+    const [commentData, setCommentData] = useState<any>();
 
     /** 게시글 데이터 항목 */
     const [pageName, setPageName] = useState<string>('');
@@ -40,6 +44,7 @@ const DetailLayout = () => {
     const [content, setContent] = useState<string>('');
     const [introduction, setIntroduction] = useState<string>('');
     const [githubUrl, setGithubUrl] = useState<string>('');
+    const [comment, setComment] = useState<string>('');
 
     /** 기술스택, 주제, 스터디분야 토글 리스트 데이터 */
     const {data: subjects, isLoading: isSubjectsLoading, isError: isSubjectsError} = useSubjectsList();
@@ -102,6 +107,25 @@ const DetailLayout = () => {
         let target = e.target.value;
         setGithubUrl(target);
     }
+    // 댓글 입력 status
+    const handleComment = (e:React.ChangeEvent<HTMLInputElement>) => {
+        let target = e.target.value;
+        setComment(target);
+    }
+
+    /** 최종 선택 된 토글 항목들 */
+    useEffect(() =>{
+      let tumpArray:any[] = [{
+        stack:selectedStackAll,
+        subject:currentSelectedSubject,
+        online: currentSelectedOnline==='온라인'?true:currentSelectedOnline==='오프라인'?false:'',
+        siDo: currentSelectedSido,
+        guGun: currentSelectedGugun,
+        recruitment: currentSelectedRecruitment==='모집 중'?true:currentSelectedRecruitment==='모집 완료'?false:'',
+        field: selectedStackAllField,
+      }];
+      setDetailSearchSelectedData(tumpArray);
+    },[currentSelectedStack,currentSelectedSubject,currentSelectedField,currentSelectedOnline,currentSelectedRecruitment,currentSelectedSido,currentSelectedGugun]);
 
     /** 수정 사항 반영 POST */
     const postEdit = async() => {
@@ -189,28 +213,55 @@ const DetailLayout = () => {
         }
     }
 
-    /** 최종 선택 된 토글 항목들 */
-    useEffect(() =>{
-      let tumpArray:any[] = [{
-        stack:selectedStackAll,
-        subject:currentSelectedSubject,
-        online: currentSelectedOnline==='온라인'?true:currentSelectedOnline==='오프라인'?false:'',
-        siDo: currentSelectedSido,
-        guGun: currentSelectedGugun,
-        recruitment: currentSelectedRecruitment==='모집 중'?true:currentSelectedRecruitment==='모집 완료'?false:'',
-        field: selectedStackAllField,
-      }];
-      setDetailSearchSelectedData(tumpArray);
-    },[currentSelectedStack,currentSelectedSubject,currentSelectedField,currentSelectedOnline,currentSelectedRecruitment,currentSelectedSido,currentSelectedGugun]);
+    /** 댓글 등록하기 */
+    const postComment = () => {
+        const postCommentApi = async(api:any,params:{}) => {
+            let tumpApi = api;
+            await POST(`${tumpApi}`,params)
+            .then((res)=>{
+                setIsPostComment(true);
+                setComment('');
+            })
+            .catch((err)=>console.error(err));
+        }
+        if(projectPage){
+            postCommentApi(`api/project/detail/${id}/comment/add`,{content:comment});
+        }else if(findProjectPage){
+            postCommentApi(`/api/projectrecruitment/detail/${id}/comment/add`,{content:comment});
+        }else if(findStudyPage){
+            postCommentApi(`/api/study/comment/${id}`,{content:comment});
+        }else if(communityPage){
+            postCommentApi(`/api/community/comment/${id}`,{content:comment});
+        }
+    }
+    /** 댓글 삭제하기 */
+    const deleteComment = async() => {
+        if(projectPage){
+            await DELETE(``)
 
+        }
+    }
+
+    
     /** 해당 데이터 불러오기 */
     useEffect(()=>{
 
+        // 게시글 데이터 불러오기
         const getData = async(api:any) => {
             let tumpApi = api;
             await GET(`${tumpApi}`)
             .then((res)=>{
                 setData(res.data);
+            })
+            .catch((err)=>console.error(err));
+        }
+        // 게시글 댓글 데이터 불러오기
+        const getCommentData = async(api:any)=>{
+            let tumpApi = api;
+            await GET(`${tumpApi}`)
+            .then((res)=>{
+                setCommentData(res.data);
+                console.log(res.data,'댓글데이터');
             })
             .catch((err)=>console.error(err));
         }
@@ -220,19 +271,24 @@ const DetailLayout = () => {
             // const {id} = router.query;
             if(router.pathname.includes('project/detail/')||router.pathname.includes('project/edit/')){
                 getData(`/api/project/detail/${id}`);
+                getCommentData(`/api/project/${id}/comment`);
                 setPageName('프로젝트');
             } else if(router.pathname.includes('findProject/detail/')||router.pathname.includes('findProject/edit/')){
                 getData(`/api/projectrecruitment/detail/${id}`);
+                getCommentData(`/api/projectrecruitment/${id}/comment`);
                 setPageName('프로젝트 모집');
             } else if(router.pathname.includes('findStudy/detail/')||router.pathname.includes('findStudy/edit/')){
                 getData(`/api/study/${id}`);
+                getCommentData(`/api/study/${id}/comments`);
                 setPageName('스터디 모집');
             } else if(router.pathname.includes('community/detail/')||router.pathname.includes('community/edit/')){
                 getData(`/api/community/${id}`);
+                getCommentData(`/api/community/${id}/comments`);
                 setPageName('커뮤니티');
             }
         }
-    },[router.isReady,router.query,router.pathname]);
+        setIsPostComment(false);
+    },[router.isReady,router.query,router.pathname,isPostComment===true]);
 
     useEffect(()=>{
         const statusData = () => {
@@ -246,10 +302,12 @@ const DetailLayout = () => {
             setCurrentSelectedRecruitment(data?.recruitment);
         }
         data?statusData():null;
-
-        console.log(data??data);
         
     },[data])
+
+    useEffect(()=>{
+
+    },[]);
 
     return(
         <Layout>
@@ -422,60 +480,37 @@ const DetailLayout = () => {
                     <div>댓글 N개</div>
                     <div className="writeComment">
                         <div id="profile"><Profile2SVG size="40"/></div>
-                        <input id="input"/>
-                        <div id="button">등록</div>
+                        <input id="input" placeholder="댓글을 입력해주세요." defaultValue={comment} onChange={handleComment}/>
+                        <div id="button" onClick={()=>postComment()}>등록</div>
                     </div>
-                    <div className="viewComment">
-                        <div id="oneComment">
-                            <div><ProfileSVG size="40"/></div>
-                            <div id="commentLog">
-                                <div>닉네임</div>
-                                <div>2023.12.28.19:00</div>
-                            </div>
-                            <div></div>
-                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                            <div id="commentText">
-                                <div>댓글내용 텍스트</div>
-                                <div id="hart">
-                                    <div><HartOffSVG size="20"/></div>
-                                    <div>1,246</div>
+                    {commentData&&commentData.length>0?
+                        <div className="viewComment">
+                            {commentData?.map((i:any,idx:number)=>(
+                                <div id="oneComment" key={idx}>
+                                    <div><ProfileSVG size="40"/></div>
+                                    <div id="commentLog">
+                                        <div>{i.memberNickName}</div>
+                                        {/* [TODO: 작성일 데이터 추가 필요] */}
+                                        <div>2023.12.28.19:00</div>
+                                        {i.isWriter?<div id="del">삭제</div>:<div></div>}
+                                    </div>
+                                    <div></div>
+                                    {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
+                                    <div id="commentText">
+                                        <div>{i.content}</div>
+                                        {/* [TODO: 좋아요기능 추가 및 데이터 필요] */}
+                                        <div id="hart">
+                                            <div><HartOffSVG size="20"/></div>
+                                            <div>1,246</div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            ))}
+                            {/* [TODO: 더보기 기능 구현] */}
+                            {/* <div id="moreView">더보기</div> */}
                         </div>
-                        <div id="oneComment">
-                            <div><ProfileSVG size="40"/></div>
-                            <div id="commentLog">
-                                <div>닉네임</div>
-                                <div>2023.12.28.19:00</div>
-                            </div>
-                            <div></div>
-                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                            <div id="commentText">
-                                <div>댓글내용 텍스트</div>
-                                <div id="hart">
-                                    <div><HartOffSVG size="20"/></div>
-                                    <div>1,246</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="oneComment">
-                            <div><ProfileSVG size="40"/></div>
-                            <div id="commentLog">
-                                <div>닉네임</div>
-                                <div>2023.12.28.19:00</div>
-                            </div>
-                            <div></div>
-                            {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
-                            <div id="commentText">
-                                <div>댓글내용 텍스트</div>
-                                <div id="hart">
-                                    <div><HartOffSVG size="20"/></div>
-                                    <div>1,246</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="moreView">더보기</div>
-                    </div>
+                    : <></>
+                    }
                 </CommentWrapper>
                 :null
             }
@@ -758,6 +793,7 @@ const CommentWrapper = styled.div`
     flex-direction: column;
     gap: 25px;
     margin: 0 25px;
+    margin-bottom: 100px;
     padding: 25px 0;
     border-top: 1px solid #BDBDBD;
 
@@ -832,8 +868,18 @@ const CommentWrapper = styled.div`
         border-bottom: 1px solid #FFE2C6;
 
             & #commentLog{
-                display: flex;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
                 gap: 10px;
+
+                & #del{
+                    display: flex;
+                    justify-content: center;
+                    width: 70px;
+
+                    font-size: 0.875rem;
+                    color: #FF4D4D;
+                }
             }
         }
 
