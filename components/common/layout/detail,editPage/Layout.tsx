@@ -24,6 +24,7 @@ const DetailLayout = () => {
     const [isDeleteAlert, setIsDeleteAlert] = useState<boolean>(false);
 
     const [isPostComment, setIsPostComment] = useState<boolean>(false);
+    const [isDelComment, setIsDelComment] = useState<boolean>(false);
 
     /** 페이지 */
     const projectPage = router.pathname.includes('/project/');
@@ -235,11 +236,22 @@ const DetailLayout = () => {
         }
     }
     /** 댓글 삭제하기 */
-    const deleteComment = async() => {
-        if(projectPage){
-            await DELETE(``)
-
+    const deleteComment = (commentId:any) => {
+        const deleteApi = async(apiPath:any) => {
+            await DELETE(apiPath)
+            .then((res)=>setIsDelComment(true))
+            .catch((err)=>console.error(err));
         }
+        if(projectPage){
+            deleteApi(`/api/project/detail/${id}/comment/delete/${commentId}`)
+        }else if(findProjectPage){
+            deleteApi(`/api/projectrecruitment/detail/${id}/comment/delete/${commentId}`)
+        }else if(findStudyPage){
+            deleteApi(`/api/study/comment/${commentId}`)
+        }else if(communityPage){
+            deleteApi(`/api/community/comment/${commentId}`)
+        }
+        
     }
 
     
@@ -261,7 +273,7 @@ const DetailLayout = () => {
             await GET(`${tumpApi}`)
             .then((res)=>{
                 setCommentData(res.data);
-                console.log(res.data,'댓글데이터');
+                console.log(res.data);
             })
             .catch((err)=>console.error(err));
         }
@@ -288,7 +300,7 @@ const DetailLayout = () => {
             }
         }
         setIsPostComment(false);
-    },[router.isReady,router.query,router.pathname,isPostComment===true]);
+    },[router.isReady,router.query,router.pathname,isPostComment===true,isDelComment===true]);
 
     useEffect(()=>{
         const statusData = () => {
@@ -302,6 +314,8 @@ const DetailLayout = () => {
             setCurrentSelectedRecruitment(data?.recruitment);
         }
         data?statusData():null;
+
+        console.log(data,'data');
         
     },[data])
 
@@ -427,9 +441,10 @@ const DetailLayout = () => {
                                 setCurrentSelected={setCurrentSelectedOnline}
                             />}
                             
-
-                            <IntroMenu>지역</IntroMenu>
-                            {detailPage&&!editPage?<IntroText>{data?.siDo}</IntroText>:<IntroText></IntroText>}
+                                <>
+                                <IntroMenu>지역</IntroMenu>
+                                {detailPage&&!editPage?<IntroText>{data?.siDo}</IntroText>:<IntroText></IntroText>}
+                                </>
                             
 
                             <IntroMenu>신청 방법</IntroMenu>
@@ -491,8 +506,8 @@ const DetailLayout = () => {
                                     <div id="commentLog">
                                         <div>{i.memberNickName}</div>
                                         {/* [TODO: 작성일 데이터 추가 필요] */}
-                                        <div>2023.12.28.19:00</div>
-                                        {i.isWriter?<div id="del">삭제</div>:<div></div>}
+                                        <div>{i.createDate}</div>
+                                        {i.isWriter||i.writer?<div id="del" onClick={()=>deleteComment(i.id)}>삭제</div>:<div></div>}
                                     </div>
                                     <div></div>
                                     {/* [TODO: 그리드에서 빈칸으로 두고싶으면 빈 div를 두는 방법 말고는 없을까?] */}
@@ -880,6 +895,8 @@ const CommentWrapper = styled.div`
 
                     font-size: 0.875rem;
                     color: #FF4D4D;
+
+                    cursor: pointer;
                 }
             }
         }

@@ -89,6 +89,12 @@ const PostLayout = () => {
     
     /** 게시글 등록 POST */
     const postWritePage = async() => {
+        const handleResDataId = (resData:string) => {
+            const lines = resData.split('\n');
+            const idLine = lines.find(line => line.includes('id ='));
+            const idValue = idLine?.split('id =')[1].trim();
+            return (idValue);
+        }
 
         if(title.length <= 0){
             alert('제목을 입력해주세요!');
@@ -121,9 +127,9 @@ const PostLayout = () => {
                 subject: currentSelectedSubject,
             })
             .then((res)=>{
-                alert(res.data);
+                alert('프로젝트 게시글이 등록되었습니다.');
                 // [TODO: res.data에 id값을 받아와서, 상세보기 페이지로 바로갈 수 있도록 구현]
-                return router.push('/project')
+                return router.push(`/project/detail/${handleResDataId(res.data)}`);
             })
             .catch((err)=>console.error(err))
         }
@@ -143,12 +149,16 @@ const PostLayout = () => {
                 siDo: currentSelectedSido,
                 guGun: currentSelectedGugun,
                 online: currentSelectedOnline==='전체'?false:currentSelectedOnline==='온라인'?true:currentSelectedOnline==='오프라인'?false:true,
-                recruitment: currentSelectedRecruitment==='전체'?true:currentSelectedRecruitment,
+                recruitment: currentSelectedRecruitment==='전체'?true:currentSelectedRecruitment==='모집 중'?true:false,
                 contact: contact,
                 subject: currentSelectedSubject,
                 techStack: selectedStackAll,
             })
-            .then((res)=>{})
+            .then((res)=>{
+                alert('프로젝트 모집 글이 등록되었습니다.');
+                let id = handleResDataId(res.data);
+                return router.push(`/findProject/detail/${id}`);
+            })
             .catch((err)=>console.error(err));
         }
         // 스터디 모집 게시글 등록 POST
@@ -172,8 +182,8 @@ const PostLayout = () => {
                 fields: selectedStackAllField,
             })
             .then((res)=>{
-                console.log(res.data);
-                return router.push(`/findStudy/detail/${res.data.id}`);
+                // alert('스터디 모집 글이 등록되었습니다.');
+                // return router.push(`/findStudy/detail/${res.data.id}`);
             })
             .catch((err)=>{
                 console.error(err);
@@ -185,11 +195,11 @@ const PostLayout = () => {
             await POST(`/api/community`,{
                 title: title,
                 content: content,
-                category: currentSelectedCategory==='자유게시판'?'free':'고민상담'?'counsel':'qna',
+                category: currentSelectedCategory,
             })
             .then((res)=>{
-                console.log(res.data);
-                return router.push('/community');
+                alert(`커뮤니티 ${currentSelectedCategory} 게시글 등록이 완료되었습니다.`);
+                return router.push(`/community/detail/${handleResDataId(res.data)}`);
             })
             .catch((err)=>console.error(err));
         }
@@ -301,14 +311,18 @@ const PostLayout = () => {
                                 setCurrentSelected={setCurrentSelectedOnline}
                             />
                             
-
-                            <IntroMenu>지역</IntroMenu>
-                            <SingleSelectSidoGugunToggle sidoGugunData={sidoGugunDataArray}
-                                currentSelectedSido={currentSelectedSido}
-                                setCurrentSelectedSido={setCurrentSelectedSido}
-                                currentSelectedGugun={currentSelectedGugun}
-                                setCurrentSelectedGugun={setCurrentSelectedGugun}
-                            />
+                            {currentSelectedOnline==='오프라인'?
+                                <>
+                                    <IntroMenu>지역</IntroMenu>
+                                    <SingleSelectSidoGugunToggle sidoGugunData={sidoGugunDataArray}
+                                        currentSelectedSido={currentSelectedSido}
+                                        setCurrentSelectedSido={setCurrentSelectedSido}
+                                        currentSelectedGugun={currentSelectedGugun}
+                                        setCurrentSelectedGugun={setCurrentSelectedGugun}
+                                    />
+                                </>
+                            : null
+                            }
                             
 
                             <IntroMenu>신청 방법</IntroMenu>
