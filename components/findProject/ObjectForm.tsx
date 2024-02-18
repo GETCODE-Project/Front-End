@@ -64,6 +64,8 @@ interface MyWriteFindProjectObjectData{
 
 const ObjectForm = ({style,data,setIsLoginAlertOn}:ObjectFormProps) => {
 
+    console.log(data,'폼에들어온데이터');
+
     const router = useRouter();
 
     /** 좋아요,찜하기 버튼 클릭 상태 */

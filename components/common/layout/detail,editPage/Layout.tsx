@@ -499,10 +499,11 @@ const DetailLayout = () => {
                                     <div id="commentText">
                                         <div>{i.content}</div>
                                         {/* [TODO: 좋아요기능 추가 및 데이터 필요] */}
-                                        <div id="hart">
+                                        {/* <div id="hart">
                                             <div><HartOffSVG size="20"/></div>
                                             <div>1,246</div>
-                                        </div>
+                                        </div> */}
+                                        <div></div>
                                     </div>
                                 </div>
                             ))}

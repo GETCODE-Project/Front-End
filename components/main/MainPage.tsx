@@ -20,47 +20,41 @@ const MainPage = () => {
     /** 로그인Alert OnOff */
     const [isLoginAlertOn, setIsLoginAlertOn] = useState<boolean>(false);
 
-    const [populateProjectObjectData, setPopulateProjectObjectData] = useState<[]>([]);
+    const [populateProjectObjectData, setPopulateProjectObjectData] = useState<any[]>([]);
     const [populateProjectObjectForm, setPopulateProjectObjectForm] = useState<any>();
     
-    const [objectForm, setObjectForm] = useState(null);
+    const [objectForm, setObjectForm] = useState<any>();
     const [objectData, setObjectData] = useState<[]>([]);
     
     const [pageName, setpageName] = useState<string>('project');
     const [dataName, setDataName] = useState<string>('ProjectData');
-
-    /** 게시물 데이터를 불러 올 모듈 이름 */
-    const [moduleName, setModuleName] = useState<string>('');
 
     const dotArr: any[] = [1,2,3,4,5];
 
 
     /** 프로젝트 게시물 전체 목록 불러오기 GET 파라미터 데이터 */
     //year,keyword,size,page,sort,subject,techStack
-    const [year, setYear] = useState<string>('');
-    const [keyword, setKeyword] = useState<string>('');
     const [size, setSize] = useState<number>(999);
-    const [page, setPage] = useState<number>(1);
-    const [sort, setSort] = useState<string>('');
-    const [subject, setSubject] = useState<string>('');
-    const [techStack, setTechStack] = useState<string>('');
+    const [pageNumber, setPageNumber] = useState<number>(1);
 
-    const [params, setParams] = useState<any>({page,size});
-    const [popularityParams, setPopularityParams] = useState<any>({page,size});
+    const [params, setParams] = useState<any>({pageNumber,size});
 
     const handlepageName = (pageName:string, dataName:string) => {
+        setObjectData([]);
         setpageName(pageName);
         setDataName(dataName);
     }
 
-    
+    // useEffect(() => {
+    //   console.log(pageName,'페이지네임',dataName,'데이터이름');
+    // },[pageName]);
 
     /** 인기 프로젝트 데이터,폼 불러오기 */
     useEffect(()=>{
 
       // 인기 프로젝트 데이터 불러오기
       const populateProjectData = async() => {
-        await GET(`/api/project/all?pageNumber=${5}&size=${3}&sort=${'likeCnt'}`)
+        await GET(`/api/project/all?pageNumber=${1}&size=${3}&sort=${'likeCnt'}`)
         .then((res)=>{
           setPopulateProjectObjectData(res.data);
         })
@@ -80,6 +74,7 @@ const MainPage = () => {
       
     },[]);
 
+
     /** 페이지 별 데이터 불러오기 함수 */
     useEffect(()=>{
       const getData = async() => {
@@ -88,22 +83,28 @@ const MainPage = () => {
               await getModule.getObjectData({
                   params,setObjectData
               });
+              console.log(objectData,'데엍');
           }
           catch (error){
               console.error(error);
           }
       };
       getData();
-    },[]);
+    },[dataName]);
 
     /** 페이지 별 객체 폼 불러오기 */
     useEffect(() => {
-        // const adjustedDataName = (dataName === 'FreeBoard' || dataName === 'QnA' || dataName === 'Consult') ? 'community' : dataName;
+      const getForm = () => {
         import(`@/components/${pageName}/ObjectForm`)
-        .then(module => 
-            setObjectForm(()=>module.ObjectForm))
+        .then(module => {pageName=='project'?
+            setObjectForm(()=>module.ObjectForm)
+        : setObjectForm(()=>module.default)
+        }
+        )
         .catch(error => console.error(error))
-    },[pageName, setObjectData]);
+      }
+      getForm();
+    },[pageName]);
 
 
 
@@ -117,14 +118,14 @@ const MainPage = () => {
                     <Contents>
                         <Title>GETCODE 인기 프로젝트</Title>
                         <MoreViewButton onClick={()=>router.push('/project')}>더보기</MoreViewButton>
-                        <ObjectList id="topObject" ref={objectListRef} pageName={pageName}>
-                          
+                        {/** 인기 프로젝트 게시글 */}
+                        <PapulateObjectList id="topObject" ref={objectListRef}>
                             {Array.isArray(populateProjectObjectData)&&populateProjectObjectData.map((i:any,idx:number)=>(
                                 populateProjectObjectForm ? React.createElement(populateProjectObjectForm, {
                                     key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
                                 }) : null
                             ))}
-                        </ObjectList>
+                        </PapulateObjectList>
                         {/* 인기 프로젝트 슬라이드 버튼 */}
                         <PageDots>
                             {dotArr.map((i:any, idx:number)=>(
@@ -142,14 +143,14 @@ const MainPage = () => {
                     </Title>
                     <MoreViewButton onClick={()=>router.push(`/${pageName}`)}>더보기</MoreViewButton>
                     {/* 목록 별 게시글 객체 불러오기 */}
-                    <ObjectList ref={objectListRef} pageName={pageName}>
+                    <ObjectList id="listObject" ref={objectListRef} pageName={pageName}>
                         {/* {objectData?.map((i:any,idx:number)=>(
                             objectForm ? React.createElement(objectForm, {key:idx, data:i}) : null
                         ))} */}
-                        {Array.isArray(objectData)&&objectData.map((i:any,idx:number)=>(
-                                objectForm ? React.createElement(objectForm, {
-                                    key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
-                                }) : null
+                        {Array.isArray(objectData)&&objectData?.map((i:any,idx:number)=>(
+                            objectForm ? React.createElement(objectForm, {
+                                key:idx, data:i, setIsLoginAlertOn:setIsLoginAlertOn
+                            }) : null
                         ))}
                     </ObjectList>
                 </BottomContents>
@@ -172,6 +173,8 @@ const BackLayout = styled.div`
     align-items: start;
     justify-content: center;
     width: 100%;
+    min-height: 100vh;
+    
     /* padding: 0 55px 70px; */
     overflow: hidden;
 `;
@@ -268,8 +271,19 @@ const BottomContents = styled.div`
   align-items: center;
   gap: 25px;
   width: 100%;
-  height: 800px;
+  min-height: 800px;
   padding: 45px 0;
+`;
+
+const PapulateObjectList = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+
+    ${media.tablet || media.mobile}{
+        justify-content: center;
+    }
 `;
 
 const ObjectList = styled.div<{pageName:string}>`

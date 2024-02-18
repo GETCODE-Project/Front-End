@@ -144,8 +144,6 @@ const PostLayout = () => {
                 guGun: currentSelectedGugun,
                 online: currentSelectedOnline==='전체'?false:currentSelectedOnline==='온라인'?true:currentSelectedOnline==='오프라인'?false:true,
                 recruitment: currentSelectedRecruitment==='전체'?true:currentSelectedRecruitment,
-                views: 0,
-                likeCnt: 0,
                 contact: contact,
                 subject: currentSelectedSubject,
                 techStack: selectedStackAll,

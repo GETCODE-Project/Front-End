@@ -31,6 +31,7 @@ interface FindProjectProps {
 /** 프로젝트모집 전체 게시물 데이터 */
 export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
 
+    console.log(params,'프젝모집파람스');
     let handleOnline = 'N';
     let handleRecruitment = 'N';
 
@@ -67,7 +68,7 @@ export const getObjectData = async({params,setObjectData}:FindProjectProps) => {
         default: break;
     }
 
-    return await GET(`/api/projectrecruitment/all?year=${params.year}&keyword=${params.keyword}&size=${params.size}&page=${params.pageNumber}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}&siDo=${params.siDo}&guGun=${params.guGun}&online=${handleOnline}&recruitment=${handleRecruitment}`,{})
+    return await GET(`/api/projectrecruitment/all?year=${params.year||''}&keyword=${params.keyword||''}&size=${params.size}&page=${params.pageNumber}&sort=${params.sort}&subject=${params.subject||''}&${techStackQueryString()}&siDo=${params.siDo||''}&guGun=${params.guGun||''}&online=${handleOnline}&recruitment=${handleRecruitment}`,{})
     .then((res)=>{
         setObjectData(res.data);
     })

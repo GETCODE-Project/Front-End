@@ -32,16 +32,18 @@ interface ProjectProps {
 /** ------------------------------------------------------------- */
 export const getObjectData = async ({params,setObjectData}:ProjectProps) => {
 
+    console.log(params,'params');
+
     const techStackQueryString = () => {
         let techStack = '';
-        if(params.techStack.length > 0){
+        if(params.techStack?.length > 0){
             techStack = params.techStack?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
         }
         return techStack;
     }
     // console.log(params,'params');
     
-    return await GET(`/api/project/all?year=${params.year}&keyword=${params.keyword}&pageNumber=${params.pageNumber}&size=${params.size}&sort=${params.sort}&subject=${params.subject}&${techStackQueryString()}`,{})
+    return await GET(`/api/project/all?year=${params.year||''}&keyword=${params.keyword||''}&pageNumber=${params.pageNumber||params.page}&size=${params.size}&sort=${params.sort}&subject=${params.subject||''}&${techStackQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
         // console.log(res.data,'res.data-ObjectData');

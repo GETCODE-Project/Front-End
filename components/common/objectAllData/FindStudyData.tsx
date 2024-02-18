@@ -36,7 +36,7 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
 
     const subjectQueryString = () => {
         let field = '';
-        if(params.field.length > 0){
+        if(params?.field?.length > 0){
             field = params.field?.map((stack) => `techStack=${encodeURIComponent(stack)}`).join('&');
         }
         return field;
@@ -66,7 +66,7 @@ export const getObjectData = async({params,setObjectData}:FindStudyProps) => {
         default: break;
     }
 
-    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${params.size}&keyword=${params.keyword}&recruitment=${handleRecruitment}&sort=${params.sort}&siDo=${params.siDo}&guGun=${params.guGun}&online=${handleOnline}&year=${params.year}&fields=${subjectQueryString()}`,{})
+    return await GET(`/api/search/studies?page=${params.pageNumber}&size=${params.size}&keyword=${params.keyword||''}&recruitment=${handleRecruitment}&sort=${params.sort}&siDo=${params.siDo||''}&guGun=${params.guGun||''}&online=${handleOnline}&year=${params.year||''}&fields=${subjectQueryString()}`,{})
     .then((res)=>{
         setObjectData(res.data);
         // console.log(res);
