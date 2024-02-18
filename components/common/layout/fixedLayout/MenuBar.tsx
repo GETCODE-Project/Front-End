@@ -75,9 +75,9 @@ const ContainerDiv = styled.div`
     font-size: 16px;
     ${media.mobile} {
       align-items: center;
-      justify-content: center;
+      /* justify-content: center; */
       font-size: 14px;
-      margin: 0 10px;
+      margin: 0 20px;
       gap: 15px;
     }
   }

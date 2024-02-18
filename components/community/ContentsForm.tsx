@@ -8,6 +8,7 @@ const ContentsForm = ({pageName}:any) => {
     const [subTitle, setSubTitle] = useState<string>('');
 
     useEffect(()=>{
+
         switch(pageName){
             case 'FreeBoard':
                 setSubTitle('자유게시판');
@@ -22,8 +23,8 @@ const ContentsForm = ({pageName}:any) => {
                 console.error('알 수 없는 페이지입니다.');
                 break;
         }
-    },[]);
-    
+    },[pageName]);
+
     return(
         <BackLayout>
             <Layout>

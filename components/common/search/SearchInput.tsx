@@ -5,6 +5,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import {MultipleSelectToggle, SingleSelectToggle} from "@/components/common/search/DetailSearchForm";
 import { useRouter } from "next/router";
+import { Span } from "next/dist/trace";
 
 interface SearchInputProps{
     children: any;
@@ -36,8 +37,8 @@ const SearchInput = ({children, setKeyword, searchButtonFC}:SearchInputProps) =>
         </Search>
         {isCommunityPage?
             <></>
-        :   <DetailButton onClick={()=>setIsDetailOpen(!isDetailOpen)}>
-                    { isDetailOpen?'닫기':'상세검색'}
+        :   <DetailButton >
+                    { isDetailOpen?<span onClick={()=>setIsDetailOpen(!isDetailOpen)}>닫기</span>:<span onClick={()=>setIsDetailOpen(!isDetailOpen)}>상세검색</span>}
             </DetailButton>
         }
         
@@ -119,7 +120,10 @@ const DetailButton = styled.div`
     font-size: 1rem;
     text-decoration-line: underline;
 
-    cursor: pointer;
+    & span{
+        cursor: pointer;
+    }
+
 `;
 
 const DetailSearchWrapper = styled.div`

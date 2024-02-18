@@ -66,6 +66,13 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
         }
     };
 
+    /** 이벤트 버블링 방지 & X버튼 클릭 시 해당 토글 선택 '전체'로 초기화 */
+    const handleResetSelection = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        setSelectedAll([]);
+        setCurrentSelected('전체');
+    }
+
     return(
         <BackLayout>
             <Layout>
@@ -74,7 +81,7 @@ export const MultipleSelectToggle = ({title, data, currentSelected, setCurrentSe
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                         <span>{currentSelected}</span>
                         <ToggleIcon/>
-                        <ExitIconWrapper>
+                        <ExitIconWrapper onClick={(event)=>handleResetSelection(event)}>
                             <ExitIcon/>
                         </ExitIconWrapper>
                         {isToggleOn ?
@@ -111,6 +118,12 @@ export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSele
     const [toggleList, setToggleList] = useState<string[]>(dataArray);
     const [isToggleOn, setIsToggleOn]=useState<boolean>(false);
 
+    /** 이벤트 버블링 방지 & X버튼 클릭 시 해당 토글 선택 '전체'로 초기화 */
+    const handleResetSelection = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        setCurrentSelected('전체');
+    }
+
     return(
         <BackLayout>
             <Layout>
@@ -119,7 +132,7 @@ export const SingleSelectToggle = ({title, data, currentSelected, setCurrentSele
                     <Toggle onClick={()=>setIsToggleOn(!isToggleOn)}>
                             <span>{currentSelected}</span>
                             <ToggleIcon/>
-                            <ExitIconWrapper>
+                            <ExitIconWrapper onClick={(event)=>handleResetSelection(event)}>
                                 <ExitIcon/>
                             </ExitIconWrapper>
                             {isToggleOn ?
@@ -146,6 +159,13 @@ export const SingleSelectSidoGugunToggle = ({title, sidoGugunData, currentSelect
     const [isSidoToggleOn, setIsSidoToggleOn]=useState<boolean>(false);
     const [isGugunToggleOn, setIsGugunToggleOn]=useState<boolean>(false);
 
+    /** 이벤트 버블링 방지 & X버튼 클릭 시 해당 토글 선택 '전체'로 초기화 */
+    const handleResetSelection = (event:React.MouseEvent) => {
+        event.stopPropagation();
+        setCurrentSelectedSido('시/도 선택');
+        setCurrentSelectedGugun('구/군 선택');
+    }
+
     return(
         <BackLayout>
             <Layout className="SidoGugun">
@@ -169,7 +189,7 @@ export const SingleSelectSidoGugunToggle = ({title, sidoGugunData, currentSelect
                     <Toggle id="Gugun" onClick={()=>setIsGugunToggleOn(!isGugunToggleOn)}>
                             <span>{currentSelectedGugun}</span>
                             <ToggleIcon/>
-                            <ExitIconWrapper>
+                            <ExitIconWrapper onClick={(event)=>handleResetSelection(event)}>
                                 <ExitIcon/>
                             </ExitIconWrapper>
                             {isGugunToggleOn ?

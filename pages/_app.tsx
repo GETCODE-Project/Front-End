@@ -5,19 +5,24 @@ import { theme } from '@/styles/theme';
 import '@/styles/globals.css';
 import { SessionProvider, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 const App = ({ Component, pageProps:{session, ...pageProps} }: AppProps) => {
 
   return (
-    <SessionProvider session={session}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle/>
-        <Head>
-          <title>GETCODE</title>
-        </Head>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={session}>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle/>
+          <Head>
+            <title>GETCODE</title>
+          </Head>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   )
 }
 export default App;

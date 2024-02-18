@@ -43,7 +43,7 @@ const Header = () => {
       .then((res)=>{
           setUserinfo(res.data);
       })
-      .catch((err)=>console.error(err.response.data.message));
+      .catch((err)=>console.error(err));
   }
 
   useEffect(()=>{
@@ -97,7 +97,7 @@ const HeaderDiv = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 1000px;
-  ${media.mobile_550} {
+  ${media.mobile} {
     margin: 0 20px;
   }
 `;
@@ -115,7 +115,7 @@ const LogoDiv = styled.a`
 const MenuDiv = styled.div`
   display: flex;
   gap: 30px;
-  ${media.mobile_550} {
+  ${media.mobile} {
     gap: 10px;
   }
 `;
@@ -133,7 +133,7 @@ const Wish = styled.div`
   line-height: 1rem;
 
   cursor: pointer;
-  ${media.mobile_550} {
+  ${media.mobile} {
     font-size: 0.8rem;
     gap: 0;
   }

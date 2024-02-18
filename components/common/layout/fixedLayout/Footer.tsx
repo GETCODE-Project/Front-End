@@ -12,9 +12,7 @@ const Footer= () => {
   );
 }
 export default Footer;
-const TextDiv =styled.div`
-  width:1000px;
-`
+
 const FooterDiv = styled.div`
   display: flex;
   justify-content: center;
@@ -33,3 +31,6 @@ const FooterDiv = styled.div`
     text-align: left;
   }
 `;
+const TextDiv =styled.div`
+  width:100%;
+`

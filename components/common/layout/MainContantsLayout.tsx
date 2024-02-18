@@ -68,14 +68,14 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
     const [siDo, setSiDo] = useState<string>('');//시도
     const [guGun, setGuGun] = useState<string>('');//구군
     const [year, setYear] = useState<string>('');//연도
-    const [category, setCategory] = useState<string>('');//연도
+    const [category, setCategory] = useState<string>('자유게시판');//커뮤니티카테고리
 
     /** 페이지 별 게시물 전체 목록 불러오기 GET 파라미터 SET*/
     const [params, setParams] = useState<Params>();
     const projectParams = {year, keyword, size, pageNumber, sort, subject, techStack};
     const findProjectParams = {year, keyword, size, pageNumber, sort, subject, techStack, online, siDo, guGun, recruitment};
     const findStudyParams = {year, keyword, size, pageNumber, sort, siDo, guGun, recruitment, online, field};
-    const communityParams = {year,keyword,size, pageNumber, sort, category};
+    const communityParams = {keyword,size, pageNumber, sort, category};
 
     /** 상세 검색 항목 SET */
     
@@ -87,7 +87,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
         await GET(`/api/userInfo`)
         .then((res)=>{
             const currentPageName = (pageName === 'FreeBoard' || pageName === 'QnA' || pageName === 'Consult') ? 'community' : pageName
-            router.push(`/${currentPageName}/post`);
+            router.push(`/${currentPageName}/write`);
         })
         .catch((err)=>setIsLoginAlertOn(true));
     }
@@ -150,31 +150,32 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
             case 'FreeBoard':
                 moduleName = 'CommunityData'
                 setParams(communityParams);
-                setCategory('FREEBOARD');
+                setCategory('자유게시판');
                 break;
             case 'QnA':
                 moduleName = 'CommunityData'
                 setParams(communityParams);
-                setCategory('QNA');
+                setCategory('QnA');
                 break;
             case 'Consult':
                 moduleName = 'CommunityData'
                 setParams(communityParams);
-                setCategory('COUNSEL');
+                setCategory('고민상담');
                 break;
             default:
                 return;
         }
         setModuleName(moduleName);
         setParams((prevParams: any) => ({ ...prevParams, sort}));
+        console.log(pageName,'페이지이름');
 
-    },[pageName, sort, year, keyword, size, pageNumber, subject, techStack, online, recruitment, siDo, guGun, field]);
+    },[pageName, category, sort, year, keyword, size, pageNumber, subject, techStack, online, recruitment, siDo, guGun, field]);
 
     /** 페이지 별 데이터 불러오기, 정렬 상태 반영 */
     useEffect(()=>{
         if(!moduleName) return;
         getData();
-    },[moduleName,params?.sort]);
+    },[pageName,moduleName,params?.sort]);
 
     useEffect(()=>{
         if (detailSearchSelectedData && detailSearchSelectedData.length > 0) {
@@ -194,7 +195,7 @@ const MainContantsLayout = ({pageName, title, subTitle, sumTitle, children, deta
 
     useEffect(() => {
         // console.log(detailSearchSelectedData,'SearchSelected');
-        console.log(objectData,'objectData');
+        // console.log(objectData,'objectData');
     },[pageName]);
 
     
@@ -309,6 +310,10 @@ const Contents = styled.div`
     justify-content: center;
     gap: 20px;
     width: 100%;
+
+    ${media.mobile}{
+        margin-top: 15px;
+    }
 `;
 
 const TotalSortWrapper = styled.div`
@@ -323,6 +328,7 @@ const TotalSortWrapper = styled.div`
 const Total = styled.div`
     display: flex;
 `;
+
 const Sort = styled.div`
     display: flex;
     gap: 10px;

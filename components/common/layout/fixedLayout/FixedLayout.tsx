@@ -38,6 +38,6 @@ const Layout = styled.div`
 
 const Content = styled.div`
     display: flex;
+    justify-content: center;
     min-height: 100vh;
-    
 `;
